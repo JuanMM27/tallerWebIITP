@@ -9,6 +9,9 @@ const productSchema = new mongoose.Schema({
     enum: ['Grano Entero', 'Molido', 'Soluble', 'Capsulas'] 
   },
   precio: { type: Number, required: true, min: 0 },
+  gramaje: {
+    type: String, required: true, enum: ['250g', '500g', '1kg']
+  },
   stock: { type: Number, required: true, default: 0, min: 0 },
   imagen: { type: String, required: true } 
 }, { timestamps: true });

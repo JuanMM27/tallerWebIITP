@@ -2,8 +2,9 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./src/config/db');
 
-dotenv.config();
+const productRoutes = require('./src/routes/productRoutes');
 
+dotenv.config();
 connectDB();
 
 const app = express();
@@ -11,7 +12,8 @@ const PORT = process.env.PORT || 4000;
 
 app.use(express.json());
 
-// Ruta de prueba
+app.use('/api/products', productRoutes);
+
 app.get('/', (req, res) => {
   res.send('ecommerce funcionando');
 });
