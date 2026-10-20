@@ -1,17 +1,13 @@
-import { Component, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { ProductService } from './services/product'; 
+import { Component } from '@angular/core';
+import { RouterOutlet, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [], 
+  imports: [RouterOutlet, RouterLink], // 👈 Importamos RouterOutlet y RouterLink para la navegación limpia
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
   title = 'Café Nominal';
-  
-  private productService = inject(ProductService);
-  products = toSignal(this.productService.getProducts(), { initialValue: [] });
 }

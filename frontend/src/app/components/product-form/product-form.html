@@ -1,0 +1,145 @@
+<div class="container py-5">
+  <div class="col-lg-7 mx-auto">
+    
+    <div class="card border p-4 p-md-5 shadow-sm form-card-container">
+      
+      <span class="badge badge-cafe-gold mx-auto mb-2 form-badge-top">
+        Panel de Administración
+      </span>
+      
+      <h2 class="font-serif text-center fw-normal mb-4 form-main-heading">
+        {{ isEditMode() ? 'Editar Perfil de Tueste' : 'Cargar Nuevo Café' }}
+      </h2>
+
+      <form (ngSubmit)="onSubmit()" #f="ngForm" novalidate>
+        
+        <div class="mb-3">
+          <label class="font-tag text-uppercase small fw-bold mb-1 form-label-custom">
+            Nombre del Café:
+          </label>
+          <input 
+            type="text" 
+            [(ngModel)]="product().nombre" 
+            name="nombre" 
+            required 
+            placeholder="Ej: Grato Gesha" 
+            class="form-control py-2 custom-form-control"
+            #nombre="ngModel">
+          
+          @if (nombre.invalid && (nombre.dirty || nombre.touched)) {
+            <div class="text-danger small mt-1">El nombre del café es obligatorio.</div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="font-tag text-uppercase small fw-bold mb-1 form-label-custom">
+            Descripción (Notas de cata):
+          </label>
+          <textarea 
+            [(ngModel)]="product().descripcion" 
+            name="descripcion" 
+            rows="3" 
+            required 
+            placeholder="Notas de jazmín, bergamota y miel..." 
+            class="form-control py-2 custom-form-control"
+            #descripcion="ngModel"></textarea>
+          
+          @if (descripcion.invalid && (descripcion.dirty || descripcion.touched)) {
+            <div class="text-danger small mt-1">La descripción es obligatoria.</div>
+          }
+        </div>
+
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label class="font-tag text-uppercase small fw-bold mb-1 form-label-custom">
+              Clasificación:
+            </label>
+            <select [(ngModel)]="product().clasificacion" name="clasificacion" required class="form-select py-2 custom-form-control">
+              <option value="Grano Entero">Grano Entero</option>
+              <option value="Molido">Molido</option>
+              <option value="Soluble">Soluble</option>
+              <option value="Capsulas">Cápsulas</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="font-tag text-uppercase small fw-bold mb-1 form-label-custom">
+              Gramaje:
+            </label>
+            <select [(ngModel)]="product().gramaje" name="gramaje" required class="form-select py-2 custom-form-control">
+              <option value="250g">250g</option>
+              <option value="500g">500g</option>
+              <option value="1kg">1kg</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label class="font-tag text-uppercase small fw-bold mb-1 form-label-custom">
+              Precio ($):
+            </label>
+            <input 
+              type="number" 
+              [(ngModel)]="product().precio" 
+              name="precio" 
+              min="1" 
+              required 
+              class="form-control py-2 custom-form-control"
+              #precio="ngModel">
+            
+            @if (precio.invalid && (precio.dirty || precio.touched)) {
+              <div class="text-danger small mt-1">Ingresá un precio válido mayor a 0.</div>
+            }
+          </div>
+
+          <div class="col-md-6">
+            <label class="font-tag text-uppercase small fw-bold mb-1 form-label-custom">
+              Stock inicial:
+            </label>
+            <input 
+              type="number" 
+              [(ngModel)]="product().stock" 
+              name="stock" 
+              [min]="isEditMode() ? 0 : 1"
+              required 
+              class="form-control py-2 custom-form-control"
+              #stock="ngModel">
+            
+            @if (stock.invalid && (stock.dirty || stock.touched)) {
+              <div class="text-danger small mt-1">El stock no puede ser negativo.</div>
+            }
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="font-tag text-uppercase small fw-bold mb-1 form-label-custom">
+            Imagen del Producto (Archivo):
+          </label>
+          <input 
+            type="file" 
+            (change)="onFileSelected($event)" 
+            accept="image/*" 
+            class="form-control py-2 custom-form-control">
+          
+          @if (isImageInvalid && fileTouched()) {
+            <div class="text-danger small mt-1">La imagen del café es obligatoria para nuevos registros.</div>
+          } @else {
+            <div class="form-text text-muted small mt-1">
+              {{ isEditMode() ? 'Opcional: Subí una nueva imagen solo si deseas reemplazar la actual.' : 'Formatos aceptados: JPG, PNG, WEBP.' }}
+            </div>
+          }
+        </div>
+        <button 
+          type="submit" 
+          [disabled]="f.invalid || isImageInvalid" 
+          class="btn btn-cafe-primary w-100 py-3 fs-6">
+          {{ isEditMode() ? 'Guardar Cambios' : 'Publicar Producto' }}
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+</div>
