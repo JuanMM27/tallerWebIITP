@@ -99,8 +99,8 @@ export class ProductForm implements OnInit {
         next: () => {
           this.router.navigate(['/']); 
         },
-        error: () => {
-          alert('Ocurrió un error al actualizar el producto.');
+        error: (error) => {
+          alert(error.error?.message || 'No se pudo actualizar el café. Revisá que el servidor y la base de datos estén disponibles.');
         }
       });
     } else {
@@ -108,8 +108,8 @@ export class ProductForm implements OnInit {
         next: () => {
           this.router.navigate(['/']); 
         },
-        error: () => {
-          alert('Ocurrió un error al guardar el producto.');
+        error: (error) => {
+          alert(error.error?.message || 'No se pudo guardar el café. Revisá que el servidor y la base de datos estén disponibles.');
         }
       });
     }
