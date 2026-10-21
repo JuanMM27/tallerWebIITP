@@ -1,130 +1,252 @@
-<div class="container py-5 home-container">
-  
-  <section class="text-center py-4 mb-5">
-    <div class="col-lg-8 mx-auto">
-      <span class="badge badge-cafe-gold mb-3 d-inline-block hero-badge">
-        Origen Único & Trazabilidad
-      </span>
-      <h1 class="font-serif display-5 fw-normal mb-3 hero-title">
-        El ritual del café de especialidad en tu taza
-      </h1>
-      <p class="font-sans text-muted fs-6 hero-desc">
-        Seleccionamos minuciosamente los mejores granos de origen para honrar el trabajo del caficultor mediante un tueste artesanal preciso.
-      </p>
-    </div>
-  </section>
-
-  <section class="mb-5">
-    
-    <div class="d-flex justify-content-between align-items-baseline border-bottom pb-3 mb-4 catalog-header">
-      <h2 class="font-serif fs-3 fw-medium m-0 catalog-heading">
-        Cosecha Actual
-      </h2>
-      <span class="font-tag text-muted catalog-subtext">
-        Orígenes disponibles
-      </span>
-    </div>
-
-    <div class="row g-3 mb-4 align-items-center">
-      <div class="col-md-8">
-        <div class="input-group">
-          <span class="input-group-text bg-white border-end-0 text-muted">🔍</span>
-          <input 
-            type="text" 
-            [(ngModel)]="searchQuery" 
-            placeholder="Buscar por nombre o notas de cata (ej: Gesha, jazmín...)" 
-            class="form-control border-start-0 py-2">
+<div class="paginaInicio">
+    <section class="seccionPrincipal" aria-labelledby="hero-title">
+        <div class="contenidoPrincipal">
+            <h1 id="hero-title" class="tituloPrincipal">
+                Café que<br />deja <em class="textoDestacado">huella.</em>
+            </h1>
+            <p class="descripcionPrincipal">
+                Granos de origen, historias reales y un ritual único en cada taza.
+            </p>
+            <a class="botonExplorar" href="#catalogo"
+                >Explorar cafés <span class="iconoBotonExplorar" aria-hidden="true">-></span></a
+            >
         </div>
-      </div>
+        <div class="artePrincipal" aria-label="Café TERRA de especialidad, origen Argentina">
+            <div class="circuloDecorativo circuloTerracota"></div>
+            <div class="circuloDecorativo circuloVerde"></div>
+            <div class="solDecorativo"></div>
+            <div class="montanaDecorativa montanaFondo"></div>
+            <div class="montanaDecorativa montanaFrontal"></div>
+            <span class="anotacionDecorativa anotacionOrigen"
+                >De la tierra,<br />con intención.</span
+            >
+            <img
+                class="bolsaCafe"
+                src="/img/CafeTerraHome.png"
+                alt="Bolsa de café TERRA con etiqueta Argentina"
+            />
+            <span class="selloOrigen"><span>CAFÉ</span><span>DE ORIGEN</span></span>
+        </div>
+    </section>
 
-      <div class="col-md-4">
-        <select [(ngModel)]="selectedClassification" class="form-select py-2">
-          <option value="Todos">Todas las clasificaciones</option>
-          <option value="Grano Entero">Grano Entero</option>
-          <option value="Molido">Molido</option>
-          <option value="Soluble">Soluble</option>
-          <option value="Capsulas">Cápsulas</option>
-        </select>
-      </div>
-    </div>
-
-    @if (filteredProducts().length === 0) {
-      <div class="text-center py-5 rounded-4 border empty-catalog-box">
-        <p class="font-serif fs-4 mb-2 empty-title">
-          No hay perfiles de tueste cargados...
-        </p>
-        <span class="font-tag text-muted small empty-subtitle">
-          Utiliza el botón "+ Cargar Producto" para registrar el primer café.
-        </span>
-      </div>
-    } @else {
-      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        
-        @for (p of filteredProducts(); track p._id) {
-          <div class="col">
-            <div class="card h-100 border position-relative shadow-sm product-card">
-              
-              <div class="position-absolute top-0 end-0 m-3 d-flex gap-2 z-3">
-                <a [routerLink]="['/admin/editar', p._id]" title="Editar producto" class="btn btn-light btn-sm rounded-circle d-flex align-items-center justify-content-center shadow" style="width: 32px; height: 32px;">
-                    ✏️
-                </a>
-                <button (click)="onDelete(p._id)" title="Eliminar producto" class="btn btn-danger btn-sm rounded-circle d-flex align-items-center justify-content-center shadow" style="width: 32px; height: 32px;">
-                  &times;
-                </button>
-              </div>
-
-              <div class="position-relative card-image-container">
-                <img [src]="'http://localhost:4000' + p.imagen" [alt]="p.nombre" class="w-100 h-100 object-fit-cover card-img-filter">
-                
-                <div class="position-absolute top-0 start-0 m-3 d-flex gap-2">
-                  <span class="badge badge-cafe-dark">{{ p.gramaje }}</span>
-                  <span class="badge badge-cafe-gold">{{ p.clasificacion }}</span>
-                </div>
-              </div>
-
-              <div class="card-body d-flex flex-column justify-content-between p-4">
-                <div>
-                  <h3 class="font-serif fs-4 fw-medium mb-2 product-title">
-                    {{ p.nombre }}
-                  </h3>
-                  <p class="font-sans small text-muted mb-4 product-desc">
-                    {{ p.descripcion }}
-                  </p>
-                </div>
-
-                <div class="d-flex justify-content-between align-items-center pt-3 border-top product-footer-border">
-                  <div>
-                    <span class="font-tag text-uppercase text-muted d-block price-label">Precio final</span>
-                    <span class="font-serif fs-3 fw-medium product-price">
-                      ${{ p.precio }}
-                    </span>
-                  </div>
-                  <div>
-                    @if (p.stock > 0) {
-                      <div class="text-end">
-                        <span class="badge bg-light text-dark border mb-1 d-block font-tag">Stock: {{ p.stock }} u.</span>
-                        <button class="btn btn-cafe-primary btn-sm">
-                          Seleccionar
-                        </button>
-                      </div>
-                    } @else {
-                      <div class="text-end">
-                        <span class="badge bg-danger text-white mb-1 d-block font-tag">Sin Stock</span>
-                        <button class="btn btn-outline-secondary btn-sm" disabled>
-                          Agotado
-                        </button>
-                      </div>
-                    }
-                  </div>
-                </div>
-              </div>
-
+    <section class="seccionCatalogo" id="catalogo" aria-labelledby="featured-title">
+        <div class="distribucionDestacados">
+            <div class="encabezadoDestacados">
+                <p class="etiquetaSeccion">Nuestra selección</p>
+                <h2 id="featured-title" class="tituloDestacados">
+                    Cafés<br /><em class="textoDestacado">destacados</em>
+                </h2>
             </div>
-          </div>
-        }
+            <div class="contenidoDestacados">
+                <div class="filaAccionesDestacados">
+                    <a class="enlaceVerCatalogo" href="#catalogo-completo"
+                        >Ver todos los cafés
+                        <span class="flechaEnlaceCatalogo" aria-hidden="true">→</span></a
+                    >
+                </div>
+                @if (filteredProducts().length === 0) {
+                    <div class="estadoVacio estadoVacioDestacados">
+                        <p class="tituloEstadoVacio">No hay cafés para mostrar.</p>
+                        <span class="mensajeEstadoVacio"
+                            >Los productos disponibles aparecerán aquí.</span
+                        >
+                    </div>
+                } @else {
+                    <div class="grillaDestacados">
+                        @for (p of filteredProducts().slice(0, 4); track p._id) {
+                            <article class="tarjetaProducto tarjetaDestacada">
+                                <div class="contenedorImagenProducto">
+                                    <img
+                                        [src]="'http://localhost:4000' + p.imagen"
+                                        [alt]="p.nombre"
+                                        class="imagenProducto"
+                                    />
+                                </div>
+                                <div class="informacionProducto">
+                                    <h3 class="nombreProducto">{{ p.nombre }}</h3>
+                                    <p class="descripcionProducto">{{ p.descripcion }}</p>
+                                    <div class="pieProducto">
+                                        <span class="precioProducto">${{ p.precio }}</span>
+                                        @if (p.stock > 0) {
+                                            <button
+                                                class="botonCarritoProducto"
+                                                type="button"
+                                                [attr.aria-label]="
+                                                    'Agregar ' + p.nombre + ' al carrito'
+                                                "
+                                            >
+                                                <svg
+                                                    class="iconoCarritoProducto"
+                                                    viewBox="0 0 24 24"
+                                                    aria-hidden="true"
+                                                >
+                                                    <path
+                                                        d="M3 4h2l2.2 10.1a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 1.9-1.4L21 8H6"
+                                                    />
+                                                    <circle cx="10" cy="20" r="1.25" />
+                                                    <circle cx="18" cy="20" r="1.25" />
+                                                </svg>
+                                            </button>
+                                        } @else {
+                                            <button
+                                                class="botonCarritoProducto"
+                                                type="button"
+                                                disabled
+                                                aria-label="Producto agotado"
+                                            >
+                                                <svg
+                                                    class="iconoCarritoProducto"
+                                                    viewBox="0 0 24 24"
+                                                    aria-hidden="true"
+                                                >
+                                                    <path
+                                                        d="M3 4h2l2.2 10.1a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 1.9-1.4L21 8H6"
+                                                    />
+                                                    <circle cx="10" cy="20" r="1.25" />
+                                                    <circle cx="18" cy="20" r="1.25" />
+                                                </svg>
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+                            </article>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
 
-      </div>
+    <section class="franjaBeneficios" aria-label="Beneficios de Café Nominal">
+        <article class="beneficioItem">
+            <svg class="iconoBeneficio" viewBox="0 0 48 40" aria-hidden="true">
+                <path d="M3 34 18 12l8 11 6-8 13 19M9 34h32" />
+            </svg>
+            <div>
+                <h3 class="tituloBeneficio">Cafés de origen</h3>
+                <p class="descripcionBeneficio">Trazabilidad y comercio justo</p>
+            </div>
+        </article>
+        <article class="beneficioItem">
+            <svg class="iconoBeneficio" viewBox="0 0 48 40" aria-hidden="true">
+                <path
+                    d="M24 4c-8 0-13 8-13 16s5 16 13 16 13-8 13-16S32 4 24 4Zm0 0c-6 7-6 25 0 32"
+                />
+            </svg>
+            <div>
+                <h3 class="tituloBeneficio">Tostado fresco</h3>
+                <p class="descripcionBeneficio">Cada semana, en pequeños lotes</p>
+            </div>
+        </article>
+        <article class="beneficioItem">
+            <svg class="iconoBeneficio" viewBox="0 0 48 40" aria-hidden="true">
+                <path d="M8 31c15 1 25-8 29-24C21 7 10 14 8 31Zm0 0 19-18m-9 9 1 9m6-15 8 1" />
+            </svg>
+            <div>
+                <h3 class="tituloBeneficio">Impacto positivo</h3>
+                <p class="descripcionBeneficio">Apoyamos a productores</p>
+            </div>
+        </article>
+        <article class="beneficioItem">
+            <svg class="iconoBeneficio" viewBox="0 0 48 40" aria-hidden="true">
+                <path
+                    d="M5 12h29v8c0 8-6 13-15 13S5 28 5 20v-8Zm29 3h5a5 5 0 0 1 0 10h-6M10 7h20"
+                />
+            </svg>
+            <div>
+                <h3 class="tituloBeneficio">Envíos a todo el país</h3>
+                <p class="descripcionBeneficio">Tu café, donde estés</p>
+            </div>
+        </article>
+    </section>
+
+    @if (filteredProducts().length > 0) {
+        <section
+            class="seccionCatalogoCompleto"
+            id="catalogo-completo"
+            aria-labelledby="full-catalog-title"
+        >
+            <div class="encabezadoCatalogoCompleto">
+                <p class="etiquetaSeccion">Todos los lotes</p>
+                <h2 id="full-catalog-title" class="tituloCatalogoCompleto">Cosecha actual</h2>
+            </div>
+            <div class="barraFiltrosCatalogo">
+                <label class="campoClasificacion"
+                    ><span>CLASIFICACIÓN</span
+                    ><select
+                        class="selectorClasificacion"
+                        [(ngModel)]="selectedClassification"
+                        aria-label="Filtrar por clasificación"
+                    >
+                        <option value="Todos">Todas</option>
+                        <option value="Grano Entero">Grano Entero</option>
+                        <option value="Molido">Molido</option>
+                        <option value="Soluble">Soluble</option>
+                        <option value="Capsulas">Cápsulas</option>
+                    </select></label
+                >
+            </div>
+            <div class="grillaCatalogo">
+                @for (p of filteredProducts(); track p._id) {
+                    <article class="tarjetaProducto tarjetaCatalogo">
+                        <div class="contenedorImagenProducto">
+                            <img
+                                [src]="'http://localhost:4000' + p.imagen"
+                                [alt]="p.nombre"
+                                class="imagenProducto"
+                            />
+                            <div class="accionesProducto">
+                                <a
+                                    [routerLink]="['/admin/editar', p._id]"
+                                    title="Editar producto"
+                                    aria-label="Editar producto"
+                                    class="botonAccion"
+                                    >✎</a
+                                >
+                                <button
+                                    (click)="onDelete(p._id)"
+                                    title="Eliminar producto"
+                                    aria-label="Eliminar producto"
+                                    class="botonAccion accionEliminar"
+                                >
+                                    &times;
+                                </button>
+                            </div>
+                            <div class="etiquetasProducto">
+                                <span class="etiquetaDatoProducto">{{ p.gramaje }}</span
+                                ><span class="etiquetaDatoProducto">{{ p.clasificacion }}</span>
+                            </div>
+                        </div>
+                        <div class="informacionProducto">
+                            <div class="etiquetaProducto">
+                                <span>CAFÉ DE ESPECIALIDAD</span
+                                ><span class="gramajeProducto">{{ p.gramaje }}</span>
+                            </div>
+                            <h3 class="nombreProducto">{{ p.nombre }}</h3>
+                            <p class="descripcionProducto">{{ p.descripcion }}</p>
+                            <div class="pieProducto">
+                                <span class="precioProducto">${{ p.precio }}</span>
+                                @if (p.stock > 0) {
+                                    <div class="areaCompra">
+                                        <span class="etiquetaStock">{{ p.stock }} disponibles</span
+                                        ><button class="botonAgregar">
+                                            Agregar
+                                            <span class="flechaBotonAgregar" aria-hidden="true"
+                                                >→</span
+                                            >
+                                        </button>
+                                    </div>
+                                } @else {
+                                    <div class="areaCompra">
+                                        <span class="etiquetaStock agotado">Sin stock</span
+                                        ><button class="botonAgregar" disabled>Agotado</button>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </article>
+                }
+            </div>
+        </section>
     }
-
-  </section>
 </div>

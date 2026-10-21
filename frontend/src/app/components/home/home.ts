@@ -4,19 +4,22 @@ import { ProductService } from '../../services/product';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { CatalogSearchService } from '../../services/catalog-search';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule, RouterLink, FormsModule],
+  host: { class: 'contenedorComponenteInicio' },
   templateUrl: './home.html', 
   styleUrl: './home.css'
 })
 export class Home {
   private productService = inject(ProductService);
+  private catalogSearch = inject(CatalogSearchService);
 
   products = toSignal(this.productService.getProducts(), { initialValue: [] });
-  searchQuery = signal('');
+  searchQuery = this.catalogSearch.query;
   selectedClassification = signal('Todos');
 
   filteredProducts = computed(() => {
