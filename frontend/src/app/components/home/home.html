@@ -7,9 +7,12 @@
             <p class="descripcionPrincipal">
                 Granos de origen, historias reales y un ritual único en cada taza.
             </p>
-            <a class="botonExplorar" href="#catalogo"
-                >Explorar cafés <span class="iconoBotonExplorar" aria-hidden="true">-></span></a
-            >
+            <a class="botonExplorar" href="#catalogo">
+                Explorar cafés
+                <svg class="iconoBotonExplorar" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 12h15m-6-6 6 6-6 6" />
+                </svg>
+            </a>
         </div>
         <div class="artePrincipal" aria-label="Café TERRA de especialidad, origen Argentina">
             <div class="circuloDecorativo circuloTerracota"></div>
@@ -39,7 +42,7 @@
             </div>
             <div class="contenidoDestacados">
                 <div class="filaAccionesDestacados">
-                    <a class="enlaceVerCatalogo" href="#catalogo-completo"
+                    <a class="enlaceVerCatalogo" routerLink="/cafes"
                         >Ver todos los cafés
                         <span class="flechaEnlaceCatalogo" aria-hidden="true">→</span></a
                     >
@@ -160,93 +163,4 @@
         </article>
     </section>
 
-    @if (filteredProducts().length > 0) {
-        <section
-            class="seccionCatalogoCompleto"
-            id="catalogo-completo"
-            aria-labelledby="full-catalog-title"
-        >
-            <div class="encabezadoCatalogoCompleto">
-                <p class="etiquetaSeccion">Todos los lotes</p>
-                <h2 id="full-catalog-title" class="tituloCatalogoCompleto">Cosecha actual</h2>
-            </div>
-            <div class="barraFiltrosCatalogo">
-                <label class="campoClasificacion"
-                    ><span>CLASIFICACIÓN</span
-                    ><select
-                        class="selectorClasificacion"
-                        [(ngModel)]="selectedClassification"
-                        aria-label="Filtrar por clasificación"
-                    >
-                        <option value="Todos">Todas</option>
-                        <option value="Grano Entero">Grano Entero</option>
-                        <option value="Molido">Molido</option>
-                        <option value="Soluble">Soluble</option>
-                        <option value="Capsulas">Cápsulas</option>
-                    </select></label
-                >
-            </div>
-            <div class="grillaCatalogo">
-                @for (p of filteredProducts(); track p._id) {
-                    <article class="tarjetaProducto tarjetaCatalogo">
-                        <div class="contenedorImagenProducto">
-                            <img
-                                [src]="'http://localhost:4000' + p.imagen"
-                                [alt]="p.nombre"
-                                class="imagenProducto"
-                            />
-                            <div class="accionesProducto">
-                                <a
-                                    [routerLink]="['/admin/editar', p._id]"
-                                    title="Editar producto"
-                                    aria-label="Editar producto"
-                                    class="botonAccion"
-                                    >✎</a
-                                >
-                                <button
-                                    (click)="onDelete(p._id)"
-                                    title="Eliminar producto"
-                                    aria-label="Eliminar producto"
-                                    class="botonAccion accionEliminar"
-                                >
-                                    &times;
-                                </button>
-                            </div>
-                            <div class="etiquetasProducto">
-                                <span class="etiquetaDatoProducto">{{ p.gramaje }}</span
-                                ><span class="etiquetaDatoProducto">{{ p.clasificacion }}</span>
-                            </div>
-                        </div>
-                        <div class="informacionProducto">
-                            <div class="etiquetaProducto">
-                                <span>CAFÉ DE ESPECIALIDAD</span
-                                ><span class="gramajeProducto">{{ p.gramaje }}</span>
-                            </div>
-                            <h3 class="nombreProducto">{{ p.nombre }}</h3>
-                            <p class="descripcionProducto">{{ p.descripcion }}</p>
-                            <div class="pieProducto">
-                                <span class="precioProducto">${{ p.precio }}</span>
-                                @if (p.stock > 0) {
-                                    <div class="areaCompra">
-                                        <span class="etiquetaStock">{{ p.stock }} disponibles</span
-                                        ><button class="botonAgregar">
-                                            Agregar
-                                            <span class="flechaBotonAgregar" aria-hidden="true"
-                                                >→</span
-                                            >
-                                        </button>
-                                    </div>
-                                } @else {
-                                    <div class="areaCompra">
-                                        <span class="etiquetaStock agotado">Sin stock</span
-                                        ><button class="botonAgregar" disabled>Agotado</button>
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                    </article>
-                }
-            </div>
-        </section>
-    }
 </div>
