@@ -1,3 +1,4 @@
+/* Hero principal */
 .contenedorComponenteInicio {
     display: block;
 }
@@ -72,16 +73,10 @@
 .iconoBotonExplorar {
     width: 17px;
     height: 17px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.5;
-    stroke-linecap: round;
-    stroke-linejoin: round;
 }
 
 .botonExplorar:hover {
     background: var(--forest);
-    color: #fff;
     transform: translateY(-2px);
 }
 
@@ -95,7 +90,6 @@
     justify-content: center;
     isolation: isolate;
 }
-
 
 .circuloDecorativo {
     position: absolute;
@@ -224,8 +218,7 @@
     transform: rotate(12deg);
 }
 
-/* Cafe destacado */
-
+/* Catálogo destacado */
 .seccionCatalogo {
     padding: 72px max(7.1vw, 28px) 56px;
     background: #fbf9f4;
@@ -237,10 +230,6 @@
     grid-template-columns: minmax(150px, 190px) minmax(0, 1fr);
     align-items: start;
     gap: clamp(24px, 3.3vw, 48px);
-}
-
-.encabezadoDestacados {
-    margin: 0;
 }
 
 .encabezadoDestacados .etiquetaSeccion {
@@ -294,8 +283,6 @@
     font-size: 15px;
     line-height: 1;
 }
-
-/* Tarjetas destacadas */
 
 .grillaDestacados {
     display: grid;
@@ -392,6 +379,10 @@
 .iconoCarritoProducto {
     width: 20px;
     height: 20px;
+}
+
+.iconoBotonExplorar,
+.iconoCarritoProducto {
     fill: none;
     stroke: currentColor;
     stroke-width: 1.5;
@@ -422,8 +413,7 @@
     font-size: 22px;
 }
 
-/* Tarjetas y estados de productos */
-
+/* Tarjetas de productos */
 .tarjetaProducto {
     min-width: 0;
     overflow: hidden;
@@ -440,7 +430,6 @@
 
 .contenedorImagenProducto {
     position: relative;
-    height: clamp(220px, 26vw, 345px);
     overflow: hidden;
     background: #e8dfd1;
 }
@@ -448,7 +437,6 @@
 .imagenProducto {
     width: 100%;
     height: 100%;
-    object-fit: cover;
     transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
@@ -456,92 +444,7 @@
     transform: scale(1.035);
 }
 
-.accionesProducto {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    display: flex;
-    gap: 7px;
-    z-index: 2;
-}
-
-.botonAccion {
-    display: grid;
-    place-items: center;
-    width: 32px;
-    height: 32px;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    background: #fbf9f4e8;
-    color: var(--primary);
-    text-decoration: none;
-    font-size: 16px;
-    box-shadow: 0 2px 9px #151b1910;
-}
-
-.botonAccion:hover {
-    background: var(--primary);
-    color: #fff;
-}
-
-.accionEliminar {
-    font-size: 20px;
-}
-
-.etiquetasProducto {
-    position: absolute;
-    bottom: 12px;
-    left: 13px;
-    display: flex;
-    gap: 6px;
-}
-
-.etiquetaDatoProducto {
-    padding: 6px 9px;
-    background: #f7f3ece8;
-    color: var(--primary);
-    font:
-        9px 'Space Grotesk',
-        sans-serif;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-}
-
-.informacionProducto {
-    padding: 18px 18px 16px;
-}
-
-.etiquetaProducto {
-    display: flex;
-    justify-content: space-between;
-    color: #84796c;
-    font:
-        9px 'Space Grotesk',
-        sans-serif;
-    letter-spacing: 0.13em;
-}
-
-.gramajeProducto {
-    color: var(--terracotta);
-}
-
-.nombreProducto {
-    margin: 10px 0 5px;
-    color: var(--primary);
-    font:
-        600 27px/1 'Newsreader',
-        Georgia,
-        serif;
-}
-
 .descripcionProducto {
-    min-height: 40px;
-    margin: 0;
-    color: #72695f;
-    font:
-        12px/1.6 'Manrope',
-        sans-serif;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -550,65 +453,8 @@
 
 .pieProducto {
     display: flex;
-    align-items: end;
     justify-content: space-between;
     gap: 10px;
-    margin-top: 17px;
-    padding-top: 13px;
-    border-top: 1px solid #ded6cb;
-}
-
-.precioProducto {
-    color: var(--primary);
-    font:
-        500 24px 'Newsreader',
-        Georgia,
-        serif;
-}
-
-.areaCompra {
-    display: grid;
-    justify-items: end;
-    gap: 5px;
-}
-
-.etiquetaStock {
-    color: #82796e;
-    font:
-        9px 'Space Grotesk',
-        sans-serif;
-    letter-spacing: 0.04em;
-}
-
-.agotado {
-    color: #a45740;
-}
-
-.botonAgregar {
-    padding: 9px 13px;
-    border: 0;
-    border-radius: 30px;
-    background: var(--primary);
-    color: white;
-    font:
-        600 10px 'Space Grotesk',
-        sans-serif;
-    letter-spacing: 0.04em;
-    transition: background 0.2s;
-}
-
-.flechaBotonAgregar {
-    margin-left: 7px;
-    font-size: 14px;
-}
-
-.botonAgregar:hover:not(:disabled) {
-    background: var(--forest);
-}
-
-.botonAgregar:disabled {
-    background: #bcb4aa;
-    cursor: not-allowed;
 }
 
 .estadoVacio {
@@ -634,7 +480,7 @@
         sans-serif;
 }
 
-
+/* Beneficios y responsive */
 .franjaBeneficios {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -652,7 +498,6 @@
 
 .iconoBeneficio {
     flex: 0 0 44px;
-    width: 44px;
     height: 40px;
     fill: none;
     stroke: var(--primary);
@@ -677,8 +522,6 @@
         sans-serif;
 }
 
-
-
 @media (max-width: 900px) {
     .seccionPrincipal {
         grid-template-columns: 0.88fr 1.12fr;
@@ -702,9 +545,6 @@
     .tituloDestacados {
         font-size: clamp(2.8rem, 6vw, 3.8rem);
     }
-    .filaAccionesDestacados {
-        margin-bottom: 14px;
-    }
     .grillaDestacados {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 22px 16px;
@@ -712,17 +552,12 @@
     .tarjetaDestacada .contenedorImagenProducto {
         height: clamp(190px, 34vw, 280px);
     }
-    .contenedorImagenProducto {
-        height: clamp(230px, 39vw, 360px);
-    }
     .franjaBeneficios {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         padding-right: 5vw;
         padding-left: 5vw;
     }
 }
-
-/* Ajustes para móvil */
 
 @media (max-width: 620px) {
     .seccionPrincipal {
@@ -787,12 +622,6 @@
     .tarjetaDestacada .contenedorImagenProducto {
         height: min(78vw, 350px);
     }
-    .contenedorImagenProducto {
-        height: min(88vw, 390px);
-    }
-    .informacionProducto {
-        padding: 17px;
-    }
     .tarjetaDestacada .informacionProducto {
         padding: 11px 0 0;
     }
@@ -803,6 +632,5 @@
     }
     .iconoBeneficio {
         flex-basis: 40px;
-        width: 40px;
     }
 }
