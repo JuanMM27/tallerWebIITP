@@ -1,1 +1,87 @@
-/* You can add global styles to this file, and also import other style files */
+/* Importación de tipografías oficiales del Design System */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Space+Grotesk:wght@500;600&display=swap');
+
+:root {
+  --surface: #fcf9f3;
+  --surface-low: #f6f3ed;
+  --surface-container: #f0eee8;
+  --on-surface: #1c1c18;
+  --on-surface-variant: #4e4540;
+  
+  --primary: #110703;
+  --on-primary: #ffffff;
+  --secondary: #775a19;
+  
+  --border-color: #d2c4bd;
+  --card-border: rgba(74, 55, 40, 0.08);
+}
+
+body {
+  background-color: var(--surface) !important;
+  color: var(--on-surface) !important;
+  font-family: 'Manrope', sans-serif !important;
+  margin: 0;
+  padding: 0;
+}
+
+.font-serif {
+  font-family: 'Newsreader', serif !important;
+}
+
+.font-tag {
+  font-family: 'Space Grotesk', sans-serif !important;
+}
+
+.btn-cafe-primary {
+  background-color: var(--primary) !important;
+  color: var(--on-primary) !important;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 10px 20px;
+  border-radius: 9999px;
+  border: none;
+}
+
+.btn-cafe-primary:hover {
+  opacity: 0.9;
+  color: var(--on-primary);
+}
+
+.btn-cafe-secondary {
+  background-color: var(--secondary) !important;
+  color: var(--on-primary) !important;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  border: none;
+}
+
+.btn-cafe-secondary:hover {
+  opacity: 0.9;
+  color: var(--on-primary);
+}
+
+.badge-cafe-dark {
+  background-color: var(--primary) !important;
+  color: #fff !important;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  padding: 6px 12px;
+  border-radius: 9999px;
+}
+
+.badge-cafe-gold {
+  background-color: var(--secondary) !important;
+  color: #fff !important;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  padding: 6px 12px;
+  border-radius: 9999px;
+}

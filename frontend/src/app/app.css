@@ -1,0 +1,32 @@
+.app-wrapper {
+  background-color: var(--surface);
+}
+
+.custom-navbar {
+  background-color: var(--surface);
+  border-color: var(--border-color) !important;
+  backdrop-filter: blur(8px);
+}
+
+.brand-title {
+  color: var(--primary);
+  letter-spacing: -0.02em;
+}
+
+.brand-subtitle {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--secondary);
+}
+
+.custom-footer {
+  background-color: var(--surface-low);
+  border-color: var(--border-color) !important;
+}
+
+.footer-text {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--on-surface-variant);
+}
