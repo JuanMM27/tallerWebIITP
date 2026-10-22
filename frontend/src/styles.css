@@ -1,16 +1,18 @@
 /* Importación de tipografías oficiales del Design System */
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Space+Grotesk:wght@500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 :root {
-  --surface: #fcf9f3;
-  --surface-low: #f6f3ed;
-  --surface-container: #f0eee8;
-  --on-surface: #1c1c18;
-  --on-surface-variant: #4e4540;
+  --surface: #F7F3EC;
+  --surface-low: #EDE5D8;
+  --surface-container: #f4f0e8;
+  --on-surface: #151B19;
+  --on-surface-variant: #76523A;
+  --terracotta: #C66B49;
+  --forest: #294536;
   
-  --primary: #110703;
+  --primary: #151B19;
   --on-primary: #ffffff;
-  --secondary: #775a19;
+  --secondary: #76523A;
   
   --border-color: #d2c4bd;
   --card-border: rgba(74, 55, 40, 0.08);
@@ -22,6 +24,7 @@ body {
   font-family: 'Manrope', sans-serif !important;
   margin: 0;
   padding: 0;
+  scroll-behavior: smooth;
 }
 
 .font-serif {

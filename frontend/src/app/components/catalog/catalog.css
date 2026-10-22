@@ -1,0 +1,537 @@
+.paginaCatalogo {
+    min-height: calc(100vh - 150px);
+    overflow-x: clip;
+    padding: 0;
+    background: var(--surface);
+    color: var(--on-surface);
+}
+
+.heroCatalogo {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    align-items: center;
+    min-height: 255px;
+    overflow: hidden;
+    padding: 28px max(5.5vw, 32px);
+    isolation: isolate;
+    background: linear-gradient(90deg, #f7f3ec 0%, #f7f3ec 42%, #f1e7db 100%);
+}
+
+.contenidoHeroCatalogo {
+    position: relative;
+    z-index: 1;
+    max-width: 790px;
+}
+
+.tituloHeroCatalogo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.16em;
+    margin: 0;
+    color: var(--primary);
+    font: 700 clamp(4.2rem, 7.8vw, 7.8rem) / 0.86 'Newsreader', Georgia, serif;
+    letter-spacing: -0.075em;
+}
+
+.palabraActual {
+    color: var(--terracotta);
+    font-style: italic;
+    font-weight: 500;
+}
+
+.descripcionHeroCatalogo {
+    max-width: 610px;
+    margin: 16px 0 0 6px;
+    color: #6d645a;
+    font: 400 clamp(14px, 1.45vw, 20px) / 1.5 'Manrope', sans-serif;
+}
+
+.imagenHeroCatalogo {
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    right: 0;
+    width: 53%;
+    height: 100%;
+    object-fit: contain;
+    object-position: right center;
+    pointer-events: none;
+}
+
+.contenidoCatalogo {
+    padding: 0 max(5.5vw, 32px) 34px;
+}
+
+.barraFiltrosCatalogo {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.95fr) minmax(300px, 1fr) minmax(170px, 1fr);
+    align-items: center;
+    gap: 26px;
+    min-height: 70px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid #ded6cb;
+}
+
+.campoBusquedaCatalogo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+    min-height: 43px;
+    padding: 0 17px;
+    border: 1px solid #d6c9ba;
+    border-radius: 28px;
+    background: #fbf9f4;
+    color: var(--primary);
+}
+
+.iconoBusquedaCatalogo,
+.iconoAccionCatalogo,
+.iconoCarritoCatalogo {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+}
+
+.iconoBusquedaCatalogo {
+    flex: 0 0 22px;
+    height: 22px;
+    stroke-width: 1.8;
+}
+
+.entradaBusquedaCatalogo {
+    width: 100%;
+    min-width: 0;
+    padding: 10px 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--primary);
+    font: 400 12px 'Manrope', sans-serif;
+}
+
+.entradaBusquedaCatalogo::placeholder {
+    color: #81766a;
+    opacity: 1;
+}
+
+.filtroClasificacionCatalogo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    min-height: 39px;
+    padding-left: 28px;
+    border-left: 1px solid #d6c9ba;
+}
+
+.etiquetaClasificacionCatalogo {
+    color: #514b44;
+    font: 600 10px 'Space Grotesk', sans-serif;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.selectorClasificacionCatalogo {
+    width: 100%;
+    min-width: 150px;
+    min-height: 42px;
+    padding: 0 16px;
+    border: 1px solid #d6c9ba;
+    border-radius: 24px;
+    background: #f9f6f0;
+    color: var(--primary);
+    font: 400 12px 'Manrope', sans-serif;
+}
+
+.cantidadResultadosCatalogo {
+    justify-self: end;
+    margin: 0;
+    color: #756d64;
+    font: 400 12px 'Manrope', sans-serif;
+    text-align: right;
+}
+
+.grillaCatalogo {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 28px 20px;
+}
+
+.tarjetaProductoCatalogo {
+    min-width: 0;
+}
+
+.imagenProductoFondo {
+    position: relative;
+    display: grid;
+    place-items: center;
+    height: clamp(250px, 23vw, 360px);
+    overflow: hidden;
+    border-radius: 8px;
+    transition: box-shadow 0.25s ease;
+}
+
+.tarjetaProductoCatalogo:hover .imagenProductoFondo {
+    box-shadow: 0 12px 24px #3827181a;
+}
+
+.fondoTerracota {
+    background: #a84f2d;
+}
+
+.fondoSalvia {
+    background: #647660;
+}
+
+.fondoOcre {
+    background: #a47b42;
+}
+
+.fondoPetroleo {
+    background: #315565;
+}
+
+.imagenProductoCatalogo {
+    width: 100%;
+    height: 100%;
+    padding: 12px;
+    object-fit: contain;
+    transition: transform 0.35s ease;
+}
+
+.tarjetaProductoCatalogo:hover .imagenProductoCatalogo {
+    transform: scale(1.025);
+}
+
+.accionesProductoCatalogo {
+    position: absolute;
+    z-index: 1;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 6px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.tarjetaProductoCatalogo:hover .accionesProductoCatalogo,
+.tarjetaProductoCatalogo:focus-within .accionesProductoCatalogo {
+    opacity: 1;
+}
+
+.botonAccionCatalogo {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #f7f3ecef;
+    color: var(--primary);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.iconoAccionCatalogo {
+    width: 15px;
+    height: 15px;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+}
+
+.etiquetaClasificacionProducto {
+    position: absolute;
+    bottom: 12px;
+    left: 13px;
+    max-width: calc(100% - 26px);
+    padding: 6px 10px;
+    overflow: hidden;
+    border-radius: 18px;
+    background: #f7f3ecef;
+    color: var(--primary);
+    font: 600 9px 'Space Grotesk', sans-serif;
+    letter-spacing: 0.07em;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.datosProductoCatalogo {
+    padding: 12px 4px 0;
+}
+
+.nombreProductoCatalogo {
+    margin: 0 0 5px;
+    color: var(--primary);
+    font: 700 17px / 1.25 'Manrope', sans-serif;
+}
+
+.notasProductoCatalogo {
+    min-height: 22px;
+    margin: 0;
+    color: #716960;
+    font: 400 13px / 1.5 'Manrope', sans-serif;
+}
+
+.pieProductoCatalogo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+.precioYGramajeCatalogo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 9px;
+}
+
+.precioProductoCatalogo {
+    color: var(--primary);
+    font: 700 20px 'Manrope', sans-serif;
+}
+
+.gramajeProductoCatalogo {
+    color: #81766a;
+    font: 400 11px 'Manrope', sans-serif;
+}
+
+.botonAgregarCatalogo {
+    display: grid;
+    flex: 0 0 54px;
+    place-items: center;
+    height: 50px;
+    border: 0;
+    border-radius: 15px;
+    background: #101b19;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.botonAgregarCatalogo:hover {
+    background: var(--forest);
+}
+
+.iconoCarritoCatalogo {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.6;
+}
+
+.etiquetaAgotadoCatalogo {
+    padding: 9px 11px;
+    border-radius: 20px;
+    background: #e9e0d5;
+    color: #7b5140;
+    font: 600 10px 'Space Grotesk', sans-serif;
+}
+
+.estadoVacioCatalogo {
+    display: grid;
+    justify-items: center;
+    padding: 72px 20px 82px;
+    text-align: center;
+}
+
+.adornoEstadoVacio {
+    color: var(--terracotta);
+    font-size: 28px;
+}
+
+.tituloEstadoVacio {
+    margin: 13px 0 7px;
+    color: var(--primary);
+    font: 500 29px 'Newsreader', Georgia, serif;
+}
+
+.textoEstadoVacio {
+    margin: 0;
+    color: #766c61;
+    font: 400 12px 'Manrope', sans-serif;
+}
+
+.franjaBeneficiosCatalogo {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 26px;
+    padding: 26px max(5.5vw, 32px);
+    background: #f0eae0;
+}
+
+.beneficioCatalogo {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+    min-width: 0;
+}
+
+.iconoBeneficioCatalogo {
+    flex: 0 0 46px;
+    height: 42px;
+    fill: none;
+    stroke: var(--primary);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+}
+
+.textoBeneficioCatalogo {
+    min-width: 0;
+}
+
+.tituloBeneficioCatalogo {
+    margin: 0 0 5px;
+    color: var(--primary);
+    font: 600 13px 'Manrope', sans-serif;
+}
+
+.descripcionBeneficioCatalogo {
+    margin: 0;
+    color: #72695f;
+    font: 400 11px / 1.5 'Manrope', sans-serif;
+}
+
+@media (max-width: 1000px) {
+    .heroCatalogo {
+        min-height: 235px;
+        padding-right: 4.5vw;
+        padding-left: 4.5vw;
+    }
+
+    .tituloHeroCatalogo {
+        font-size: clamp(4rem, 8vw, 6.3rem);
+    }
+
+    .imagenHeroCatalogo {
+        width: 51%;
+    }
+
+    .contenidoCatalogo {
+        padding-right: 4.5vw;
+        padding-left: 4.5vw;
+    }
+
+    .barraFiltrosCatalogo {
+        grid-template-columns: minmax(220px, 1fr) minmax(270px, 1fr);
+        gap: 16px;
+        padding: 12px 0;
+    }
+
+    .cantidadResultadosCatalogo {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    .grillaCatalogo {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 26px 18px;
+    }
+
+    .imagenProductoFondo {
+        height: clamp(260px, 38vw, 380px);
+    }
+
+    .franjaBeneficiosCatalogo {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+        padding-right: 4.5vw;
+        padding-left: 4.5vw;
+    }
+}
+
+@media (max-width: 620px) {
+    .heroCatalogo {
+        grid-template-columns: minmax(0, 1fr);
+        min-height: 0;
+        padding: 35px 23px 0;
+        background: linear-gradient(180deg, #f7f3ec 0%, #f3e8dc 100%);
+    }
+
+    .contenidoHeroCatalogo {
+        max-width: none;
+    }
+
+    .tituloHeroCatalogo {
+        column-gap: 0.13em;
+        font-size: clamp(3.8rem, 15vw, 5.8rem);
+    }
+
+    .descripcionHeroCatalogo {
+        max-width: 360px;
+        margin: 13px 0 0 2px;
+        font-size: 14px;
+    }
+
+    .imagenHeroCatalogo {
+        position: relative;
+        right: auto;
+        width: min(100%, 520px);
+        height: auto;
+        max-height: 300px;
+        aspect-ratio: 3 / 2;
+        justify-self: end;
+    }
+
+    .contenidoCatalogo {
+        padding: 0 22px 28px;
+    }
+
+    .barraFiltrosCatalogo {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+        padding: 14px 0;
+    }
+
+    .campoBusquedaCatalogo {
+        min-height: 46px;
+    }
+
+    .filtroClasificacionCatalogo {
+        justify-content: space-between;
+        min-height: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    .selectorClasificacionCatalogo {
+        width: auto;
+        min-width: 160px;
+    }
+
+    .cantidadResultadosCatalogo {
+        grid-column: 1;
+        grid-row: auto;
+        justify-self: end;
+        margin-top: -3px;
+    }
+
+    .grillaCatalogo {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 24px;
+    }
+
+    .imagenProductoFondo {
+        height: min(88vw, 390px);
+    }
+
+    .accionesProductoCatalogo {
+        opacity: 1;
+    }
+
+    .franjaBeneficiosCatalogo {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+        padding: 25px 22px;
+    }
+}
