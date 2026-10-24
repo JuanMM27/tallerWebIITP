@@ -6,7 +6,7 @@ const connectDB = require('./src/config/db');
 
 const productRoutes = require('./src/routes/productRoutes');
 
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, '.env') });
 connectDB();
 
 const app = express();
