@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { CatalogSearchService } from '../../services/catalog-search';
 import { ProductService } from '../../services/product';
+import { AuthService } from '../../services/auth';
+
 
 @Component({
   selector: 'app-catalog',
@@ -16,7 +18,7 @@ import { ProductService } from '../../services/product';
 export class Catalog {
   private productService = inject(ProductService);
   private catalogSearch = inject(CatalogSearchService);
-
+  auth = inject(AuthService);
   products = toSignal(this.productService.getProducts(), { initialValue: [] });
   searchQuery = this.catalogSearch.query;
   selectedClassification = signal('Todos');

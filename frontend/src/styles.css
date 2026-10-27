@@ -88,3 +88,32 @@ body {
   padding: 6px 12px;
   border-radius: 9999px;
 }
+
+.form-card-container {
+  background-color: var(--surface-container);
+  border-color: var(--card-border) !important;
+  border-radius: 12px;
+}
+
+.form-badge-top {
+  background-color: #fed48833 !important;
+  color: var(--secondary);
+  width: fit-content;
+}
+
+.form-main-heading {
+  color: var(--primary);
+  font-size: 32px;
+}
+
+.form-label-custom {
+  color: var(--on-surface-variant);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+
+.custom-form-control {
+  background-color: var(--surface);
+  border-color: var(--border-color);
+  color: var(--on-surface);
+}

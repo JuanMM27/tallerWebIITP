@@ -84,29 +84,31 @@
                                 [src]="'http://localhost:4000' + product.imagen"
                                 [alt]="product.nombre"
                             />
-                            <div class="accionesProductoCatalogo">
-                                <a
-                                    class="botonAccionCatalogo"
-                                    [routerLink]="['/admin/editar', product._id]"
-                                    title="Editar producto"
-                                    aria-label="Editar producto"
-                                >
-                                    <svg class="iconoAccionCatalogo" viewBox="0 0 24 24" aria-hidden="true">
-                                        <path d="m14 5 5 5M4 20l4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z" />
-                                    </svg>
-                                </a>
-                                <button
-                                    class="botonAccionCatalogo"
-                                    type="button"
-                                    (click)="onDelete(product._id)"
-                                    title="Eliminar producto"
-                                    aria-label="Eliminar producto"
-                                >
-                                    <svg class="iconoAccionCatalogo" viewBox="0 0 24 24" aria-hidden="true">
-                                        <path d="M4 7h16M10 11v6m4-6v6M6 7l1 14h10l1-14M9 7V4h6v3" />
-                                    </svg>
-                                </button>
-                            </div>
+                            @if (auth.esAdmin()) {
+                                <div class="accionesProductoCatalogo">
+                                    <a
+                                        class="botonAccionCatalogo"
+                                        [routerLink]="['/admin/editar', product._id]"
+                                        title="Editar producto"
+                                        aria-label="Editar producto"
+                                    >
+                                        <svg class="iconoAccionCatalogo" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path d="m14 5 5 5M4 20l4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z" />
+                                        </svg>
+                                    </a>
+                                    <button
+                                        class="botonAccionCatalogo"
+                                        type="button"
+                                        (click)="onDelete(product._id)"
+                                        title="Eliminar producto"
+                                        aria-label="Eliminar producto"
+                                    >
+                                        <svg class="iconoAccionCatalogo" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path d="M4 7h16M10 11v6m4-6v6M6 7l1 14h10l1-14M9 7V4h6v3" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            }
                             <span class="etiquetaClasificacionProducto">
                                 {{ product.clasificacion }}
                             </span>
