@@ -6,7 +6,7 @@ const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
 const register = async (req, res) => {
     try {
-        const { correo, password, nombre, apellido, direccion } = req.body;
+        const { correo, password, nombre, apellido, direccion } = req.body || {};
 
         if (!correo || !password || !nombre || !apellido || !direccion) {
             return res.status(400).json({ message: 'Todos los campos son obligatorios.' });
@@ -53,7 +53,7 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     try {
-        const { correo, password } = req.body;
+        const { correo, password } = req.body || {};
 
         if (!correo || !password) {
             return res.status(400).json({ message: 'Debe ingresar ambos campos para iniciar sesión.' });
