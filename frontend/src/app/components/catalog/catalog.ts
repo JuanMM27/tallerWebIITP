@@ -1,5 +1,4 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -16,34 +15,44 @@ import { AuthService } from '../../services/auth';
   styleUrl: './catalog.css'
 })
 export class Catalog {
-  private productService = inject(ProductService);
-  private catalogSearch = inject(CatalogSearchService);
+  private servicioProductos = inject(ProductService);
+  private servicioBusquedaCatalogo = inject(CatalogSearchService);
   auth = inject(AuthService);
-  products = toSignal(this.productService.getProducts(), { initialValue: [] });
-  searchQuery = this.catalogSearch.query;
-  selectedClassification = signal('Todos');
-  classifications = computed(() => [
-    ...new Set(this.products().map(product => product.clasificacion))
+
+  productos = signal<any[]>([]);
+  cargando = signal(true);
+  errorCarga = signal(false);
+  consultaBusqueda = this.servicioBusquedaCatalogo.query;
+  clasificacionSeleccionada = signal('Todos');
+  clasificaciones = computed(() => [
+    ...new Set(this.productos().map(producto => producto.clasificacion))
   ].sort());
 
-  filteredProducts = computed(() => {
-    const query = this.searchQuery().toLowerCase().trim();
-    const classification = this.selectedClassification();
+  productosFiltrados = computed(() => {
+    const consulta = this.consultaBusqueda().toLowerCase().trim();
+    const clasificacion = this.clasificacionSeleccionada();
 
-    return this.products().filter(product => {
-      const matchesText = product.nombre.toLowerCase().includes(query)
-        || product.descripcion.toLowerCase().includes(query);
-      const matchesCategory = classification === 'Todos'
-        || product.clasificacion === classification;
+    return this.productos().filter(producto => {
+      const coincideTexto = producto.nombre.toLowerCase().includes(consulta)
+        || producto.descripcion.toLowerCase().includes(consulta);
+      const coincideClasificacion = clasificacion === 'Todos'
+        || producto.clasificacion === clasificacion;
 
-      return matchesText && matchesCategory;
+      return coincideTexto && coincideClasificacion;
     });
   });
 
-  onDelete(id: string) {
+  constructor() {
+    this.servicioProductos.getProducts().subscribe({
+      next: productos => { this.productos.set(productos); this.cargando.set(false); },
+      error: () => { this.errorCarga.set(true); this.cargando.set(false); }
+    });
+  }
+
+  eliminarProducto(identificador: string) {
     if (confirm('¿Estás seguro de que deseas dar de baja este lote?')) {
-      this.productService.deleteProduct(id).subscribe({
-        next: () => window.location.reload(),
+      this.servicioProductos.deleteProduct(identificador).subscribe({
+        next: () => this.productos.update(productos => productos.filter(producto => producto._id !== identificador)),
         error: () => alert('No se pudo eliminar el producto.')
       });
     }

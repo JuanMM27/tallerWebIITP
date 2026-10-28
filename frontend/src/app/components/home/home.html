@@ -47,7 +47,11 @@
                         <span class="flechaEnlaceCatalogo" aria-hidden="true">→</span></a
                     >
                 </div>
-                @if (filteredProducts().length === 0) {
+                @if (cargando()) {
+                    <div class="estadoVacio estadoVacioDestacados"><p class="tituloEstadoVacio">Cargando cafés...</p></div>
+                } @else if (errorCarga()) {
+                    <div class="estadoVacio estadoVacioDestacados"><p class="tituloEstadoVacio">No pudimos cargar los cafés.</p><span class="mensajeEstadoVacio">Revisá tu conexión e intentá nuevamente.</span></div>
+                } @else if (productosDestacados().length === 0) {
                     <div class="estadoVacio estadoVacioDestacados">
                         <p class="tituloEstadoVacio">No hay cafés para mostrar.</p>
                         <span class="mensajeEstadoVacio"
@@ -56,26 +60,28 @@
                     </div>
                 } @else {
                     <div class="grillaDestacados">
-                        @for (p of filteredProducts().slice(0, 4); track p._id) {
+                        @for (producto of productosDestacados(); track producto._id) {
                             <article class="tarjetaProducto tarjetaDestacada">
                                 <div class="contenedorImagenProducto">
-                                    <img
-                                        [src]="'http://localhost:4000' + p.imagen"
-                                        [alt]="p.nombre"
-                                        class="imagenProducto"
-                                    />
+                                    <a [routerLink]="['/cafes', producto._id]" [attr.aria-label]="'Ver detalle de ' + producto.nombre">
+                                        <img
+                                            [src]="'http://localhost:4000' + producto.imagen"
+                                            [alt]="producto.nombre"
+                                            class="imagenProducto"
+                                        />
+                                    </a>
                                 </div>
                                 <div class="informacionProducto">
-                                    <h3 class="nombreProducto">{{ p.nombre }}</h3>
-                                    <p class="descripcionProducto">{{ p.descripcion }}</p>
+                                    <h3 class="nombreProducto"><a [routerLink]="['/cafes', producto._id]">{{ producto.nombre }}</a></h3>
+                                    <p class="descripcionProducto">{{ producto.descripcion }}</p>
                                     <div class="pieProducto">
-                                        <span class="precioProducto">${{ p.precio }}</span>
-                                        @if (p.stock > 0) {
+                                        <span class="precioProducto">${{ producto.precio }}</span>
+                                        @if (producto.stock > 0) {
                                             <button
                                                 class="botonCarritoProducto"
                                                 type="button"
                                                 [attr.aria-label]="
-                                                    'Agregar ' + p.nombre + ' al carrito'
+                                                    'Agregar ' + producto.nombre + ' al carrito'
                                                 "
                                             >
                                                 <svg

@@ -64,6 +64,15 @@
     padding: 0 max(5.5vw, 32px) 34px;
 }
 
+.imagenProductoFondo > a {
+    display: contents;
+}
+
+.nombreProductoCatalogo a {
+    color: inherit;
+    text-decoration: none;
+}
+
 .barraFiltrosCatalogo {
     display: grid;
     grid-template-columns: minmax(260px, 0.95fr) minmax(300px, 1fr) minmax(170px, 1fr);

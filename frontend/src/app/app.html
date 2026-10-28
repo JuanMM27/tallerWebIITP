@@ -4,7 +4,7 @@
       <a routerLink="/" class="brand-lockup" aria-label="Café Nominal, inicio">
         <img src="/img/LogoTerra.png" alt="TERRA Café de Especialidad" class="brand-logo">
       </a>
-      <nav class="main-nav" aria-label="Navegación principal"><a href="/#catalogo">Cafés</a><a href="/#catalogo">Orígenes</a><a href="/#catalogo">Nuestra historia</a></nav>
+      <nav class="main-nav" aria-label="Navegación principal"><a routerLink="/cafes">Cafés</a><a routerLink="/origenes">Orígenes</a><a routerLink="/nuestra-historia">Nuestra historia</a></nav>
       <div class="navbar-actions">
         <div class="header-search">
           <button class="search-toggle" type="button" (click)="toggleSearch()" [attr.aria-expanded]="searchOpen()" aria-label="Buscar cafés">
