@@ -494,45 +494,7 @@
         sans-serif;
 }
 
-/* Beneficios y responsive */
-.franjaBeneficios {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 24px;
-    padding: var(--paddingVerticalBeneficios) var(--paddingHorizontalBeneficios);
-    background: #f0eae0;
-}
-
-.beneficioItem {
-    display: flex;
-    align-items: center;
-    gap: var(--separacionIconoBeneficios);
-    min-width: 0;
-}
-
-.iconoBeneficio {
-    flex: 0 0 var(--tamanoIconoBeneficios);
-    width: var(--tamanoIconoBeneficios);
-    height: var(--tamanoIconoBeneficios);
-    fill: none;
-    stroke: var(--primary);
-    stroke-width: 1.7;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-.tituloBeneficio {
-    margin: 0 0 var(--margenTituloBeneficios);
-    color: var(--primary);
-    font: 600 var(--tamanoTituloBeneficios)/var(--interlineadoTituloBeneficios) 'Manrope', sans-serif;
-}
-
-.descripcionBeneficio {
-    margin: 0;
-    color: var(--colorDescripcionBeneficios);
-    font: 400 var(--tamanoDescripcionBeneficios)/var(--interlineadoDescripcionBeneficios) 'Manrope', sans-serif;
-}
-
+/* Responsive */
 @media (max-width: 900px) {
     .seccionPrincipal {
         grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
@@ -560,11 +522,6 @@
     }
     .tarjetaDestacada .contenedorImagenProducto {
         height: clamp(190px, 34vw, 280px);
-    }
-    .franjaBeneficios {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        padding-right: var(--paddingHorizontalBeneficios);
-        padding-left: var(--paddingHorizontalBeneficios);
     }
 }
 
@@ -632,14 +589,6 @@
     }
     .tarjetaDestacada .informacionProducto {
         padding: 11px 0 0;
-    }
-    .franjaBeneficios {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        padding: var(--paddingVerticalBeneficios) var(--paddingHorizontalBeneficios);
-    }
-    .iconoBeneficio {
-        flex-basis: var(--tamanoIconoBeneficios);
     }
 }
 

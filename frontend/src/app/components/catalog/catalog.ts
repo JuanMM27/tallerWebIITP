@@ -6,11 +6,12 @@ import { CatalogSearchService } from '../../services/catalog-search';
 import { ProductService } from '../../services/product';
 import { AuthService } from '../../services/auth';
 import type { Cafe } from '../../models/cafe';
+import { Benefits } from '../shared/benefits/benefits';
 
 @Component({
   selector: 'app-catalog',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, Benefits],
   templateUrl: './catalog.html',
   styleUrl: './catalog.css'
 })

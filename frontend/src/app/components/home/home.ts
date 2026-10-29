@@ -3,11 +3,12 @@ import { ProductService } from '../../services/product';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import type { Cafe } from '../../models/cafe';
+import { Benefits } from '../shared/benefits/benefits';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, Benefits],
   host: { class: 'contenedorComponenteInicio' },
   templateUrl: './home.html', 
   styleUrl: './home.css'

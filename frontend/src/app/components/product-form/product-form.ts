@@ -1,19 +1,8 @@
+﻿import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import type { Cafe, DatosCafe } from '../../models/cafe';
 import { ProductService } from '../../services/product';
-
-function obtenerMensajeError(respuesta: HttpErrorResponse, mensajePredeterminado: string): string {
-  const cuerpoRespuesta: unknown = respuesta.error;
-  if (typeof cuerpoRespuesta === 'object' && cuerpoRespuesta !== null && 'message' in cuerpoRespuesta) {
-    const mensaje = cuerpoRespuesta.message;
-    if (typeof mensaje === 'string') return mensaje;
-  }
-  return mensajePredeterminado;
-}
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-product-form',
@@ -23,14 +12,14 @@ function obtenerMensajeError(respuesta: HttpErrorResponse, mensajePredeterminado
   styleUrl: './product-form.css'
 })
 export class ProductForm implements OnInit {
-  private servicioProductos = inject(ProductService);
-  private enrutador = inject(Router);
-  private rutaActual = inject(ActivatedRoute);
+  private productService = inject(ProductService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
-  modoEdicion = signal(false);
-  identificadorProducto = signal<string | null>(null);
+  isEditMode = signal(false);
+  productId = signal<string | null>(null);
 
-  datosCafe = signal<DatosCafe>({
+  product = signal({
     nombre: '',
     descripcion: '',
     clasificacion: 'Grano Entero',
@@ -40,29 +29,29 @@ export class ProductForm implements OnInit {
     imagen: ''
   });
 
-  archivoSeleccionado: File | null = null;
-  archivoTocado = signal(false);
+  selectedFile: File | null = null;
+  fileTouched = signal(false);
 
-  ngOnInit(): void {
-    const identificador = this.rutaActual.snapshot.paramMap.get('id');
-    if (identificador) {
-      this.modoEdicion.set(true);
-      this.identificadorProducto.set(identificador);
-      this.cargarDatosProducto(identificador);
+  ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.isEditMode.set(true);
+      this.productId.set(id);
+      this.loadProductData(id);
     }
   }
 
-  cargarDatosProducto(identificador: string): void {
-    this.servicioProductos.getProductById(identificador).subscribe({
-      next: (cafeRecibido: Cafe) => {
-        this.datosCafe.set({
-          nombre: cafeRecibido.nombre,
-          descripcion: cafeRecibido.descripcion,
-          clasificacion: cafeRecibido.clasificacion,
-          gramaje: cafeRecibido.gramaje,
-          precio: cafeRecibido.precio,
-          stock: cafeRecibido.stock,
-          imagen: cafeRecibido.imagen || ''
+  loadProductData(id: string) {
+    this.productService.getProductById(id).subscribe({
+      next: (prod: any) => {
+        this.product.set({
+          nombre: prod.nombre,
+          descripcion: prod.descripcion,
+          clasificacion: prod.clasificacion,
+          gramaje: prod.gramaje,
+          precio: prod.precio,
+          stock: prod.stock,
+          imagen: prod.imagen || ''
         });
       },
       error: () => {
@@ -71,55 +60,56 @@ export class ProductForm implements OnInit {
     });
   }
 
-  seleccionarArchivo(evento: Event): void {
-    const entrada = evento.target;
-    if (!(entrada instanceof HTMLInputElement)) return;
-
-    this.archivoTocado.set(true);
-    this.archivoSeleccionado = entrada.files?.[0] ?? null;
+  onFileSelected(event: any) {
+    this.fileTouched.set(true);
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    } else {
+      this.selectedFile = null;
+    }
+  }
+  get isImageInvalid(): boolean {
+    return !this.isEditMode() && !this.selectedFile;
   }
 
-  get imagenInvalida(): boolean {
-    return !this.modoEdicion() && !this.archivoSeleccionado;
-  }
+  onSubmit() {
 
-  guardarProducto(): void {
-    if (this.imagenInvalida) {
-      this.archivoTocado.set(true);
+    if (this.isImageInvalid) {
+      this.fileTouched.set(true);
       return;
     }
+    const formData = new FormData();
+    formData.append('nombre', this.product().nombre);
+    formData.append('descripcion', this.product().descripcion);
+    formData.append('clasificacion', this.product().clasificacion);
+    formData.append('gramaje', this.product().gramaje);
+    formData.append('precio', this.product().precio.toString());
+    formData.append('stock', this.product().stock.toString());
 
-    const datosFormulario = new FormData();
-    datosFormulario.append('nombre', this.datosCafe().nombre);
-    datosFormulario.append('descripcion', this.datosCafe().descripcion);
-    datosFormulario.append('clasificacion', this.datosCafe().clasificacion);
-    datosFormulario.append('gramaje', this.datosCafe().gramaje);
-    datosFormulario.append('precio', this.datosCafe().precio.toString());
-    datosFormulario.append('stock', this.datosCafe().stock.toString());
-
-    if (this.archivoSeleccionado) {
-      datosFormulario.append('imagen', this.archivoSeleccionado);
+    if (this.selectedFile) {
+      formData.append('imagen', this.selectedFile);
     }
 
-    if (this.modoEdicion()) {
-      const identificador = this.identificadorProducto();
-      if (!identificador) return;
+    if (this.isEditMode()) {
+      const id = this.productId();
+      if (!id) return;
 
-      this.servicioProductos.updateProduct(identificador, datosFormulario).subscribe({
+      this.productService.updateProduct(id, formData).subscribe({
         next: () => {
-          this.enrutador.navigate(['/']);
+          this.router.navigate(['/']); 
         },
-        error: (errorRespuesta: HttpErrorResponse) => {
-          alert(obtenerMensajeError(errorRespuesta, 'No se pudo actualizar el café. Revisá que el servidor y la base de datos estén disponibles.'));
+        error: (error) => {
+          alert(error.error?.message || 'No se pudo actualizar el café. Revisá que el servidor y la base de datos estén disponibles.');
         }
       });
     } else {
-      this.servicioProductos.createProduct(datosFormulario).subscribe({
+      this.productService.createProduct(formData).subscribe({
         next: () => {
-          this.enrutador.navigate(['/']);
+          this.router.navigate(['/']); 
         },
-        error: (errorRespuesta: HttpErrorResponse) => {
-          alert(obtenerMensajeError(errorRespuesta, 'No se pudo guardar el café. Revisá que el servidor y la base de datos estén disponibles.'));
+        error: (error) => {
+          alert(error.error?.message || 'No se pudo guardar el café. Revisá que el servidor y la base de datos estén disponibles.');
         }
       });
     }

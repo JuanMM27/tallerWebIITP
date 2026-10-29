@@ -388,47 +388,6 @@
     font: 400 12px 'Manrope', sans-serif;
 }
 
-.franjaBeneficiosCatalogo {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 26px;
-    padding: 26px max(5.5vw, 32px);
-    background: #f0eae0;
-}
-
-.beneficioCatalogo {
-    display: flex;
-    align-items: center;
-    gap: 17px;
-    min-width: 0;
-}
-
-.iconoBeneficioCatalogo {
-    flex: 0 0 46px;
-    height: 42px;
-    fill: none;
-    stroke: var(--primary);
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-width: 1.7;
-}
-
-.textoBeneficioCatalogo {
-    min-width: 0;
-}
-
-.tituloBeneficioCatalogo {
-    margin: 0 0 5px;
-    color: var(--primary);
-    font: 600 13px 'Manrope', sans-serif;
-}
-
-.descripcionBeneficioCatalogo {
-    margin: 0;
-    color: #72695f;
-    font: 400 11px / 1.5 'Manrope', sans-serif;
-}
-
 @media (max-width: 1000px) {
     .heroCatalogo {
         min-height: 235px;
@@ -465,12 +424,6 @@
         height: clamp(260px, 38vw, 380px);
     }
 
-    .franjaBeneficiosCatalogo {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 24px;
-        padding-right: 4.5vw;
-        padding-left: 4.5vw;
-    }
 }
 
 @media (max-width: 620px) {
@@ -551,9 +504,4 @@
         opacity: 1;
     }
 
-    .franjaBeneficiosCatalogo {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 20px;
-        padding: 25px 22px;
-    }
 }
