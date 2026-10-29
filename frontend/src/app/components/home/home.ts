@@ -2,6 +2,7 @@ import { Component, inject, computed, signal } from '@angular/core';
 import { ProductService } from '../../services/product';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import type { Cafe } from '../../models/cafe';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,7 @@ import { RouterLink } from '@angular/router';
 })
 export class Home {
   private servicioProductos = inject(ProductService);
-  productos = signal<any[]>([]);
+  productos = signal<Cafe[]>([]);
   cargando = signal(true);
   errorCarga = signal(false);
   productosDestacados = computed(() => this.productos().slice(0, 4));

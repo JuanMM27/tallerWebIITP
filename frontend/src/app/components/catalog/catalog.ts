@@ -5,7 +5,7 @@ import { RouterLink } from '@angular/router';
 import { CatalogSearchService } from '../../services/catalog-search';
 import { ProductService } from '../../services/product';
 import { AuthService } from '../../services/auth';
-
+import type { Cafe } from '../../models/cafe';
 
 @Component({
   selector: 'app-catalog',
@@ -19,7 +19,7 @@ export class Catalog {
   private servicioBusquedaCatalogo = inject(CatalogSearchService);
   auth = inject(AuthService);
 
-  productos = signal<any[]>([]);
+  productos = signal<Cafe[]>([]);
   cargando = signal(true);
   errorCarga = signal(false);
   consultaBusqueda = this.servicioBusquedaCatalogo.query;
