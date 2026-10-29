@@ -16,6 +16,70 @@
   
   --border-color: #d2c4bd;
   --card-border: rgba(74, 55, 40, 0.08);
+
+    --tipografiaTitulos: 'Newsreader', Georgia, serif;
+    --tipografiaEtiquetas: 'Space Grotesk', sans-serif;
+    --tamanoTituloPrincipal: clamp(3rem, 6vw, 5.5rem);
+    --tamanoTituloSeccion: clamp(2.25rem, 3.4vw, 3rem);
+    --tamanoSubtitulo: clamp(1.125rem, 1.5vw, 1.5rem);
+    --tamanoParrafo: 1rem;
+    --tamanoParrafoIntroductorio: 1.125rem;
+    --tamanoEtiqueta: 11px;
+    --interlineadoTitulo: 0.94;
+    --interlineadoParrafo: 1.6;
+    --espaciadoTitulo: -0.055em;
+    --espaciadoEtiqueta: 0.18em;
+    --heroPaddingSuperior: 30px;
+    --heroPaddingInferior: 54px;
+    --heroPaddingLateral: max(7.1vw, 28px);
+    --heroSeparacion: clamp(24px, 3vw, 48px);
+    --heroAnchoContenido: 560px;
+    --heroAnchoTexto: 390px;
+    --heroAnchoImagen: 510px;
+    --tamanoIconoBeneficios: 44px;
+    --separacionIconoBeneficios: 17px;
+    --tamanoTituloBeneficios: 14px;
+    --interlineadoTituloBeneficios: 1.25;
+    --margenTituloBeneficios: 5px;
+    --tamanoDescripcionBeneficios: 11px;
+    --interlineadoDescripcionBeneficios: 1.5;
+    --colorDescripcionBeneficios: #72695f;
+    --colorSeparadorBeneficios: #d9cbbb;
+    --paddingVerticalBeneficios: 28px;
+    --paddingHorizontalBeneficios: max(7.1vw, 28px);
+    --tamanoDescripcionTarjeta: 12px;
+    --interlineadoDescripcionTarjeta: 1.45;
+    --colorDescripcionTarjeta: #655e56;
+}
+
+@media (max-width: 900px) {
+    :root {
+        --heroPaddingInferior: 46px;
+        --heroPaddingLateral: max(5vw, 28px);
+        --heroSeparacion: 28px;
+        --paddingHorizontalBeneficios: max(5vw, 28px);
+    }
+}
+
+@media (max-width: 700px) {
+    :root {
+        --paddingHorizontalBeneficios: 24px;
+    }
+}
+
+@media (max-width: 620px) {
+    :root {
+        --tamanoTituloPrincipal: clamp(2.625rem, 12vw, 3.25rem);
+        --tamanoTituloSeccion: clamp(1.875rem, 8vw, 2.25rem);
+        --tamanoSubtitulo: 1.125rem;
+        --tamanoParrafo: 0.9375rem;
+        --tamanoParrafoIntroductorio: 1rem;
+        --tamanoEtiqueta: 10px;
+        --heroPaddingSuperior: 30px;
+        --heroPaddingInferior: 36px;
+        --heroPaddingLateral: 24px;
+        --heroSeparacion: 24px;
+    }
 }
 
 body {

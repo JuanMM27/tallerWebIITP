@@ -31,8 +31,8 @@
     column-gap: 0.16em;
     margin: 0;
     color: var(--primary);
-    font: 700 clamp(4.2rem, 7.8vw, 7.8rem) / 0.86 'Newsreader', Georgia, serif;
-    letter-spacing: -0.075em;
+    font: 600 var(--tamanoTituloPrincipal)/var(--interlineadoTitulo) var(--tipografiaTitulos);
+    letter-spacing: var(--espaciadoTitulo);
 }
 
 .palabraActual {
@@ -45,7 +45,7 @@
     max-width: 610px;
     margin: 16px 0 0 6px;
     color: #6d645a;
-    font: 400 clamp(14px, 1.45vw, 20px) / 1.5 'Manrope', sans-serif;
+    font: 400 var(--tamanoParrafoIntroductorio)/var(--interlineadoParrafo) 'Manrope', sans-serif;
 }
 
 .imagenHeroCatalogo {
@@ -418,10 +418,6 @@
         padding-left: 4.5vw;
     }
 
-    .tituloHeroCatalogo {
-        font-size: clamp(4rem, 8vw, 6.3rem);
-    }
-
     .imagenHeroCatalogo {
         width: 51%;
     }
@@ -473,13 +469,12 @@
 
     .tituloHeroCatalogo {
         column-gap: 0.13em;
-        font-size: clamp(3.8rem, 15vw, 5.8rem);
     }
 
     .descripcionHeroCatalogo {
         max-width: 360px;
         margin: 13px 0 0 2px;
-        font-size: 14px;
+        font-size: var(--tamanoParrafoIntroductorio);
     }
 
     .imagenHeroCatalogo {
