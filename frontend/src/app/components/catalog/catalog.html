@@ -100,12 +100,13 @@
                             [class.fondoOcre]="indice % 4 === 2"
                             [class.fondoPetroleo]="indice % 4 === 3"
                         >
-                            <img
-                                class="imagenProductoCatalogo"
-                                [src]="'http://localhost:4000' + producto.imagen"
-                                [alt]="producto.nombre"
-                            />
-
+                            <a class="enlaceImagenProductoCatalogo" [routerLink]="['/cafes', producto._id]" [attr.aria-label]="'Ver detalle de ' + producto.nombre">
+                                <img
+                                    class="imagenProductoCatalogo"
+                                    [src]="'http://localhost:4000' + producto.imagen"
+                                    [alt]="producto.nombre"
+                                />
+                            </a>
                             @if (auth.esAdmin()) {
                                 <div class="accionesProductoCatalogo">
                                     <a
@@ -140,7 +141,6 @@
                                     </button>
                                 </div>
                             }
-
                             <span class="etiquetaClasificacionProducto">
                                 {{ producto.clasificacion }}
                             </span>
@@ -148,7 +148,9 @@
 
                         <div class="datosProductoCatalogo">
                             <h2 class="nombreProductoCatalogo">
-                                {{ producto.nombre }}
+                                <a class="enlaceNombreProductoCatalogo" [routerLink]="['/cafes', producto._id]">
+                                    {{ producto.nombre }}
+                                </a>
                             </h2>
                             <p class="notasProductoCatalogo">
                                 {{ producto.descripcion }}
@@ -157,7 +159,7 @@
                             <div class="pieProductoCatalogo">
                                 <div class="precioYGramajeCatalogo">
                                     <span class="precioProductoCatalogo">
-                                        ${{ producto.precio }}
+                                        {{ producto.precio | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}
                                     </span>
                                     <span class="gramajeProductoCatalogo">
                                         {{ producto.gramaje }}

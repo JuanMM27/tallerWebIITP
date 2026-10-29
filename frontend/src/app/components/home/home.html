@@ -63,7 +63,7 @@
                         @for (producto of productosDestacados(); track producto._id) {
                             <article class="tarjetaProducto tarjetaDestacada">
                                 <div class="contenedorImagenProducto">
-                                    <a [routerLink]="['/cafes', producto._id]" [attr.aria-label]="'Ver detalle de ' + producto.nombre">
+                                    <a class="enlaceImagenDestacada" [routerLink]="['/cafes', producto._id]" [attr.aria-label]="'Ver detalle de ' + producto.nombre">
                                         <img
                                             [src]="'http://localhost:4000' + producto.imagen"
                                             [alt]="producto.nombre"
@@ -72,10 +72,10 @@
                                     </a>
                                 </div>
                                 <div class="informacionProducto">
-                                    <h3 class="nombreProducto"><a [routerLink]="['/cafes', producto._id]">{{ producto.nombre }}</a></h3>
+                                    <h3 class="nombreProducto"><a class="enlaceNombreDestacado" [routerLink]="['/cafes', producto._id]">{{ producto.nombre }}</a></h3>
                                     <p class="descripcionProducto">{{ producto.descripcion }}</p>
                                     <div class="pieProducto">
-                                        <span class="precioProducto">${{ producto.precio }}</span>
+                                        <span class="precioProducto">{{ producto.precio | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}</span>
                                         @if (producto.stock > 0) {
                                             <button
                                                 class="botonCarritoProducto"
