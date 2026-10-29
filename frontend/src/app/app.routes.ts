@@ -1,14 +1,13 @@
 import { Routes } from '@angular/router';
 import { Home } from './components/home/home';
 import { Catalog } from './components/catalog/catalog';
+import { ProductDetail } from './components/product-detail/product-detail';
 import { ProductForm } from './components/product-form/product-form';
 import { Login } from './components/login/login';
 import { Registro } from './components/registro/registro';
-import { adminGuard } from './guards/admin-guard';
 import { Origenes } from './components/origenes/origenes';
 import { NuestraHistoria } from './components/nuestra-historia/nuestra-historia';
-import { ProductDetail } from './components/product-detail/product-detail';
-
+import { adminGuard } from './guards/admin-guard';
 
 export const routes: Routes = [
   { path: '', component: Home },

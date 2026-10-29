@@ -36,6 +36,25 @@
     max-width: var(--heroAnchoContenido);
 }
 
+.etiquetaOrigenes,
+.etiquetaCompromiso {
+    margin: 0;
+    color: var(--secondary);
+    font: 600 11px/1.4 'Space Grotesk', sans-serif;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+}
+
+.etiquetaOrigenes {
+    margin-bottom: 12px;
+}
+
+.etiquetaCompromiso {
+    margin-bottom: 10px;
+    font-size: 10px;
+    letter-spacing: .22em;
+}
+
 .tituloOrigenes {
     margin: 0;
     color: var(--primary);
