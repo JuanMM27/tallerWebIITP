@@ -1,0 +1,347 @@
+:host {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.paginaOrigenes,
+.paginaOrigenes * {
+    box-sizing: border-box;
+}
+
+.paginaOrigenes {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    background: var(--surface);
+    color: var(--on-surface);
+}
+
+.portadaOrigenes {
+    position: relative;
+    display: grid;
+    min-width: 0;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: var(--heroSeparacion);
+    padding: var(--heroPaddingSuperior) var(--heroPaddingLateral) var(--heroPaddingInferior);
+    isolation: isolate;
+    background: radial-gradient(ellipse at 75% 45%, #eee5d9 0, #f7f3ec 62%);
+}
+
+.contenidoPortadaOrigenes {
+    z-index: 1;
+    max-width: var(--heroAnchoContenido);
+}
+
+.tituloOrigenes {
+    margin: 0;
+    color: var(--primary);
+    font: 600 var(--tamanoTituloPrincipal)/var(--interlineadoTitulo) var(--tipografiaTitulos);
+    letter-spacing: var(--espaciadoTitulo);
+}
+
+.tituloPaisOrigenes {
+    color: var(--terracotta);
+    font-style: italic;
+    font-weight: 500;
+}
+
+.descripcionPortadaOrigenes {
+    max-width: var(--heroAnchoTexto);
+    margin: 22px 0 0;
+    color: #554f48;
+    font-size: var(--tamanoParrafoIntroductorio);
+    font-weight: 500;
+    line-height: var(--interlineadoParrafo);
+}
+
+.ilustracionArgentina {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: center;
+    width: min(100%, 440px);
+    max-height: min(36vw, 420px);
+    height: auto;
+    object-fit: contain;
+}
+
+.seccionRegiones {
+    padding: var(--paddingVerticalBeneficios) var(--paddingHorizontalBeneficios);
+    background: #f8f5ee;
+}
+
+.contenedorRegiones {
+    width: min(100%, 1362px);
+    margin: 0 auto;
+}
+
+.tituloRegiones {
+    margin: 0 0 20px;
+    color: var(--primary);
+    font: 600 var(--tamanoTituloSeccion)/var(--interlineadoTitulo) var(--tipografiaTitulos);
+    letter-spacing: var(--espaciadoTitulo);
+}
+
+.grillaRegiones {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.tarjetaRegion {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    flex-direction: column;
+    border-radius: 14px;
+    background: #f0e7d9;
+}
+
+.imagenRegion {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    border-radius: 14px 14px 0 0;
+    object-fit: contain;
+    background: #e9dfcf;
+}
+
+.contenidoRegion {
+    flex: 1;
+    padding: 14px 16px 18px;
+}
+
+.descripcionRegion {
+    margin: 0;
+    color: var(--colorDescripcionTarjeta);
+    font: 400 var(--tamanoDescripcionTarjeta)/var(--interlineadoDescripcionTarjeta) 'Manrope', sans-serif;
+}
+
+.seccionCompromiso {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    align-items: center;
+    column-gap: clamp(32px, 5vw, 76px);
+    row-gap: 24px;
+    padding: var(--paddingVerticalBeneficios) var(--paddingHorizontalBeneficios);
+    background: #f0eae0;
+}
+
+.paisajeCompromisoContenedor {
+    position: relative;
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
+    aspect-ratio: 3 / 1;
+    align-self: stretch;
+    justify-self: stretch;
+    pointer-events: none;
+}
+
+.paisajeCompromiso {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.contenidoCompromiso {
+    z-index: 1;
+    grid-column: 2;
+    grid-row: 1;
+    max-width: 760px;
+}
+
+.tituloCompromiso {
+    margin: 0;
+    color: var(--primary);
+    font: 600 var(--tamanoTituloSeccion)/var(--interlineadoTitulo) var(--tipografiaTitulos);
+    letter-spacing: var(--espaciadoTitulo);
+}
+
+.palabraImpacto {
+    color: var(--terracotta);
+    font-weight: 500;
+}
+
+.descripcionCompromiso {
+    max-width: 620px;
+    margin: 14px 0 0;
+    color: #625d56;
+    font-size: var(--tamanoParrafo);
+    line-height: var(--interlineadoParrafo);
+}
+
+.grillaCompromisos {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.bloqueCompromiso {
+    min-width: 0;
+    padding: 0 22px;
+    border-left: 1px solid var(--colorSeparadorBeneficios);
+}
+
+.bloqueCompromiso:first-child {
+    padding-left: 0;
+    border-left: 0;
+}
+
+.iconoCompromiso {
+    display: block;
+    width: var(--tamanoIconoBeneficios);
+    height: var(--tamanoIconoBeneficios);
+    margin: 0 auto 12px;
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.tituloBloqueCompromiso {
+    margin: 0 0 var(--margenTituloBeneficios);
+    color: var(--primary);
+    font: 600 var(--tamanoTituloBeneficios)/var(--interlineadoTituloBeneficios) 'Manrope', sans-serif;
+    text-align: center;
+}
+
+.textoBloqueCompromiso {
+    max-width: 320px;
+    margin: 0 auto;
+    color: var(--colorDescripcionBeneficios);
+    font: 400 var(--tamanoDescripcionBeneficios)/var(--interlineadoDescripcionBeneficios) 'Manrope', sans-serif;
+    text-align: center;
+}
+
+@media (max-width: 1300px) {
+    .grillaRegiones {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .seccionCompromiso {
+        column-gap: 32px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .seccionCompromiso {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 24px;
+        padding: var(--paddingVerticalBeneficios) var(--paddingHorizontalBeneficios);
+    }
+
+    .paisajeCompromisoContenedor {
+        grid-column: 1;
+        grid-row: 1;
+        width: 100%;
+        max-width: none;
+        aspect-ratio: 3 / 1;
+        justify-self: stretch;
+    }
+
+    .contenidoCompromiso {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .grillaCompromisos {
+        grid-column: 1;
+        grid-row: 3;
+    }
+}
+
+@media (max-width: 700px) {
+    .portadaOrigenes {
+        grid-template-columns: 1fr;
+        gap: var(--heroSeparacion);
+        padding: var(--heroPaddingSuperior) var(--heroPaddingLateral) var(--heroPaddingInferior);
+    }
+
+    .contenidoPortadaOrigenes {
+        max-width: var(--heroAnchoContenido);
+        padding: 0;
+    }
+
+    .tituloOrigenes {
+        font-size: var(--tamanoTituloPrincipal);
+    }
+
+    .descripcionPortadaOrigenes {
+        margin-top: 22px;
+        font-size: var(--tamanoParrafoIntroductorio);
+    }
+
+    .ilustracionArgentina {
+        grid-column: 1;
+        grid-row: auto;
+        width: min(100%, 440px);
+        height: auto;
+        max-height: none;
+        margin: 0 auto;
+    }
+
+    .seccionRegiones {
+        padding: 24px;
+    }
+
+    .grillaRegiones {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .contenidoRegion {
+        padding: 12px 14px;
+    }
+
+    .seccionCompromiso {
+        row-gap: 20px;
+        padding: var(--paddingVerticalBeneficios) var(--paddingHorizontalBeneficios);
+    }
+
+    .grillaCompromisos {
+        grid-template-columns: 1fr;
+        row-gap: 20px;
+    }
+
+    .bloqueCompromiso {
+        display: grid;
+        grid-template-columns: var(--tamanoIconoBeneficios) minmax(0, 1fr);
+        column-gap: 14px;
+        row-gap: 4px;
+        padding: 0 0 16px;
+        border-bottom: 1px solid var(--colorSeparadorBeneficios);
+        border-left: 0;
+    }
+
+    .bloqueCompromiso:first-child {
+        padding-left: 0;
+    }
+
+    .iconoCompromiso {
+        grid-column: 1;
+        grid-row: 1 / span 2;
+        margin: 2px 0 0;
+    }
+
+    .tituloBloqueCompromiso {
+        text-align: left;
+    }
+
+    .textoBloqueCompromiso {
+        max-width: none;
+        margin: 0;
+        text-align: left;
+    }
+}
+

@@ -1,0 +1,64 @@
+:host {
+    display: block;
+}
+
+.franjaBeneficios {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    padding: 26px max(5.5vw, 32px);
+    background: #f0eae0;
+}
+
+.beneficioItem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 17px;
+    min-width: 0;
+}
+
+.iconoBeneficio {
+    flex: 0 0 46px;
+    width: 46px;
+    height: 42px;
+    fill: none;
+    stroke: var(--primary);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+}
+
+.tituloBeneficio {
+    margin: 0 0 5px;
+    color: var(--primary);
+    font: 600 13px 'Manrope', sans-serif;
+}
+
+.descripcionBeneficio {
+    margin: 0;
+    color: #72695f;
+    font: 400 11px / 1.5 'Manrope', sans-serif;
+}
+
+@media (max-width: 900px) {
+    .franjaBeneficios {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .beneficioItem:nth-child(3) {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 620px) {
+    .franjaBeneficios {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+        padding: 24px 22px;
+    }
+
+    .beneficioItem:nth-child(3) {
+        grid-column: auto;
+    }
+}
