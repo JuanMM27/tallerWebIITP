@@ -364,6 +364,58 @@
     font: 600 10px 'Space Grotesk', sans-serif;
 }
 
+.controlesAgregarCatalogo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.selectorCantidadCatalogo {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.botonCantidadCatalogo {
+    display: grid;
+    width: 28px;
+    height: 28px;
+    place-items: center;
+    padding: 0;
+    border: 1px solid #d6c9ba;
+    border-radius: 50%;
+    background: #fbf9f4;
+    color: var(--primary);
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.botonCantidadCatalogo:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.valorCantidadCatalogo {
+    min-width: 16px;
+    text-align: center;
+    color: var(--primary);
+    font: 700 14px 'Space Grotesk', sans-serif;
+}
+
+.botonAgregado {
+    flex: 0 0 auto;
+    width: auto;
+    padding: 0 14px;
+    background: #2f7d4f;
+}
+
+.confirmacionAgregado {
+    font: 600 12px 'Space Grotesk', sans-serif;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+
 .estadoVacioCatalogo {
     display: grid;
     justify-items: center;

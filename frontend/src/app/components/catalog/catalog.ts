@@ -25,6 +25,10 @@ export class Catalog {
   productos = signal<Cafe[]>([]);
   cargando = signal(true);
   errorCarga = signal(false);
+  // Cantidad seleccionada por producto (para agregar varias unidades desde el catálogo)
+  cantidades = signal<Record<string, number>>({});
+  // Feedback visual: producto que se acaba de agregar
+  agregadoRecientemente = signal<Record<string, boolean>>({});
   consultaBusqueda = this.servicioBusquedaCatalogo.query;
   clasificacionSeleccionada = signal('Todos');
   clasificaciones = computed(() => [
@@ -61,12 +65,42 @@ export class Catalog {
     }
   }
 
+  cantidadDe(producto: Cafe): number {
+    return this.cantidades()[producto._id] ?? 1;
+  }
+
+  incrementarCantidad(producto: Cafe): void {
+    const actual = this.cantidadDe(producto);
+    if (actual >= producto.stock) {
+      alert(`No hay más stock disponible de ${producto.nombre}.`);
+      return;
+    }
+    this.cantidades.update(mapa => ({ ...mapa, [producto._id]: actual + 1 }));
+  }
+
+  decrementarCantidad(producto: Cafe): void {
+    const actual = this.cantidadDe(producto);
+    if (actual <= 1) return;
+    this.cantidades.update(mapa => ({ ...mapa, [producto._id]: actual - 1 }));
+  }
+
+  fueAgregado(producto: Cafe): boolean {
+    return this.agregadoRecientemente()[producto._id] === true;
+  }
+
   agregarAlCarrito(producto: Cafe) {
-    const resultado = this.carrito.agregar(producto, 1);
+    const resultado = this.carrito.agregar(producto, this.cantidadDe(producto));
     if (!resultado.agregado) {
       alert(`No podés agregar más de ${producto.nombre}: ya alcanzaste el stock (${resultado.stock} unidades).`);
-    } else if (resultado.capped) {
+      return;
+    }
+    if (resultado.capped) {
       alert(`Solo hay ${resultado.stock} unidades de ${producto.nombre}; agregamos las disponibles.`);
     }
+    // Feedback visual en el botón: "✓ Agregado" durante un instante
+    this.agregadoRecientemente.update(mapa => ({ ...mapa, [producto._id]: true }));
+    setTimeout(() => {
+      this.agregadoRecientemente.update(mapa => ({ ...mapa, [producto._id]: false }));
+    }, 1200);
   }
 }
