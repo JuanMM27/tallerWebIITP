@@ -83,4 +83,45 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-module.exports = { getProducts, createProduct, updateProduct, getProductById, deleteProduct };
+// Valida el stock de una lista de productos para el carrito.
+// Recibe: [{ productId, cantidad }]
+// Devuelve: { ok: [{productId, cantidad, stock}], insuficiente: [{productId, cantidad, stock}] }
+const validateStock = async (req, res) => {
+  try {
+    const items = req.body;
+
+    if (!Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ message: 'Debe enviar una lista de productos.' });
+    }
+
+    const ok = [];
+    const insuficiente = [];
+
+    for (const item of items) {
+      const { productId, cantidad } = item;
+
+      if (!productId || typeof cantidad !== 'number' || cantidad <= 0) {
+        return res.status(400).json({ message: 'Cada ítem debe tener un productId y una cantidad mayor a 0.' });
+      }
+
+      const esIdValido = /^[a-f\d]{24}$/i.test(productId);
+      const producto = esIdValido ? await Product.findById(productId) : null;
+
+      // Si el producto no existe (o fue eliminado) no se puede vender: stock 0.
+      const stock = producto ? producto.stock : 0;
+      const resultado = { productId, cantidad, stock };
+
+      if (producto && producto.stock >= cantidad) {
+        ok.push(resultado);
+      } else {
+        insuficiente.push(resultado);
+      }
+    }
+
+    res.status(200).json({ ok, insuficiente });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al validar el stock', error: error.message });
+  }
+};
+
+module.exports = { getProducts, createProduct, updateProduct, getProductById, deleteProduct, validateStock };
