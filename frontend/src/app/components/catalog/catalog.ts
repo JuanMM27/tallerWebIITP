@@ -67,8 +67,19 @@ export class Catalog {
     }
   }
 
+  cantidadEnCarrito(producto: Cafe): number {
+    return this.carrito.lista().find(item => item.productId === producto._id)?.cantidad ?? 0;
+  }
+
+  // Stock que aún se puede agregar: el stock del producto menos lo que ya está en el carrito
+  maxDisponible(producto: Cafe): number {
+    return Math.max(0, producto.stock - this.cantidadEnCarrito(producto));
+  }
+
   cantidadDe(producto: Cafe): number {
-    return this.cantidades()[producto._id] ?? 1;
+    const maximo = this.maxDisponible(producto);
+    const guardado = this.cantidades()[producto._id] ?? 1;
+    return Math.min(Math.max(1, guardado), maximo);
   }
 
   mensajeDeStock(producto: Cafe): string {
@@ -76,8 +87,9 @@ export class Catalog {
   }
 
   incrementarCantidad(producto: Cafe): void {
+    const maximo = this.maxDisponible(producto);
     const actual = this.cantidadDe(producto);
-    if (actual >= producto.stock) {
+    if (actual >= maximo) {
       this.mostrarMensajeStock(producto, 'No hay más stock');
       return;
     }
