@@ -4,12 +4,96 @@
     <p class="subtituloCarrito">Revisá tu pedido antes de continuar.</p>
   </header>
 
-  @if (estaVacio()) {
+  @if (pedidoConfirmado(); as pedido) {
+    <section class="pedidoConfirmado" aria-live="polite">
+      <span class="iconoExito" aria-hidden="true">✓</span>
+      <h2 class="tituloPedidoConfirmado">¡Pedido confirmado!</h2>
+      <p class="textoPedidoConfirmado">
+        Tu pago fue simulado con éxito y descontamos el stock de los productos.
+      </p>
+
+      <div class="resumenPedido">
+        <ul class="listaItemsPedido">
+          @for (item of pedido.productos; track item.productId) {
+            <li class="itemPedido">
+              <span class="nombreItemPedido">{{ item.nombre }}</span>
+              <span class="detalleItemPedido">
+                {{ item.cantidad }} × {{ item.precioUnitario | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}
+              </span>
+            </li>
+          }
+        </ul>
+        <div class="totalPedido">
+          <span class="etiquetaTotalCarrito">Total</span>
+          <strong class="valorTotalFinal">{{ pedido.total | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}</strong>
+        </div>
+        <p class="estadoPedido">Estado: {{ pedido.estado }}</p>
+      </div>
+
+      <div class="accionesPedidoConfirmado">
+        <a class="botonPrimarioCarrito" routerLink="/cafes">Seguir comprando</a>
+      </div>
+    </section>
+  } @else if (estaVacio()) {
     <section class="estadoVacioCarrito" aria-live="polite">
       <span class="adornoEstadoVacio" aria-hidden="true">🛒</span>
       <h2 class="tituloEstadoVacio">Tu carrito está vacío.</h2>
       <p class="textoEstadoVacio">Agregá cafés desde el catálogo para armar tu pedido.</p>
       <a class="enlaceVolverCarrito" routerLink="/cafes">Explorar cafés</a>
+    </section>
+  } @else if (mostrandoPago()) {
+    <section class="simulacionPago" aria-label="Simulación de pago">
+      <h2 class="tituloSimulacionPago">Simulación de pago</h2>
+      <p class="textoSimulacionPago">
+        Esto es una simulación: no se procesa ningún cobro real ni se usa una pasarela de pago.
+      </p>
+
+      <div class="resumenPago">
+        <span class="etiquetaTotalCarrito">Total a pagar</span>
+        <span class="valorTotalFinal">{{ total() | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}</span>
+      </div>
+
+      <div class="formularioPago">
+        <label class="campoPago">
+          <span class="etiquetaCampoPago">Titular de la tarjeta</span>
+          <input class="entradaPago" type="text" placeholder="Nombre como figura en la tarjeta" />
+        </label>
+        <label class="campoPago">
+          <span class="etiquetaCampoPago">Número de tarjeta</span>
+          <input class="entradaPago" type="text" inputmode="numeric" placeholder="0000 0000 0000 0000" />
+        </label>
+        <div class="filaPago">
+          <label class="campoPago">
+            <span class="etiquetaCampoPago">Vencimiento</span>
+            <input class="entradaPago" type="text" placeholder="MM/AA" />
+          </label>
+          <label class="campoPago">
+            <span class="etiquetaCampoPago">Código</span>
+            <input class="entradaPago" type="text" inputmode="numeric" placeholder="CVC" />
+          </label>
+        </div>
+      </div>
+
+      @if (errorPago()) {
+        <p class="errorPago" role="alert">{{ errorPago() }}</p>
+      }
+
+      <div class="accionesPago">
+        <button
+          class="botonSecundarioCarrito"
+          type="button"
+          (click)="cancelarPago()"
+          [disabled]="procesandoPago()"
+        >Cancelar</button>
+        <button
+          class="botonPrimarioCarrito"
+          type="button"
+          (click)="confirmarPago()"
+          [disabled]="procesandoPago()"
+        >
+          {{ procesandoPago() ? 'Procesando...' : 'Pagar (simulado)' }}
+        </button>
+      </div>
     </section>
   } @else {
     <section class="contenidoCarrito" aria-label="Detalle del carrito">
@@ -80,7 +164,16 @@
           </div>
         </div>
 
-        <!-- Persona B: el botón "Confirmar compra" y el manejo de sesión se conectan acá -->
+        @if (auth.estaLogueado()) {
+          <button class="botonPrimarioCarrito" type="button" (click)="abrirPago()">
+            Confirmar compra
+          </button>
+        } @else {
+          <div class="avisoSesion">
+            <p class="textoAvisoSesion">Debés iniciar sesión para comprar.</p>
+            <a class="botonPrimarioCarrito" routerLink="/login">Iniciar sesión</a>
+          </div>
+        }
       </footer>
     </section>
   }

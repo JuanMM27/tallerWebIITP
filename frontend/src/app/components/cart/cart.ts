@@ -1,9 +1,13 @@
 import { CommonModule, registerLocaleData } from '@angular/common';
 import localeEsAr from '@angular/common/locales/es-AR';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CartService } from '../../services/cart';
 import { ProductService } from '../../services/product';
+import { AuthService } from '../../services/auth';
+import { OrderService } from '../../services/order';
+import type { Pedido } from '../../services/order';
 
 registerLocaleData(localeEsAr, 'es-AR');
 
@@ -17,6 +21,9 @@ registerLocaleData(localeEsAr, 'es-AR');
 export class Cart implements OnInit {
   private readonly carrito = inject(CartService);
   private readonly servicioProductos = inject(ProductService);
+  private readonly servicioPedidos = inject(OrderService);
+  readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
 
   items = this.carrito.lista;
   cantidadTotal = this.carrito.cantidadTotal;
@@ -26,6 +33,12 @@ export class Cart implements OnInit {
 
   avisoStock = signal(false);
   verificandoStock = signal(false);
+
+  // Estado del checkout (pago simulado)
+  mostrandoPago = signal(false);
+  procesandoPago = signal(false);
+  errorPago = signal('');
+  pedidoConfirmado = signal<Pedido | null>(null);
 
   ngOnInit(): void {
     this.verificarStock();
@@ -45,6 +58,52 @@ export class Cart implements OnInit {
 
   vaciar(): void {
     this.carrito.vaciar();
+  }
+
+  abrirPago(): void {
+    // Solo se puede comprar con sesión iniciada.
+    if (!this.auth.estaLogueado()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+    this.errorPago.set('');
+    this.mostrandoPago.set(true);
+  }
+
+  cancelarPago(): void {
+    this.mostrandoPago.set(false);
+    this.errorPago.set('');
+  }
+
+  confirmarPago(): void {
+    if (this.items().length === 0) return;
+
+    const payload = {
+      productos: this.items().map(item => ({
+        productId: item.productId,
+        nombre: item.nombre,
+        cantidad: item.cantidad,
+        precioUnitario: item.precio
+      })),
+      total: this.total()
+    };
+
+    this.procesandoPago.set(true);
+    this.errorPago.set('');
+
+    this.servicioPedidos.createOrder(payload).subscribe({
+      next: pedido => {
+        this.pedidoConfirmado.set(pedido);
+        this.mostrandoPago.set(false);
+        this.procesandoPago.set(false);
+        // Tras confirmar, se limpia el carrito.
+        this.carrito.vaciar();
+      },
+      error: (error: HttpErrorResponse) => {
+        this.procesandoPago.set(false);
+        this.errorPago.set(error.error?.message || 'No se pudo confirmar el pedido. Intentalo de nuevo.');
+      }
+    });
   }
 
   // Re-valida el stock contra el backend (fuente de verdad) para corregir
