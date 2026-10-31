@@ -1,6 +1,7 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { CartService } from './cart';
 
 export interface Usuario {
   id: string;
@@ -30,6 +31,7 @@ interface RespuestaLogin {
 })
 export class AuthService {
   private http = inject(HttpClient);
+  private cart = inject(CartService);
   private apiUrl = 'http://localhost:4000/api/auth';
 
   usuario = signal<Usuario | null>(this.leerUsuarioGuardado());
@@ -54,6 +56,8 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
     this.usuario.set(null);
+    // El carrito persiste al recargar pero se limpia al cerrar sesión (ver plan 1.1).
+    this.cart.vaciar();
   }
 
   getToken(): string | null {
