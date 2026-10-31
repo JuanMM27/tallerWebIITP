@@ -170,6 +170,7 @@
                                     <button
                                         class="botonAgregarCatalogo"
                                         type="button"
+                                        (click)="agregarAlCarrito(producto)"
                                         [attr.aria-label]="'Agregar ' + producto.nombre + ' al carrito'"
                                     >
                                         <svg

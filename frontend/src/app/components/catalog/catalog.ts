@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { CatalogSearchService } from '../../services/catalog-search';
 import { ProductService } from '../../services/product';
+import { CartService } from '../../services/cart';
 import { AuthService } from '../../services/auth';
 import type { Cafe } from '../../models/cafe';
 import { Benefits } from '../shared/benefits/benefits';
@@ -18,6 +19,7 @@ import { Benefits } from '../shared/benefits/benefits';
 export class Catalog {
   private servicioProductos = inject(ProductService);
   private servicioBusquedaCatalogo = inject(CatalogSearchService);
+  private carrito = inject(CartService);
   auth = inject(AuthService);
 
   productos = signal<Cafe[]>([]);
@@ -56,6 +58,15 @@ export class Catalog {
         next: () => this.productos.update(productos => productos.filter(producto => producto._id !== identificador)),
         error: () => alert('No se pudo eliminar el producto.')
       });
+    }
+  }
+
+  agregarAlCarrito(producto: Cafe) {
+    const resultado = this.carrito.agregar(producto, 1);
+    if (!resultado.agregado) {
+      alert(`No podés agregar más de ${producto.nombre}: ya alcanzaste el stock (${resultado.stock} unidades).`);
+    } else if (resultado.capped) {
+      alert(`Solo hay ${resultado.stock} unidades de ${producto.nombre}; agregamos las disponibles.`);
     }
   }
 }
