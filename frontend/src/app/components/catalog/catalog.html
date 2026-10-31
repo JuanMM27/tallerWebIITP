@@ -1,3 +1,4 @@
+
 <main class="paginaCatalogo">
     <section class="heroCatalogo" aria-labelledby="tituloCatalogo">
         <div class="contenidoHeroCatalogo">
@@ -26,8 +27,8 @@
                 <input
                     class="entradaBusquedaCatalogo"
                     type="search"
-                    [ngModel]="searchQuery()"
-                    (ngModelChange)="searchQuery.set($event)"
+                    [ngModel]="consultaBusqueda()"
+                    (ngModelChange)="consultaBusqueda.set($event)"
                     placeholder="Buscar café o notas de cata..."
                     aria-label="Buscar café o notas de cata"
                 />
@@ -40,102 +41,151 @@
                 <select
                     class="selectorClasificacionCatalogo"
                     id="clasificacionCatalogo"
-                    [(ngModel)]="selectedClassification"
+                    [ngModel]="clasificacionSeleccionada()"
+                    (ngModelChange)="clasificacionSeleccionada.set($event)"
                 >
                     <option value="Todos">Todas</option>
-                    @for (classification of classifications(); track classification) {
-                        <option [value]="classification">
-                            {{ classification === 'Capsulas' ? 'Cápsulas' : classification }}
+                    @for (clasificacion of clasificaciones(); track clasificacion) {
+                        <option [value]="clasificacion">
+                            {{ clasificacion === 'Capsulas' ? 'Cápsulas' : clasificacion }}
                         </option>
                     }
                 </select>
             </div>
 
             <p class="cantidadResultadosCatalogo" aria-live="polite">
-                {{ filteredProducts().length }}
-                {{ filteredProducts().length === 1 ? 'café encontrado' : 'cafés encontrados' }}
+                {{ productosFiltrados().length }}
+                {{ productosFiltrados().length === 1 ? 'café encontrado' : 'cafés encontrados' }}
             </p>
         </div>
 
-        @if (filteredProducts().length === 0) {
+        @if (cargando()) {
+            <div class="estadoVacioCatalogo">
+                <h2 class="tituloEstadoVacio">Cargando cafés...</h2>
+            </div>
+        } @else if (errorCarga()) {
+            <div class="estadoVacioCatalogo">
+                <h2 class="tituloEstadoVacio">No pudimos cargar los cafés.</h2>
+                <p class="textoEstadoVacio">
+                    Revisá que el servidor esté disponible e intentá nuevamente.
+                </p>
+            </div>
+        } @else if (productosFiltrados().length === 0) {
             <div class="estadoVacioCatalogo">
                 <span class="adornoEstadoVacio" aria-hidden="true">✳</span>
-                @if (products().length === 0) {
-                    <h2 class="tituloEstadoVacio">Todavía no hay cafés en esta cosecha.</h2>
-                    <p class="textoEstadoVacio">Los nuevos lotes aparecerán aquí.</p>
+                @if (productos().length === 0) {
+                    <h2 class="tituloEstadoVacio">
+                        Todavía no hay cafés en esta cosecha.
+                    </h2>
+                    <p class="textoEstadoVacio">
+                        Los nuevos lotes aparecerán aquí.
+                    </p>
                 } @else {
-                    <h2 class="tituloEstadoVacio">No encontramos cafés con esos filtros.</h2>
-                    <p class="textoEstadoVacio">Probá con otra búsqueda o clasificación.</p>
+                    <h2 class="tituloEstadoVacio">
+                        No encontramos cafés con esos filtros.
+                    </h2>
+                    <p class="textoEstadoVacio">
+                        Probá con otra búsqueda o clasificación.
+                    </p>
                 }
             </div>
         } @else {
             <div class="grillaCatalogo">
-                @for (product of filteredProducts(); track product._id; let index = $index) {
+                @for (producto of productosFiltrados(); track producto._id; let indice = $index) {
                     <article class="tarjetaProductoCatalogo">
                         <div
                             class="imagenProductoFondo"
-                            [class.fondoTerracota]="index % 4 === 0"
-                            [class.fondoSalvia]="index % 4 === 1"
-                            [class.fondoOcre]="index % 4 === 2"
-                            [class.fondoPetroleo]="index % 4 === 3"
+                            [class.fondoTerracota]="indice % 4 === 0"
+                            [class.fondoSalvia]="indice % 4 === 1"
+                            [class.fondoOcre]="indice % 4 === 2"
+                            [class.fondoPetroleo]="indice % 4 === 3"
                         >
-                            <img
-                                class="imagenProductoCatalogo"
-                                [src]="'http://localhost:4000' + product.imagen"
-                                [alt]="product.nombre"
-                            />
+                            <a class="enlaceImagenProductoCatalogo" [routerLink]="['/cafes', producto._id]" [attr.aria-label]="'Ver detalle de ' + producto.nombre">
+                                <img
+                                    class="imagenProductoCatalogo"
+                                    [src]="'http://localhost:4000' + producto.imagen"
+                                    [alt]="producto.nombre"
+                                />
+                            </a>
                             @if (auth.esAdmin()) {
                                 <div class="accionesProductoCatalogo">
                                     <a
                                         class="botonAccionCatalogo"
-                                        [routerLink]="['/admin/editar', product._id]"
+                                        [routerLink]="['/admin/editar', producto._id]"
                                         title="Editar producto"
                                         aria-label="Editar producto"
                                     >
-                                        <svg class="iconoAccionCatalogo" viewBox="0 0 24 24" aria-hidden="true">
+                                        <svg
+                                            class="iconoAccionCatalogo"
+                                            viewBox="0 0 24 24"
+                                            aria-hidden="true"
+                                        >
                                             <path d="m14 5 5 5M4 20l4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z" />
                                         </svg>
                                     </a>
+
                                     <button
                                         class="botonAccionCatalogo"
                                         type="button"
-                                        (click)="onDelete(product._id)"
+                                        (click)="eliminarProducto(producto._id)"
                                         title="Eliminar producto"
                                         aria-label="Eliminar producto"
                                     >
-                                        <svg class="iconoAccionCatalogo" viewBox="0 0 24 24" aria-hidden="true">
+                                        <svg
+                                            class="iconoAccionCatalogo"
+                                            viewBox="0 0 24 24"
+                                            aria-hidden="true"
+                                        >
                                             <path d="M4 7h16M10 11v6m4-6v6M6 7l1 14h10l1-14M9 7V4h6v3" />
                                         </svg>
                                     </button>
                                 </div>
                             }
                             <span class="etiquetaClasificacionProducto">
-                                {{ product.clasificacion }}
+                                {{ producto.clasificacion }}
                             </span>
                         </div>
 
                         <div class="datosProductoCatalogo">
-                            <h2 class="nombreProductoCatalogo">{{ product.nombre }}</h2>
-                            <p class="notasProductoCatalogo">{{ product.descripcion }}</p>
+                            <h2 class="nombreProductoCatalogo">
+                                <a class="enlaceNombreProductoCatalogo" [routerLink]="['/cafes', producto._id]">
+                                    {{ producto.nombre }}
+                                </a>
+                            </h2>
+                            <p class="notasProductoCatalogo">
+                                {{ producto.descripcion }}
+                            </p>
+
                             <div class="pieProductoCatalogo">
                                 <div class="precioYGramajeCatalogo">
-                                    <span class="precioProductoCatalogo">${{ product.precio }}</span>
-                                    <span class="gramajeProductoCatalogo">{{ product.gramaje }}</span>
+                                    <span class="precioProductoCatalogo">
+                                        {{ producto.precio | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}
+                                    </span>
+                                    <span class="gramajeProductoCatalogo">
+                                        {{ producto.gramaje }}
+                                    </span>
                                 </div>
-                                @if (product.stock > 0) {
+
+                                @if (producto.stock > 0) {
                                     <button
                                         class="botonAgregarCatalogo"
                                         type="button"
-                                        [attr.aria-label]="'Agregar ' + product.nombre + ' al carrito'"
+                                        [attr.aria-label]="'Agregar ' + producto.nombre + ' al carrito'"
                                     >
-                                        <svg class="iconoCarritoCatalogo" viewBox="0 0 24 24" aria-hidden="true">
+                                        <svg
+                                            class="iconoCarritoCatalogo"
+                                            viewBox="0 0 24 24"
+                                            aria-hidden="true"
+                                        >
                                             <path d="M3 4h2l2.2 10.1a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 1.9-1.4L21 8H6" />
                                             <circle cx="10" cy="20" r="1.25" />
                                             <circle cx="18" cy="20" r="1.25" />
                                         </svg>
                                     </button>
                                 } @else {
-                                    <span class="etiquetaAgotadoCatalogo">Sin stock</span>
+                                    <span class="etiquetaAgotadoCatalogo">
+                                        Sin stock
+                                    </span>
                                 }
                             </div>
                         </div>
@@ -145,42 +195,5 @@
         }
     </section>
 
-    <section class="franjaBeneficiosCatalogo" aria-label="Beneficios de nuestros cafés">
-        <article class="beneficioCatalogo">
-            <svg class="iconoBeneficioCatalogo" viewBox="0 0 48 40" aria-hidden="true">
-                <path d="M3 34 18 12l8 11 6-8 13 19M9 34h32" />
-            </svg>
-            <div class="textoBeneficioCatalogo">
-                <h2 class="tituloBeneficioCatalogo">Cafés de origen</h2>
-                <p class="descripcionBeneficioCatalogo">Trazabilidad y comercio justo</p>
-            </div>
-        </article>
-        <article class="beneficioCatalogo">
-            <svg class="iconoBeneficioCatalogo" viewBox="0 0 48 40" aria-hidden="true">
-                <path d="M24 4c-8 0-13 8-13 16s5 16 13 16 13-8 13-16S32 4 24 4Zm0 0c-6 7-6 25 0 32" />
-            </svg>
-            <div class="textoBeneficioCatalogo">
-                <h2 class="tituloBeneficioCatalogo">Tostado fresco</h2>
-                <p class="descripcionBeneficioCatalogo">Cada semana, en pequeños lotes</p>
-            </div>
-        </article>
-        <article class="beneficioCatalogo">
-            <svg class="iconoBeneficioCatalogo" viewBox="0 0 48 40" aria-hidden="true">
-                <path d="M8 31c15 1 25-8 29-24C21 7 10 14 8 31Zm0 0 19-18m-9 9 1 9m6-15 8 1" />
-            </svg>
-            <div class="textoBeneficioCatalogo">
-                <h2 class="tituloBeneficioCatalogo">Impacto positivo</h2>
-                <p class="descripcionBeneficioCatalogo">Apoyamos a productores</p>
-            </div>
-        </article>
-        <article class="beneficioCatalogo">
-            <svg class="iconoBeneficioCatalogo" viewBox="0 0 48 40" aria-hidden="true">
-                <path d="M5 12h29v8c0 8-6 13-15 13S5 28 5 20v-8Zm29 3h5a5 5 0 0 1 0 10h-6M10 7h20" />
-            </svg>
-            <div class="textoBeneficioCatalogo">
-                <h2 class="tituloBeneficioCatalogo">Envíos a todo el país</h2>
-                <p class="descripcionBeneficioCatalogo">Tu café, donde estés</p>
-            </div>
-        </article>
-    </section>
+    <app-benefits />
 </main>

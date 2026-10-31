@@ -1,0 +1,65 @@
+<header class="barraNavegacion">
+  <div class="contenidoNavegacion">
+    <a routerLink="/" class="enlaceMarca" aria-label="Café Nominal, inicio">
+      <img src="/img/LogoTerra.png" alt="TERRA Café de Especialidad" class="logoMarca">
+    </a>
+
+    <nav class="menuPrincipal" aria-label="Navegación principal">
+      <a routerLink="/cafes">Catálogo</a>
+      <a routerLink="/origenes">Orígenes</a>
+      <a routerLink="/nuestra-historia">Nuestra historia</a>
+    </nav>
+
+    <div class="accionesNavegacion">
+      <div class="busquedaEncabezado">
+        <button
+          class="botonBusqueda"
+          type="button"
+          (click)="toggleSearch()"
+          [attr.aria-expanded]="searchOpen()"
+          aria-label="Buscar cafés"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="10.8" cy="10.8" r="6.8" />
+            <path d="m16 16 4.5 4.5" />
+          </svg>
+        </button>
+        @if (searchOpen()) {
+          <div class="panelBusqueda">
+            <input
+              type="search"
+              [ngModel]="catalogSearch.query()"
+              (ngModelChange)="catalogSearch.query.set($event)"
+              placeholder="Buscar cafés..."
+              aria-label="Buscar por nombre o notas de cata"
+            >
+          </div>
+        }
+      </div>
+
+      @if (auth.esAdmin()) {
+        <a routerLink="/admin/crear" class="enlaceCargarProducto">
+          <span aria-hidden="true">＋</span> Cargar producto
+        </a>
+      }
+
+      @if (auth.estaLogueado()) {
+        <span class="saludoUsuario">Hola, {{ auth.usuario()?.nombre }}</span>
+        <button type="button" class="enlaceCargarProducto botonCerrarSesion" (click)="cerrarSesion()">
+          Salir
+        </button>
+      } @else {
+        <a routerLink="/login" class="enlaceCargarProducto">Ingresar</a>
+      }
+
+      <button class="botonCarrito" type="button" aria-label="Carrito, 0 productos">
+        <svg class="iconoCarrito" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 4h2l2.2 10.1a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 1.9-1.4L21 8H6" />
+          <circle cx="10" cy="20" r="1.25" />
+          <circle cx="18" cy="20" r="1.25" />
+        </svg>
+        <span class="cantidadCarrito">0</span>
+      </button>
+    </div>
+  </div>
+</header>

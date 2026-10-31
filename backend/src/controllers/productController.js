@@ -1,5 +1,4 @@
 const Product = require('../models/Product');
-
 const getProducts = async (req, res) => {
     try {
         const products = await Product.find({});
@@ -72,7 +71,6 @@ const getProductById = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params; 
-
     const deletedProduct = await Product.findByIdAndDelete(id);
 
     if (!deletedProduct) {

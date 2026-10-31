@@ -1,34 +1,7 @@
 <div class="app-wrapper">
-  <header class="custom-navbar">
-    <div class="navbar-inner">
-      <a routerLink="/" class="brand-lockup" aria-label="Café Nominal, inicio">
-        <img src="/img/LogoTerra.png" alt="TERRA Café de Especialidad" class="brand-logo">
-      </a>
-      <nav class="main-nav" aria-label="Navegación principal"><a href="/#catalogo">Cafés</a><a href="/#catalogo">Orígenes</a><a href="/#catalogo">Nuestra historia</a></nav>
-      <div class="navbar-actions">
-        <div class="header-search">
-          <button class="search-toggle" type="button" (click)="toggleSearch()" [attr.aria-expanded]="searchOpen()" aria-label="Buscar cafés">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg>
-          </button>
-          @if (searchOpen()) {
-            <div class="search-popover">
-              <input type="search" [ngModel]="catalogSearch.query()" (ngModelChange)="catalogSearch.query.set($event)" placeholder="Buscar cafés..." aria-label="Buscar por nombre o notas de cata">
-            </div>
-          }
-        </div>
-        @if (auth.esAdmin()) {
-          <a routerLink="/admin/crear" class="load-product-link"><span aria-hidden="true">＋</span> Cargar Producto</a>
-        }
-        @if (auth.estaLogueado()) {
-          <span class="user-greeting">Hola, {{ auth.usuario()?.nombre }}</span>
-          <button type="button" class="load-product-link session-button" (click)="cerrarSesion()">Salir</button>
-        } @else {
-          <a routerLink="/login" class="load-product-link">Ingresar</a>
-        }
-        <button class="cart-button" type="button" aria-label="Carrito, 0 productos"><svg class="cart-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 10.1a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 1.9-1.4L21 8H6"/><circle cx="10" cy="20" r="1.25"/><circle cx="18" cy="20" r="1.25"/></svg><span class="cart-count">0</span></button>
-      </div>
-    </div>
-  </header>
-  <main class="flex-grow-1"><router-outlet></router-outlet></main>
-  <footer class="custom-footer"><div class="container"><p class="footer-text">TERRA — Café de origen, tueste artesanal</p></div></footer>
+  <app-header />
+  <main class="flex-grow-1">
+    <router-outlet />
+  </main>
+  <app-footer />
 </div>

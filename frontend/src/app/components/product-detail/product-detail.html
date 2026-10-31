@@ -1,0 +1,53 @@
+<main class="paginaDetalleCafe">
+    @if (cargando()) {
+        <section class="estadoDetalleCafe" aria-live="polite"><p class="textoEstadoDetalle">Cargando café...</p></section>
+    } @else if (noEncontrado()) {
+        <section class="estadoDetalleCafe"><h1 class="tituloEstadoDetalle">No encontramos ese café.</h1><a class="enlaceVolverDetalle" routerLink="/cafes">Volver al catálogo</a></section>
+    } @else if (errorCarga()) {
+        <section class="estadoDetalleCafe"><h1 class="tituloEstadoDetalle">No pudimos cargar el café.</h1><p class="textoEstadoDetalle">Revisá que el servidor esté disponible e intentá nuevamente.</p><a class="enlaceVolverDetalle" routerLink="/cafes">Volver al catálogo</a></section>
+    } @else if (productoSeleccionado(); as producto) {
+        <section class="contenidoDetalleCafe" aria-label="Detalle del café">
+            <div class="marcoImagenDetalleCafe">
+                <img class="imagenDetalleCafe" [src]="'http://localhost:4000' + producto.imagen" [alt]="producto.nombre" />
+            </div>
+            <div class="datosDetalleCafe">
+                <h1 class="nombreDetalleCafe">{{ producto.nombre }}</h1>
+                <p class="descripcionDetalleCafe">{{ producto.descripcion }}</p>
+
+                <dl class="atributosDetalleCafe">
+                    <div class="filaAtributoDetalle"><dt class="etiquetaAtributoDetalle">Clasificación</dt><dd class="valorAtributoDetalle">{{ producto.clasificacion }}</dd></div>
+                    <div class="filaAtributoDetalle"><dt class="etiquetaAtributoDetalle">Contenido</dt><dd class="valorAtributoDetalle">{{ producto.gramaje }}</dd></div>
+                </dl>
+
+                <div class="compraDetalleCafe">
+                    <div class="filaPrecioStockDetalle">
+                        <p class="precioDetalleCafe">{{ producto.precio | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}</p>
+                        @if (producto.stock > 0) {
+                            <p class="estadoStockDetalle"><span class="indicadorStockDisponible" aria-hidden="true"></span>En stock ({{ producto.stock }} unidades)</p>
+                        } @else {
+                            <p class="estadoStockDetalle estadoSinStock"><span class="indicadorStockAgotado" aria-hidden="true"></span>Sin stock</p>
+                        }
+                    </div>
+
+                    @if (producto.stock > 0) {
+                        <div class="accionesDetalleCafe">
+                            <div class="controlCantidadDetalle">
+                                <span class="etiquetaCantidadDetalle">Cantidad</span>
+                                <div class="selectorCantidadDetalle" aria-label="Selector de cantidad">
+                                    <button class="botonCantidadDetalle" type="button" (click)="cambiarCantidad(-1)" [disabled]="cantidad() <= 1" aria-label="Disminuir cantidad">−</button>
+                                    <output class="valorCantidadDetalle" aria-live="polite">{{ cantidad() }}</output>
+                                    <button class="botonCantidadDetalle" type="button" (click)="cambiarCantidad(1)" [disabled]="cantidad() >= producto.stock" aria-label="Aumentar cantidad">+</button>
+                                </div>
+                            </div>
+                            <button class="botonAgregarDetalle" type="button">Agregar al carrito</button>
+                        </div>
+                    } @else {
+                        <button class="botonAgregarDetalle botonAgotadoDetalle" type="button" disabled>Sin stock</button>
+                    }
+                </div>
+            </div>
+        </section>
+    }
+
+    <app-benefits />
+</main>
