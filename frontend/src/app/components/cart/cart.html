@@ -1,0 +1,87 @@
+<main class="paginaCarrito">
+  <header class="encabezadoCarrito">
+    <h1 class="tituloCarrito">Tu carrito</h1>
+    <p class="subtituloCarrito">Revisá tu pedido antes de continuar.</p>
+  </header>
+
+  @if (estaVacio()) {
+    <section class="estadoVacioCarrito" aria-live="polite">
+      <span class="adornoEstadoVacio" aria-hidden="true">🛒</span>
+      <h2 class="tituloEstadoVacio">Tu carrito está vacío.</h2>
+      <p class="textoEstadoVacio">Agregá cafés desde el catálogo para armar tu pedido.</p>
+      <a class="enlaceVolverCarrito" routerLink="/cafes">Explorar cafés</a>
+    </section>
+  } @else {
+    <section class="contenidoCarrito" aria-label="Detalle del carrito">
+      @if (avisoStock()) {
+        <p class="avisoStock" role="status">
+          El stock de algunos productos cambió y ajustamos las cantidades.
+        </p>
+      }
+
+      <ul class="listaItemsCarrito">
+        @for (item of items(); track item.productId) {
+          <li class="itemCarrito">
+            <div class="datosItemCarrito">
+              <h2 class="nombreItemCarrito">{{ item.nombre }}</h2>
+              <p class="metaItemCarrito">{{ item.clasificacion }} · {{ item.gramaje }}</p>
+              <p class="precioUnitarioItem">
+                {{ item.precio | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }} c/u
+              </p>
+            </div>
+
+            <div class="cantidadItemCarrito">
+              <button
+                class="botonCantidadCarrito"
+                type="button"
+                (click)="decrementar(item.productId)"
+                [disabled]="item.cantidad <= 1"
+                [attr.aria-label]="'Disminuir cantidad de ' + item.nombre"
+              >−</button>
+              <output class="valorCantidadCarrito" aria-live="polite">{{ item.cantidad }}</output>
+              <button
+                class="botonCantidadCarrito"
+                type="button"
+                (click)="incrementar(item.productId)"
+                [disabled]="item.cantidad >= item.stock"
+                [attr.aria-label]="'Aumentar cantidad de ' + item.nombre"
+              >+</button>
+            </div>
+
+            <p class="subtotalItemCarrito">
+              {{ (item.precio * item.cantidad) | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}
+            </p>
+
+            <button
+              class="botonQuitarCarrito"
+              type="button"
+              (click)="quitar(item.productId)"
+              [attr.aria-label]="'Quitar ' + item.nombre + ' del carrito'"
+            >✕</button>
+          </li>
+        }
+      </ul>
+
+      <footer class="resumenCarrito">
+        <button class="botonVaciarCarrito" type="button" (click)="vaciar()">Vaciar carrito</button>
+
+        <div class="totalesCarrito">
+          <div class="filaTotalCarrito">
+            <span class="etiquetaTotalCarrito">Subtotal</span>
+            <span class="valorTotalCarrito">
+              {{ subtotal() | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}
+            </span>
+          </div>
+          <div class="filaTotalCarrito filaTotalFinal">
+            <span class="etiquetaTotalCarrito">Total</span>
+            <span class="valorTotalFinal">
+              {{ total() | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Persona B: el botón "Confirmar compra" y el manejo de sesión se conectan acá -->
+      </footer>
+    </section>
+  }
+</main>
