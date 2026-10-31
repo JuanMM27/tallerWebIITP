@@ -167,21 +167,56 @@
                                 </div>
 
                                 @if (producto.stock > 0) {
-                                    <button
-                                        class="botonAgregarCatalogo"
-                                        type="button"
-                                        [attr.aria-label]="'Agregar ' + producto.nombre + ' al carrito'"
-                                    >
-                                        <svg
-                                            class="iconoCarritoCatalogo"
-                                            viewBox="0 0 24 24"
-                                            aria-hidden="true"
-                                        >
-                                            <path d="M3 4h2l2.2 10.1a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 1.9-1.4L21 8H6" />
-                                            <circle cx="10" cy="20" r="1.25" />
-                                            <circle cx="18" cy="20" r="1.25" />
-                                        </svg>
-                                    </button>
+                                    @if (maxDisponible(producto) <= 0) {
+                                        <span class="etiquetaAgotadoCatalogo">
+                                            No hay más stock
+                                        </span>
+                                    } @else {
+                                        <div class="controlesAgregarCatalogo">
+                                            <div class="columnaSelectorCatalogo">
+                                                <div class="selectorCantidadCatalogo" [attr.aria-label]="'Cantidad de ' + producto.nombre">
+                                                    <button
+                                                        class="botonCantidadCatalogo"
+                                                        type="button"
+                                                        (click)="decrementarCantidad(producto)"
+                                                        [disabled]="cantidadDe(producto) <= 1"
+                                                        aria-label="Disminuir cantidad"
+                                                    >−</button>
+                                                    <output class="valorCantidadCatalogo" aria-live="polite">{{ cantidadDe(producto) }}</output>
+                                                    <button
+                                                        class="botonCantidadCatalogo"
+                                                        type="button"
+                                                        (click)="incrementarCantidad(producto)"
+                                                        aria-label="Aumentar cantidad"
+                                                    >+</button>
+                                                </div>
+                                                @if (mensajeDeStock(producto); as mensaje) {
+                                                    <span class="mensajeSinStockCatalogo" role="status">{{ mensaje }}</span>
+                                                }
+                                            </div>
+                                            <button
+                                                class="botonAgregarCatalogo"
+                                                [class.botonAgregado]="fueAgregado(producto)"
+                                                type="button"
+                                                (click)="agregarAlCarrito(producto)"
+                                                [attr.aria-label]="'Agregar ' + producto.nombre + ' al carrito'"
+                                            >
+                                                @if (fueAgregado(producto)) {
+                                                    <span class="confirmacionAgregado">✓ Agregado</span>
+                                                } @else {
+                                                    <svg
+                                                        class="iconoCarritoCatalogo"
+                                                        viewBox="0 0 24 24"
+                                                        aria-hidden="true"
+                                                    >
+                                                        <path d="M3 4h2l2.2 10.1a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 1.9-1.4L21 8H6" />
+                                                        <circle cx="10" cy="20" r="1.25" />
+                                                        <circle cx="18" cy="20" r="1.25" />
+                                                    </svg>
+                                                }
+                                            </button>
+                                        </div>
+                                    }
                                 } @else {
                                     <span class="etiquetaAgotadoCatalogo">
                                         Sin stock

@@ -5,6 +5,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { of, switchMap } from 'rxjs';
 import { ProductService } from '../../services/product';
+import { CartService } from '../../services/cart';
 import type { Cafe } from '../../models/cafe';
 import { Benefits } from '../shared/benefits/benefits';
 
@@ -20,6 +21,7 @@ registerLocaleData(localeEsAr, 'es-AR');
 export class ProductDetail implements OnInit {
   private readonly rutaActual = inject(ActivatedRoute);
   private readonly servicioProductos = inject(ProductService);
+  private readonly carrito = inject(CartService);
 
   productoSeleccionado = signal<Cafe | null>(null);
   cantidad = signal(1);
@@ -60,5 +62,17 @@ export class ProductDetail implements OnInit {
     const producto = this.productoSeleccionado();
     if (!producto || producto.stock <= 0) return;
     this.cantidad.update(actual => Math.min(producto.stock, Math.max(1, actual + cambio)));
+  }
+
+  agregarAlCarrito(): void {
+    const producto = this.productoSeleccionado();
+    if (!producto) return;
+
+    const resultado = this.carrito.agregar(producto, this.cantidad());
+    if (!resultado.agregado) {
+      alert(`No podés agregar más de ${producto.nombre}: ya alcanzaste el stock (${resultado.stock} unidades).`);
+    } else if (resultado.capped) {
+      alert(`Solo hay ${resultado.stock} unidades de ${producto.nombre}; agregamos las disponibles.`);
+    }
   }
 }

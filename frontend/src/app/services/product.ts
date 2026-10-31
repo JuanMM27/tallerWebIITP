@@ -3,6 +3,23 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import type { Cafe, RespuestaActualizarCafe, RespuestaEliminarCafe } from "../models/cafe";
 
+// Contrato compartido del carrito: validación de stock (ver plan sección 3.3)
+export interface ItemValidacionStock {
+    productId: string;
+    cantidad: number;
+}
+
+export interface ItemStockResultado {
+    productId: string;
+    cantidad: number;
+    stock: number;
+}
+
+export interface RespuestaValidarStock {
+    ok: ItemStockResultado[];
+    insuficiente: ItemStockResultado[];
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -12,6 +29,10 @@ export class ProductService {
 
     getProducts(): Observable<Cafe[]> {
         return this.clienteHttp.get<Cafe[]>(this.urlApi);
+    }
+
+    validateStock(items: ItemValidacionStock[]): Observable<RespuestaValidarStock> {
+        return this.clienteHttp.post<RespuestaValidarStock>(`${this.urlApi}/validate-stock`, items);
     }
 
     getProductById(identificador: string): Observable<Cafe> {
