@@ -376,6 +376,20 @@
     gap: 7px;
 }
 
+.columnaSelectorCatalogo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.mensajeSinStockCatalogo {
+    max-width: 92px;
+    color: #b3261e;
+    font: 600 10px/1.15 'Manrope', sans-serif;
+    text-align: center;
+}
+
 .botonCantidadCatalogo {
     display: grid;
     width: 28px;

@@ -29,6 +29,8 @@ export class Catalog {
   cantidades = signal<Record<string, number>>({});
   // Feedback visual: producto que se acaba de agregar
   agregadoRecientemente = signal<Record<string, boolean>>({});
+  // Mensaje de stock por producto (se muestra debajo del selector, en rojo)
+  mensajeStock = signal<Record<string, string>>({});
   consultaBusqueda = this.servicioBusquedaCatalogo.query;
   clasificacionSeleccionada = signal('Todos');
   clasificaciones = computed(() => [
@@ -69,19 +71,25 @@ export class Catalog {
     return this.cantidades()[producto._id] ?? 1;
   }
 
+  mensajeDeStock(producto: Cafe): string {
+    return this.mensajeStock()[producto._id] ?? '';
+  }
+
   incrementarCantidad(producto: Cafe): void {
     const actual = this.cantidadDe(producto);
     if (actual >= producto.stock) {
-      alert(`No hay más stock disponible de ${producto.nombre}.`);
+      this.mostrarMensajeStock(producto, 'No hay más stock');
       return;
     }
     this.cantidades.update(mapa => ({ ...mapa, [producto._id]: actual + 1 }));
+    this.limpiarMensajeStock(producto);
   }
 
   decrementarCantidad(producto: Cafe): void {
     const actual = this.cantidadDe(producto);
     if (actual <= 1) return;
     this.cantidades.update(mapa => ({ ...mapa, [producto._id]: actual - 1 }));
+    this.limpiarMensajeStock(producto);
   }
 
   fueAgregado(producto: Cafe): boolean {
@@ -91,16 +99,31 @@ export class Catalog {
   agregarAlCarrito(producto: Cafe) {
     const resultado = this.carrito.agregar(producto, this.cantidadDe(producto));
     if (!resultado.agregado) {
-      alert(`No podés agregar más de ${producto.nombre}: ya alcanzaste el stock (${resultado.stock} unidades).`);
+      this.mostrarMensajeStock(producto, 'No hay más stock');
       return;
     }
     if (resultado.capped) {
-      alert(`Solo hay ${resultado.stock} unidades de ${producto.nombre}; agregamos las disponibles.`);
+      this.mostrarMensajeStock(producto, `Solo hay ${resultado.stock} unidades`);
+    } else {
+      this.limpiarMensajeStock(producto);
     }
     // Feedback visual en el botón: "✓ Agregado" durante un instante
     this.agregadoRecientemente.update(mapa => ({ ...mapa, [producto._id]: true }));
     setTimeout(() => {
       this.agregadoRecientemente.update(mapa => ({ ...mapa, [producto._id]: false }));
     }, 1200);
+  }
+
+  private mostrarMensajeStock(producto: Cafe, texto: string): void {
+    this.mensajeStock.update(mapa => ({ ...mapa, [producto._id]: texto }));
+  }
+
+  private limpiarMensajeStock(producto: Cafe): void {
+    this.mensajeStock.update(mapa => {
+      if (!(producto._id in mapa)) return mapa;
+      const copia = { ...mapa };
+      delete copia[producto._id];
+      return copia;
+    });
   }
 }

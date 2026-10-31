@@ -168,21 +168,26 @@
 
                                 @if (producto.stock > 0) {
                                     <div class="controlesAgregarCatalogo">
-                                        <div class="selectorCantidadCatalogo" [attr.aria-label]="'Cantidad de ' + producto.nombre">
-                                            <button
-                                                class="botonCantidadCatalogo"
-                                                type="button"
-                                                (click)="decrementarCantidad(producto)"
-                                                [disabled]="cantidadDe(producto) <= 1"
-                                                aria-label="Disminuir cantidad"
-                                            >−</button>
-                                            <output class="valorCantidadCatalogo" aria-live="polite">{{ cantidadDe(producto) }}</output>
-                                            <button
-                                                class="botonCantidadCatalogo"
-                                                type="button"
-                                                (click)="incrementarCantidad(producto)"
-                                                aria-label="Aumentar cantidad"
-                                            >+</button>
+                                        <div class="columnaSelectorCatalogo">
+                                            <div class="selectorCantidadCatalogo" [attr.aria-label]="'Cantidad de ' + producto.nombre">
+                                                <button
+                                                    class="botonCantidadCatalogo"
+                                                    type="button"
+                                                    (click)="decrementarCantidad(producto)"
+                                                    [disabled]="cantidadDe(producto) <= 1"
+                                                    aria-label="Disminuir cantidad"
+                                                >−</button>
+                                                <output class="valorCantidadCatalogo" aria-live="polite">{{ cantidadDe(producto) }}</output>
+                                                <button
+                                                    class="botonCantidadCatalogo"
+                                                    type="button"
+                                                    (click)="incrementarCantidad(producto)"
+                                                    aria-label="Aumentar cantidad"
+                                                >+</button>
+                                            </div>
+                                            @if (mensajeDeStock(producto); as mensaje) {
+                                                <span class="mensajeSinStockCatalogo" role="status">{{ mensaje }}</span>
+                                            }
                                         </div>
                                         <button
                                             class="botonAgregarCatalogo"
