@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CatalogSearchService } from '../../services/catalog-search';
 import { AuthService } from '../../services/auth';
+import { CartService } from '../../services/cart';
 
 @Component({
   selector: 'app-header',
@@ -14,8 +15,11 @@ import { AuthService } from '../../services/auth';
 export class Header {
   catalogSearch = inject(CatalogSearchService);
   auth = inject(AuthService);
+  private carrito = inject(CartService);
   private router = inject(Router);
   searchOpen = signal(false);
+
+  cantidadCarrito = this.carrito.cantidadTotal;
 
   cerrarSesion() {
     this.auth.logout();

@@ -39,7 +39,7 @@
                                     <button class="botonCantidadDetalle" type="button" (click)="cambiarCantidad(1)" [disabled]="cantidad() >= producto.stock" aria-label="Aumentar cantidad">+</button>
                                 </div>
                             </div>
-                            <button class="botonAgregarDetalle" type="button">Agregar al carrito</button>
+                            <button class="botonAgregarDetalle" type="button" (click)="agregarAlCarrito()">Agregar al carrito</button>
                         </div>
                     } @else {
                         <button class="botonAgregarDetalle botonAgotadoDetalle" type="button" disabled>Sin stock</button>

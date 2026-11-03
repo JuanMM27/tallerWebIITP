@@ -164,6 +164,7 @@
   background: transparent;
   color: var(--primary);
   cursor: pointer;
+  text-decoration: none;
 }
 
 .iconoCarrito {

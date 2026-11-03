@@ -1,5 +1,6 @@
 import { Component, inject, computed, signal } from '@angular/core';
 import { ProductService } from '../../services/product';
+import { CartService } from '../../services/cart';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import type { Cafe } from '../../models/cafe';
@@ -15,6 +16,7 @@ import { Benefits } from '../shared/benefits/benefits';
 })
 export class Home {
   private servicioProductos = inject(ProductService);
+  private carrito = inject(CartService);
   productos = signal<Cafe[]>([]);
   cargando = signal(true);
   errorCarga = signal(false);
@@ -25,6 +27,15 @@ export class Home {
       next: productos => { this.productos.set(productos); this.cargando.set(false); },
       error: () => { this.errorCarga.set(true); this.cargando.set(false); }
     });
+  }
+
+  agregarAlCarrito(producto: Cafe) {
+    const resultado = this.carrito.agregar(producto, 1);
+    if (!resultado.agregado) {
+      alert(`No podés agregar más de ${producto.nombre}: ya alcanzaste el stock (${resultado.stock} unidades).`);
+    } else if (resultado.capped) {
+      alert(`Solo hay ${resultado.stock} unidades de ${producto.nombre}; agregamos las disponibles.`);
+    }
   }
 
 }
