@@ -1,0 +1,153 @@
+<div class="container py-5">
+  <div class="col-md-10 col-lg-7 mx-auto">
+    <div class="card border p-4 p-md-5 shadow-sm form-card-container">
+      @if (registroExitoso()) {
+        <div class="text-center" role="status">
+          <h1 class="font-serif fw-normal mb-3 form-main-heading">¡Cuenta creada!</h1>
+          <p class="mb-4">Tu cuenta se registró correctamente. Ya podés iniciar sesión.</p>
+          <a routerLink="/login" class="btn btn-cafe-primary px-5 py-3">Iniciar sesión</a>
+        </div>
+      } @else {
+        <h1 class="font-serif text-center fw-normal mb-4 form-main-heading">Crear cuenta</h1>
+
+        @if (mensajeError()) {
+          <div class="alert alert-danger small" role="alert">{{ mensajeError() }}</div>
+        }
+
+        <form (ngSubmit)="onSubmit()" #f="ngForm" novalidate>
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label
+                for="nombre"
+                class="font-tag text-uppercase small fw-bold mb-1 form-label-custom"
+              >
+                Nombre
+              </label>
+              <input
+                id="nombre"
+                type="text"
+                name="nombre"
+                [(ngModel)]="nombre"
+                required
+                autocomplete="given-name"
+                class="form-control py-2 custom-form-control"
+                #nombreCtrl="ngModel"
+              />
+              @if (nombreCtrl.invalid && nombreCtrl.touched) {
+                <div class="text-danger small mt-1">El nombre es obligatorio.</div>
+              }
+            </div>
+            <div class="col-md-6">
+              <label
+                for="apellido"
+                class="font-tag text-uppercase small fw-bold mb-1 form-label-custom"
+              >
+                Apellido
+              </label>
+              <input
+                id="apellido"
+                type="text"
+                name="apellido"
+                [(ngModel)]="apellido"
+                required
+                autocomplete="family-name"
+                class="form-control py-2 custom-form-control"
+                #apellidoCtrl="ngModel"
+              />
+              @if (apellidoCtrl.invalid && apellidoCtrl.touched) {
+                <div class="text-danger small mt-1">El apellido es obligatorio.</div>
+              }
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label
+              for="direccion"
+              class="font-tag text-uppercase small fw-bold mb-1 form-label-custom"
+            >
+              Dirección
+            </label>
+            <input
+              id="direccion"
+              type="text"
+              name="direccion"
+              [(ngModel)]="direccion"
+              required
+              autocomplete="street-address"
+              class="form-control py-2 custom-form-control"
+              #direccionCtrl="ngModel"
+            />
+            @if (direccionCtrl.invalid && direccionCtrl.touched) {
+              <div class="text-danger small mt-1">La dirección es obligatoria.</div>
+            }
+          </div>
+
+          <div class="mb-3">
+            <label
+              for="correo"
+              class="font-tag text-uppercase small fw-bold mb-1 form-label-custom"
+            >
+              Email
+            </label>
+            <input
+              id="correo"
+              type="email"
+              name="correo"
+              [(ngModel)]="correo"
+              required
+              email
+              autocomplete="email"
+              class="form-control py-2 custom-form-control"
+              #correoCtrl="ngModel"
+            />
+            @if (correoCtrl.invalid && correoCtrl.touched) {
+              <div class="text-danger small mt-1">Ingresá un email válido.</div>
+            }
+          </div>
+
+          <div class="mb-4">
+            <label
+              for="password"
+              class="font-tag text-uppercase small fw-bold mb-1 form-label-custom"
+            >
+              Contraseña
+            </label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              [(ngModel)]="password"
+              required
+              [pattern]="passwordPattern"
+              autocomplete="new-password"
+              aria-describedby="password-ayuda"
+              class="form-control py-2 custom-form-control"
+              #passwordCtrl="ngModel"
+            />
+            <div
+              id="password-ayuda"
+              class="small mt-1"
+              [class.text-danger]="passwordCtrl.invalid && passwordCtrl.touched"
+              [class.text-muted]="!(passwordCtrl.invalid && passwordCtrl.touched)"
+            >
+              Mínimo 8 caracteres, con al menos una mayúscula, una minúscula, un número y un
+              símbolo.
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            [disabled]="f.invalid || cargando()"
+            class="btn btn-cafe-primary w-100 py-3 fs-6"
+          >
+            {{ cargando() ? 'Creando cuenta...' : 'Crear cuenta' }}
+          </button>
+        </form>
+
+        <p class="text-center small mt-4 mb-0">
+          ¿Ya tenés cuenta? <a routerLink="/login">Iniciá sesión</a>
+        </p>
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<div class="container py-5">
+  <div class="col-md-8 col-lg-5 mx-auto">
+    <div class="card border p-4 p-md-5 shadow-sm form-card-container">
+      <h1 class="font-serif text-center fw-normal mb-4 form-main-heading">Iniciar sesión</h1>
+
+      @if (mensajeError()) {
+        <div class="alert alert-danger small" role="alert">{{ mensajeError() }}</div>
+      }
+
+      <form (ngSubmit)="onSubmit()" #f="ngForm" novalidate>
+        <div class="mb-3">
+          <label for="correo" class="font-tag text-uppercase small fw-bold mb-1 form-label-custom">
+            Email
+          </label>
+          <input
+            id="correo"
+            type="email"
+            name="correo"
+            [(ngModel)]="correo"
+            required
+            email
+            autocomplete="email"
+            class="form-control py-2 custom-form-control"
+            #correoCtrl="ngModel"
+          />
+          @if (correoCtrl.invalid && correoCtrl.touched) {
+            <div class="text-danger small mt-1">Ingresá un email válido.</div>
+          }
+        </div>
+
+        <div class="mb-4">
+          <label
+            for="password"
+            class="font-tag text-uppercase small fw-bold mb-1 form-label-custom"
+          >
+            Contraseña
+          </label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            [(ngModel)]="password"
+            required
+            autocomplete="current-password"
+            class="form-control py-2 custom-form-control"
+            #passwordCtrl="ngModel"
+          />
+          @if (passwordCtrl.invalid && passwordCtrl.touched) {
+            <div class="text-danger small mt-1">Ingresá tu contraseña.</div>
+          }
+        </div>
+
+        <button
+          type="submit"
+          [disabled]="f.invalid || cargando()"
+          class="btn btn-cafe-primary w-100 py-3 fs-6"
+        >
+          {{ cargando() ? 'Ingresando...' : 'Ingresar' }}
+        </button>
+      </form>
+
+      <p class="text-center small mt-4 mb-0">
+        ¿No tenés cuenta? <a routerLink="/registro">Registrate</a>
+      </p>
+    </div>
+  </div>
+</div>

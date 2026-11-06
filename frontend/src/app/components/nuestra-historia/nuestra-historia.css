@@ -1,0 +1,310 @@
+:host {
+    display: block;
+    min-width: 0;
+}
+
+.paginaNuestraHistoria {
+    overflow: hidden;
+    background: var(--surface);
+    color: var(--on-surface);
+}
+
+.seccionEsencia,
+.seccionFilosofia {
+    display: grid;
+    max-width: 1536px;
+    margin: 0 auto;
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: var(--heroSeparacion);
+    padding: 30px max(6.1vw, 36px);
+}
+
+.seccionEsencia {
+    max-width: none;
+    padding: var(--heroPaddingSuperior) var(--heroPaddingLateral) var(--heroPaddingInferior);
+}
+
+.contenidoEsencia,
+.contenidoFilosofia {
+    max-width: 590px;
+}
+
+.contenidoEsencia {
+    max-width: var(--heroAnchoContenido);
+}
+
+.tituloEsencia {
+    margin: 0;
+    color: var(--primary);
+    font: 600 var(--tamanoTituloPrincipal)/var(--interlineadoTitulo) var(--tipografiaTitulos);
+    letter-spacing: var(--espaciadoTitulo);
+}
+
+.tituloFilosofia,
+.tituloProposito {
+    margin: 0;
+    color: var(--primary);
+    font: 600 var(--tamanoTituloSeccion)/var(--interlineadoTitulo) var(--tipografiaTitulos);
+    letter-spacing: var(--espaciadoTitulo);
+}
+
+.textoDestacadoHistoria {
+    color: var(--terracotta);
+    font-weight: 500;
+}
+
+.textoEsencia,
+.textoFilosofia {
+    margin: 18px 0 0;
+    color: #625d56;
+    font-size: var(--tamanoParrafo);
+    line-height: var(--interlineadoParrafo);
+}
+
+.textoEsenciaPrincipal {
+    max-width: var(--heroAnchoTexto);
+    margin-top: 22px;
+    color: #554f48;
+    font-size: var(--tamanoParrafoIntroductorio);
+    font-weight: 500;
+    line-height: var(--interlineadoParrafo);
+}
+
+.textoEsenciaSecundario,
+.textoFilosofiaSecundario {
+    margin-top: 12px;
+}
+
+.imagenEsencia,
+.imagenFilosofia {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.imagenEsencia {
+    grid-column: 2;
+    grid-row: 1;
+    width: min(76%, var(--heroAnchoImagen));
+    justify-self: center;
+}
+
+.seccionFilosofia {
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr);
+    min-height: 425px;
+    gap: clamp(38px, 5.5vw, 84px);
+}
+
+.imagenFilosofia {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.contenidoFilosofia {
+    grid-column: 2;
+}
+
+.seccionValores {
+    padding: var(--paddingVerticalBeneficios) var(--paddingHorizontalBeneficios);
+    background: #f0eae0;
+}
+
+.contenedorValores {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.grillaValores {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.valorHistoria {
+    min-width: 0;
+    padding: 0 22px;
+    text-align: center;
+}
+
+.valorHistoria + .valorHistoria {
+    border-left: 1px solid var(--colorSeparadorBeneficios);
+}
+
+.iconoValor {
+    display: block;
+    width: var(--tamanoIconoBeneficios);
+    height: var(--tamanoIconoBeneficios);
+    margin: 0 auto 12px;
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.tituloValor {
+    margin: 0 0 var(--margenTituloBeneficios);
+    color: var(--primary);
+    font: 600 var(--tamanoTituloBeneficios)/var(--interlineadoTituloBeneficios) 'Manrope', sans-serif;
+}
+
+.textoValor {
+    max-width: 320px;
+    margin: 0 auto;
+    color: var(--colorDescripcionBeneficios);
+    font: 400 var(--tamanoDescripcionBeneficios)/var(--interlineadoDescripcionBeneficios) 'Manrope', sans-serif;
+}
+
+.seccionProposito {
+    position: relative;
+    display: grid;
+    min-height: clamp(260px, 22vw, 320px);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    overflow: hidden;
+    background: #e8dfd1;
+}
+
+.imagenProposito {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.contenidoProposito {
+    z-index: 1;
+    grid-column: 2;
+    width: min(90%, 560px);
+    justify-self: center;
+    padding: clamp(24px, 3vw, 40px);
+    border-radius: 42% 48% 45% 40% / 13% 14% 16% 15%;
+    background: #f7f3ec;
+}
+
+.textoProposito {
+    margin: 16px 0 0;
+    color: #514b44;
+    font-size: var(--tamanoParrafo);
+    line-height: var(--interlineadoParrafo);
+}
+
+@media (max-width: 900px) {
+    .seccionEsencia,
+    .seccionFilosofia {
+        min-height: 0;
+        gap: var(--heroSeparacion);
+        padding: 34px max(5vw, 28px);
+    }
+
+    .seccionEsencia {
+        padding: var(--heroPaddingSuperior) var(--heroPaddingLateral) var(--heroPaddingInferior);
+    }
+
+    .textoEsencia,
+    .textoFilosofia {
+        font-size: var(--tamanoParrafo);
+    }
+
+    .textoEsenciaPrincipal {
+        font-size: var(--tamanoParrafoIntroductorio);
+    }
+
+    .valorHistoria {
+        padding: 0 22px;
+    }
+
+    .seccionProposito {
+        min-height: 300px;
+    }
+}
+
+@media (max-width: 700px) {
+    .seccionEsencia {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .contenidoEsencia {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .imagenEsencia {
+        grid-column: 1;
+        grid-row: 2;
+        width: min(76%, var(--heroAnchoImagen));
+        justify-self: center;
+    }
+}
+
+@media (max-width: 620px) {
+    .seccionEsencia,
+    .seccionFilosofia {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--heroSeparacion);
+        padding: 30px 24px;
+    }
+
+    .seccionEsencia {
+        padding: var(--heroPaddingSuperior) var(--heroPaddingLateral) var(--heroPaddingInferior);
+    }
+
+    .contenidoEsencia,
+    .contenidoFilosofia {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .imagenEsencia,
+    .imagenFilosofia {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .imagenEsencia {
+        width: min(100%, var(--heroAnchoImagen));
+        justify-self: center;
+    }
+
+    .seccionValores {
+        padding: var(--paddingVerticalBeneficios) var(--paddingHorizontalBeneficios);
+    }
+
+    .grillaValores {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+    }
+
+    .valorHistoria {
+        padding: 20px 4px;
+    }
+
+    .valorHistoria + .valorHistoria {
+        border-top: 1px solid var(--colorSeparadorBeneficios);
+        border-left: 0;
+    }
+
+    .seccionProposito {
+        display: flex;
+        min-height: 0;
+        flex-direction: column;
+    }
+
+    .imagenProposito {
+        position: static;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .contenidoProposito {
+        width: calc(100% - 40px);
+        align-self: center;
+        margin: 20px 0 24px;
+        padding: 30px 28px;
+    }
+
+}
