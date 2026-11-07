@@ -403,6 +403,26 @@
     cursor: not-allowed;
 }
 
+/* Confirmación al agregar al carrito */
+.botonAgregadoProducto,
+.botonAgregadoProducto:hover:not(:disabled) {
+    width: auto;
+    padding: 0 12px;
+    background: #2f7d4f;
+}
+
+.textoAgregadoProducto {
+    font: 600 12px 'Space Grotesk', sans-serif;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+
+.mensajeStockProducto {
+    margin: 8px 0 0;
+    color: #b3261e;
+    font: 600 12px/1.3 'Manrope', sans-serif;
+}
+
 .estadoVacioDestacados {
     justify-items: start;
     padding: 20px 0;
@@ -461,6 +481,7 @@
 .descripcionProducto {
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
