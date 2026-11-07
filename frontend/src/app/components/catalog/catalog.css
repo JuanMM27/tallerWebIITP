@@ -75,7 +75,7 @@
 
 .barraFiltrosCatalogo {
     display: grid;
-    grid-template-columns: minmax(260px, 0.95fr) minmax(300px, 1fr) minmax(170px, 1fr);
+    grid-template-columns: minmax(240px, 1fr) minmax(260px, 1fr) auto minmax(140px, auto);
     align-items: center;
     gap: 26px;
     min-height: 70px;
@@ -124,6 +124,49 @@
 .entradaBusquedaCatalogo::placeholder {
     color: #81766a;
     opacity: 1;
+}
+
+/* Botones "Aplicar filtros" y "Limpiar" */
+.accionesFiltrosCatalogo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.botonAplicarFiltros,
+.botonLimpiarFiltros {
+    min-height: 39px;
+    padding: 0 18px;
+    border-radius: 28px;
+    font: 600 12px 'Space Grotesk', sans-serif;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.botonAplicarFiltros {
+    border: 1px solid var(--primary);
+    background: transparent;
+    color: var(--primary);
+}
+
+/* Hay cambios sin aplicar: el botón se resalta */
+.botonAplicarPendiente,
+.botonAplicarFiltros:hover {
+    background: var(--primary);
+    color: var(--on-primary);
+}
+
+.botonLimpiarFiltros {
+    border: 1px solid transparent;
+    background: transparent;
+    color: #6d645a;
+    text-decoration: underline;
+}
+
+.botonLimpiarFiltros:hover {
+    color: var(--primary);
 }
 
 .filtroClasificacionCatalogo {
@@ -476,6 +519,11 @@
         padding: 12px 0;
     }
 
+    .accionesFiltrosCatalogo {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
     .cantidadResultadosCatalogo {
         grid-column: 2;
         grid-row: 2;
@@ -548,6 +596,15 @@
     .selectorClasificacionCatalogo {
         width: auto;
         min-width: 160px;
+    }
+
+    .accionesFiltrosCatalogo {
+        grid-column: 1;
+        grid-row: auto;
+    }
+
+    .botonAplicarFiltros {
+        flex: 1;
     }
 
     .cantidadResultadosCatalogo {
