@@ -122,15 +122,23 @@ export class CartService {
     this.persistir();
   }
 
-  /**
+    /**
    * Actualiza el stock conocido de un ítem (viene del backend, que es la fuente
-   * de verdad). Si el stock bajó, capa la cantidad. Devuelve true si ajustó algo.
+   * de verdad). Si el stock bajó, capa la cantidad; si se agotó, quita el ítem
+   * (no puede quedar en el carrito con cantidad 0).
+   * Devuelve qué pasó para que la vista pueda avisarle al usuario.
    */
-  sincronizarStock(productId: string, stock: number): boolean {
+  sincronizarStock(productId: string, stock: number): 'sin-cambios' | 'ajustado' | 'quitado' {
     const item = this.items().find(i => i.productId === productId);
-    if (!item) return false;
+    if (!item) return 'sin-cambios';
 
     const nuevoStock = Math.max(0, stock);
+
+    if (nuevoStock === 0) {
+      this.quitar(productId);
+      return 'quitado';
+    }
+
     const nuevaCantidad = Math.min(item.cantidad, nuevoStock);
     const ajusto = nuevaCantidad < item.cantidad;
 
@@ -140,7 +148,7 @@ export class CartService {
         : i
     ));
     this.persistir();
-    return ajusto;
+    return ajusto ? 'ajustado' : 'sin-cambios';
   }
 
   private persistir(): void {
