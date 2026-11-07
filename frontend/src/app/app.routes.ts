@@ -16,6 +16,7 @@ export const routes: Routes = [
   { path: '', component: Home },
   { path: 'cafes', component: Catalog },
   { path: 'cafes/:id', component: ProductDetail },
+  { path: 'carrito', component: Cart },
   { path: 'mis-pedidos', component: MisPedidos, canActivate: [authGuard] },
   { path: 'origenes', component: Origenes },
   { path: 'nuestra-historia', component: NuestraHistoria },
