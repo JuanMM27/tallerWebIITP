@@ -45,6 +45,7 @@
 
       @if (auth.estaLogueado()) {
         <span class="saludoUsuario">Hola, {{ auth.usuario()?.nombre }}</span>
+        <a routerLink="/mis-pedidos" class="enlaceCargarProducto">Mis pedidos</a>
         <button type="button" class="enlaceCargarProducto botonCerrarSesion" (click)="cerrarSesion()">
           Salir
         </button>
@@ -57,13 +58,4 @@
         routerLink="/carrito"
         [attr.aria-label]="'Carrito, ' + cantidadCarrito() + ' productos'"
       >
-        <svg class="iconoCarrito" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M3 4h2l2.2 10.1a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 1.9-1.4L21 8H6" />
-          <circle cx="10" cy="20" r="1.25" />
-          <circle cx="18" cy="20" r="1.25" />
-        </svg>
-        <span class="cantidadCarrito">{{ cantidadCarrito() }}</span>
-      </a>
-    </div>
-  </div>
-</header>
+        <svg class="iconoCarrito" viewBox="0 0 24 24"

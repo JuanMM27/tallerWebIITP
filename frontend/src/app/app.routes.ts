@@ -8,13 +8,15 @@ import { Registro } from './components/registro/registro';
 import { Origenes } from './components/origenes/origenes';
 import { NuestraHistoria } from './components/nuestra-historia/nuestra-historia';
 import { Cart } from './components/cart/cart';
+import { MisPedidos } from './components/mis-pedidos/mis-pedidos';
 import { adminGuard } from './guards/admin-guard';
+import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
   { path: '', component: Home },
   { path: 'cafes', component: Catalog },
   { path: 'cafes/:id', component: ProductDetail },
-  { path: 'carrito', component: Cart },
+  { path: 'mis-pedidos', component: MisPedidos, canActivate: [authGuard] },
   { path: 'origenes', component: Origenes },
   { path: 'nuestra-historia', component: NuestraHistoria },
   { path: 'login', component: Login },

@@ -1,0 +1,59 @@
+<main class="paginaPedidos">
+  <header class="encabezadoPedidos">
+    <h1 class="tituloPedidos">Mis pedidos</h1>
+    <p class="subtituloPedidos">Tu historial de compras, del más reciente al más antiguo.</p>
+  </header>
+
+  @if (cargando()) {
+    <p class="estadoPedidos" aria-live="polite">Cargando tus pedidos...</p>
+  } @else if (error()) {
+    <section class="estadoPedidos estadoError" role="alert">
+      <p>{{ error() }}</p>
+      <button class="botonPedidos" type="button" (click)="cargarPedidos()">Reintentar</button>
+    </section>
+  } @else if (pedidos().length === 0) {
+    <section class="estadoPedidos">
+      <h2 class="tituloEstadoPedidos">Todavía no hiciste ningún pedido.</h2>
+      <p>Cuando confirmes una compra, la vas a ver acá.</p>
+      <a class="botonPedidos" routerLink="/cafes">Explorar cafés</a>
+    </section>
+  } @else {
+    <ul class="listaPedidos">
+      @for (pedido of pedidos(); track pedido._id) {
+        <li class="tarjetaPedido">
+          <div class="cabeceraPedido">
+            <div>
+              <p class="fechaPedido">
+                {{ pedido.fechaCreacion | date:'d MMM y, HH:mm':'':'es-AR' }}
+              </p>
+              <p class="idPedido">Pedido #{{ pedido._id.slice(-6).toUpperCase() }}</p>
+            </div>
+            <span [class]="'estadoPedido estado' + pedido.estado">
+              {{ pedido.estado }}
+            </span>
+          </div>
+
+          <ul class="itemsPedido">
+            @for (item of pedido.productos; track item.productId) {
+              <li class="itemPedido">
+                <span class="nombreItem">{{ item.nombre }}</span>
+                <span class="detalleItem">
+                  {{ item.cantidad }} × {{ item.precioUnitario | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}
+                </span>
+              </li>
+            }
+          </ul>
+
+          <div class="piePedido">
+            <span class="unidadesPedido">
+              {{ cantidadUnidades(pedido) }} {{ cantidadUnidades(pedido) === 1 ? 'unidad' : 'unidades' }}
+            </span>
+            <strong class="totalPedido">
+              {{ pedido.total | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}
+            </strong>
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</main>
