@@ -9,7 +9,7 @@
       <span class="iconoExito" aria-hidden="true">✓</span>
       <h2 class="tituloPedidoConfirmado">¡Pedido confirmado!</h2>
       <p class="textoPedidoConfirmado">
-        Tu pago fue simulado con éxito y descontamos el stock de los productos.
+                Recibimos tu pago y ya registramos tu pedido.
       </p>
 
       <div class="resumenPedido">
@@ -46,10 +46,10 @@
       <a class="enlaceVolverCarrito" routerLink="/cafes">Explorar cafés</a>
     </section>
   } @else if (mostrandoPago()) {
-    <section class="simulacionPago" aria-label="Simulación de pago">
-      <h2 class="tituloSimulacionPago">Simulación de pago</h2>
+        <section class="simulacionPago" aria-label="Datos de pago">
+      <h2 class="tituloSimulacionPago">Datos de pago</h2>
       <p class="textoSimulacionPago">
-        Esto es una simulación: no se procesa ningún cobro real ni se usa una pasarela de pago.
+        Ingresá los datos de tu tarjeta para finalizar la compra.
       </p>
 
       <div class="resumenPago">
@@ -95,7 +95,7 @@
           (click)="confirmarPago()"
           [disabled]="procesandoPago()"
         >
-          {{ procesandoPago() ? 'Procesando...' : 'Pagar (simulado)' }}
+                    {{ procesandoPago() ? 'Procesando...' : 'Pagar' }}
         </button>
       </div>
     </section>
