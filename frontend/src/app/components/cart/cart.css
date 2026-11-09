@@ -498,7 +498,15 @@
 }
 
 .accionesPedidoConfirmado {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
     margin-top: 24px;
+}
+
+.accionesPedidoConfirmado .botonSecundarioCarrito {
+    text-decoration: none;
 }
 
 @media (max-width: 860px) {

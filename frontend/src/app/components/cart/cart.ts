@@ -8,6 +8,7 @@ import { ProductService } from '../../services/product';
 import { AuthService } from '../../services/auth';
 import { OrderService } from '../../services/order';
 import type { Pedido } from '../../services/order';
+import type { ItemStockResultado } from '../../services/product';
 
 registerLocaleData(localeEsAr, 'es-AR');
 
@@ -31,7 +32,8 @@ export class Cart implements OnInit {
   total = this.carrito.total;
   estaVacio = this.carrito.estaVacio;
 
-  avisoStock = signal(false);
+  // Mensaje cuando el stock cambió y se ajustó el carrito ('' = sin aviso)
+  avisoStock = signal('');
   verificandoStock = signal(false);
 
   // Estado del checkout (pago simulado)
@@ -63,7 +65,8 @@ export class Cart implements OnInit {
   abrirPago(): void {
     // Solo se puede comprar con sesión iniciada.
     if (!this.auth.estaLogueado()) {
-      this.router.navigate(['/login']);
+      // Después del login vuelve al carrito.
+      this.router.navigate(['/login'], { queryParams: { returnUrl: '/carrito' } });
       return;
     }
     this.errorPago.set('');
@@ -101,7 +104,23 @@ export class Cart implements OnInit {
       },
       error: (error: HttpErrorResponse) => {
         this.procesandoPago.set(false);
-        this.errorPago.set(error.error?.message || 'No se pudo confirmar el pedido. Intentalo de nuevo.');
+
+        // Stock insuficiente: el backend devuelve el stock real de cada producto.
+        // Ajustamos el carrito y volvemos al listado para que el usuario revise.
+        const insuficiente: ItemStockResultado[] | undefined = error.error?.insuficiente;
+        if (error.status === 400 && Array.isArray(insuficiente) && insuficiente.length > 0) {
+          this.aplicarStock(insuficiente);
+          this.mostrandoPago.set(false);
+          return;
+        }
+
+        if (error.status === 0) {
+          this.errorPago.set('No pudimos conectarnos con el servidor. Revisá tu conexión e intentalo de nuevo.');
+        } else if (error.status === 401) {
+          this.errorPago.set('Tu sesión venció. Iniciá sesión de nuevo para terminar la compra.');
+        } else {
+          this.errorPago.set(error.error?.message || 'No se pudo confirmar el pedido. Intentalo de nuevo.');
+        }
       }
     });
   }
@@ -117,17 +136,29 @@ export class Cart implements OnInit {
       items.map(item => ({ productId: item.productId, cantidad: item.cantidad }))
     ).subscribe({
       next: respuesta => {
-        const resultados = [...respuesta.ok, ...respuesta.insuficiente];
-        let huboAjuste = false;
-        resultados.forEach(resultado => {
-          if (this.carrito.sincronizarStock(resultado.productId, resultado.stock)) {
-            huboAjuste = true;
-          }
-        });
-        this.avisoStock.set(huboAjuste);
+        this.aplicarStock([...respuesta.ok, ...respuesta.insuficiente]);
         this.verificandoStock.set(false);
       },
       error: () => this.verificandoStock.set(false)
     });
+  }
+
+  // Sincroniza el carrito con el stock real y arma el aviso para el usuario.
+  private aplicarStock(resultados: ItemStockResultado[]): void {
+    const nombres = new Map(this.items().map(i => [i.productId, i.nombre]));
+    const quitados: string[] = [];
+    const ajustados: string[] = [];
+
+    resultados.forEach(resultado => {
+      const nombre = nombres.get(resultado.productId) ?? 'Un producto';
+      const cambio = this.carrito.sincronizarStock(resultado.productId, resultado.stock);
+      if (cambio === 'quitado') quitados.push(nombre);
+      if (cambio === 'ajustado') ajustados.push(`${nombre} (quedan ${resultado.stock})`);
+    });
+
+    const partes: string[] = [];
+    if (quitados.length) partes.push(`Se agotó y lo quitamos del carrito: ${quitados.join(', ')}.`);
+    if (ajustados.length) partes.push(`Ajustamos la cantidad por stock: ${ajustados.join(', ')}.`);
+    this.avisoStock.set(partes.join(' '));
   }
 }

@@ -52,12 +52,22 @@ export class AuthService {
     );
   }
 
-  logout() {
+    logout() {
+    this.borrarSesion();
+    // El carrito persiste al recargar pero se limpia al cerrar sesión (ver plan 1.1).
+    this.cart.vaciar();
+  }
+
+  // Sesión vencida (token expirado): se borra la sesión pero se conserva el
+  // carrito, para que el usuario no pierda lo que cargó justo antes de pagar.
+  sesionVencida() {
+    this.borrarSesion();
+  }
+
+  private borrarSesion() {
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
     this.usuario.set(null);
-    // El carrito persiste al recargar pero se limpia al cerrar sesión (ver plan 1.1).
-    this.cart.vaciar();
   }
 
   getToken(): string | null {

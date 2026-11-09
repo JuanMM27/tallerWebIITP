@@ -31,6 +31,7 @@
       </div>
 
       <div class="accionesPedidoConfirmado">
+        <a class="botonSecundarioCarrito" routerLink="/mis-pedidos">Ver mis pedidos</a>
         <a class="botonPrimarioCarrito" routerLink="/cafes">Seguir comprando</a>
       </div>
     </section>
@@ -38,6 +39,9 @@
     <section class="estadoVacioCarrito" aria-live="polite">
       <span class="adornoEstadoVacio" aria-hidden="true">🛒</span>
       <h2 class="tituloEstadoVacio">Tu carrito está vacío.</h2>
+      @if (avisoStock()) {
+        <p class="avisoStock" role="status">{{ avisoStock() }}</p>
+      }
       <p class="textoEstadoVacio">Agregá cafés desde el catálogo para armar tu pedido.</p>
       <a class="enlaceVolverCarrito" routerLink="/cafes">Explorar cafés</a>
     </section>
@@ -98,9 +102,7 @@
   } @else {
     <section class="contenidoCarrito" aria-label="Detalle del carrito">
       @if (avisoStock()) {
-        <p class="avisoStock" role="status">
-          El stock de algunos productos cambió y ajustamos las cantidades.
-        </p>
+        <p class="avisoStock" role="status">{{ avisoStock() }}</p>
       }
 
       <ul class="listaItemsCarrito">
@@ -171,7 +173,7 @@
         } @else {
           <div class="avisoSesion">
             <p class="textoAvisoSesion">Debés iniciar sesión para comprar.</p>
-            <a class="botonPrimarioCarrito" routerLink="/login">Iniciar sesión</a>
+            <a class="botonPrimarioCarrito" routerLink="/login" [queryParams]="{ returnUrl: '/carrito' }">Iniciar sesión</a>
           </div>
         }
       </footer>
