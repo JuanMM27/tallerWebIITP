@@ -1,7 +1,7 @@
 import { CommonModule, registerLocaleData } from '@angular/common';
 import localeEsAr from '@angular/common/locales/es-AR';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CartService } from '../../services/cart';
 import { ProductService } from '../../services/product';
@@ -42,6 +42,28 @@ export class Cart implements OnInit {
   errorPago = signal('');
   pedidoConfirmado = signal<Pedido | null>(null);
 
+  // Formulario de tarjeta. El pago es simulado: estos datos se validan
+  // pero NO se envían al backend ni se guardan en ningún lado.
+  titular = signal('');
+  numeroTarjeta = signal('');   // con espacios cada 4 dígitos: "1234 5678 ..."
+  vencimiento = signal('');     // formato MM/AA
+  codigo = signal('');
+  intentoPagar = signal(false); // los errores se muestran recién al tocar "Pagar"
+
+  errorTitular = computed(() =>
+    this.titular().trim().length >= 3 ? '' : 'Ingresá el nombre como figura en la tarjeta.'
+  );
+  errorNumero = computed(() =>
+    this.numeroTarjeta().replace(/\s/g, '').length === 16 ? '' : 'El número de tarjeta debe tener 16 dígitos.'
+  );
+  errorVencimiento = computed(() => this.validarVencimiento(this.vencimiento()));
+  errorCodigo = computed(() =>
+    /^\d{3}$/.test(this.codigo()) ? '' : 'El código debe tener 3 números.'
+  );
+  formularioValido = computed(() =>
+    !this.errorTitular() && !this.errorNumero() && !this.errorVencimiento() && !this.errorCodigo()
+  );
+
   ngOnInit(): void {
     this.verificarStock();
   }
@@ -70,6 +92,7 @@ export class Cart implements OnInit {
       return;
     }
     this.errorPago.set('');
+    this.limpiarFormularioPago();
     this.mostrandoPago.set(true);
   }
 
@@ -80,6 +103,10 @@ export class Cart implements OnInit {
 
   confirmarPago(): void {
     if (this.items().length === 0) return;
+
+    // No se puede pagar con la tarjeta incompleta o mal cargada.
+    this.intentoPagar.set(true);
+    if (!this.formularioValido()) return;
 
     const payload = {
       productos: this.items().map(item => ({
@@ -160,5 +187,63 @@ export class Cart implements OnInit {
     if (quitados.length) partes.push(`Se agotó y lo quitamos del carrito: ${quitados.join(', ')}.`);
     if (ajustados.length) partes.push(`Ajustamos la cantidad por stock: ${ajustados.join(', ')}.`);
     this.avisoStock.set(partes.join(' '));
+  }
+
+  // --- Formulario de tarjeta ---
+  // Cada campo limpia lo que se escribe: si el usuario tipea una letra en el
+  // número, se borra al instante. Por eso escribimos el valor limpio de vuelta
+  // en el input además de guardarlo en la signal.
+
+  onTitular(evento: Event): void {
+    const input = evento.target as HTMLInputElement;
+    const limpio = input.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñÜü ]/g, '');
+    input.value = limpio;
+    this.titular.set(limpio);
+  }
+
+  onNumeroTarjeta(evento: Event): void {
+    const input = evento.target as HTMLInputElement;
+    const digitos = input.value.replace(/\D/g, '').slice(0, 16);
+    const conEspacios = digitos.replace(/(\d{4})(?=\d)/g, '$1 ');
+    input.value = conEspacios;
+    this.numeroTarjeta.set(conEspacios);
+  }
+
+  onVencimiento(evento: Event): void {
+    const input = evento.target as HTMLInputElement;
+    const digitos = input.value.replace(/\D/g, '').slice(0, 4);
+    const conBarra = digitos.length > 2 ? `${digitos.slice(0, 2)}/${digitos.slice(2)}` : digitos;
+    input.value = conBarra;
+    this.vencimiento.set(conBarra);
+  }
+
+  onCodigo(evento: Event): void {
+    const input = evento.target as HTMLInputElement;
+    const digitos = input.value.replace(/\D/g, '').slice(0, 3);
+    input.value = digitos;
+    this.codigo.set(digitos);
+  }
+
+  private validarVencimiento(valor: string): string {
+    const partes = /^(\d{2})\/(\d{2})$/.exec(valor);
+    if (!partes) return 'Ingresá el vencimiento como MM/AA.';
+
+    const mes = Number(partes[1]);
+    const anio = 2000 + Number(partes[2]);
+    if (mes < 1 || mes > 12) return 'El mes debe estar entre 01 y 12.';
+
+    // La tarjeta vale hasta el último día del mes de vencimiento.
+    const primerDiaDelMesSiguiente = new Date(anio, mes, 1);
+    if (primerDiaDelMesSiguiente <= new Date()) return 'La tarjeta está vencida.';
+
+    return '';
+  }
+
+  private limpiarFormularioPago(): void {
+    this.titular.set('');
+    this.numeroTarjeta.set('');
+    this.vencimiento.set('');
+    this.codigo.set('');
+    this.intentoPagar.set(false);
   }
 }

@@ -201,6 +201,16 @@
     font: 600 13px 'Manrope', sans-serif;
 }
 
+.botonAgregadoDetalle {
+    background: #2f7d4f;
+}
+
+.mensajeStockDetalle {
+    margin: 12px 0 0;
+    color: #b3261e;
+    font: 600 13px/1.4 'Manrope', sans-serif;
+}
+
 .botonAgotadoDetalle {
     width: 100%;
     margin-top: 24px;

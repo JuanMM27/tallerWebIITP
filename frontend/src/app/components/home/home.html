@@ -79,23 +79,28 @@
                                         @if (producto.stock > 0) {
                                             <button
                                                 class="botonCarritoProducto"
+                                                [class.botonAgregadoProducto]="fueAgregado(producto)"
                                                 type="button"
                                                 (click)="agregarAlCarrito(producto)"
                                                 [attr.aria-label]="
                                                     'Agregar ' + producto.nombre + ' al carrito'
                                                 "
                                             >
-                                                <svg
-                                                    class="iconoCarritoProducto"
-                                                    viewBox="0 0 24 24"
-                                                    aria-hidden="true"
-                                                >
-                                                    <path
-                                                        d="M3 4h2l2.2 10.1a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 1.9-1.4L21 8H6"
-                                                    />
-                                                    <circle cx="10" cy="20" r="1.25" />
-                                                    <circle cx="18" cy="20" r="1.25" />
-                                                </svg>
+                                                @if (fueAgregado(producto)) {
+                                                    <span class="textoAgregadoProducto">✓ Agregado</span>
+                                                } @else {
+                                                    <svg
+                                                        class="iconoCarritoProducto"
+                                                        viewBox="0 0 24 24"
+                                                        aria-hidden="true"
+                                                    >
+                                                        <path
+                                                            d="M3 4h2l2.2 10.1a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 1.9-1.4L21 8H6"
+                                                        />
+                                                        <circle cx="10" cy="20" r="1.25" />
+                                                        <circle cx="18" cy="20" r="1.25" />
+                                                    </svg>
+                                                }
                                             </button>
                                         } @else {
                                             <button
@@ -118,6 +123,9 @@
                                             </button>
                                         }
                                     </div>
+                                    @if (mensajeDeStock(producto); as mensaje) {
+                                        <p class="mensajeStockProducto" role="status">{{ mensaje }}</p>
+                                    }
                                 </div>
                             </article>
                         }
