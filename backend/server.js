@@ -5,6 +5,8 @@ const dotenv = require('dotenv');
 const connectDB = require('./src/config/db');
 
 const productRoutes = require('./src/routes/productRoutes');
+const authRoutes = require('./src/routes/authRoutes');
+const orderRoutes = require('./src/routes/orderRoutes');
 
 dotenv.config({ path: path.join(__dirname, '.env') });
 connectDB();
@@ -16,6 +18,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/products', productRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/orders', orderRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.get('/', (req, res) => {

@@ -1,0 +1,18 @@
+:host {
+  display: block;
+}
+
+.piePagina {
+  padding: 21px 0;
+  border-top: 1px solid #ded6cb;
+  background: #f2ede4;
+}
+
+.textoPiePagina {
+  margin: 0;
+  color: #81766a;
+  font: 9px 'Space Grotesk', sans-serif;
+  letter-spacing: .1em;
+  text-align: center;
+  text-transform: uppercase;
+}

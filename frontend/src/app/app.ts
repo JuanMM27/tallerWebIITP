@@ -1,20 +1,13 @@
-import { Component, inject, signal } from '@angular/core';
-import { RouterOutlet, RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { CatalogSearchService } from './services/catalog-search';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { Header } from './layout/header/header';
+import { Footer } from './layout/footer/footer';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, FormsModule],
+  imports: [RouterOutlet, Header, Footer],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {
-  catalogSearch = inject(CatalogSearchService);
-  searchOpen = signal(false);
-
-  toggleSearch() {
-    this.searchOpen.update(open => !open);
-  }
-}
+export class App {}

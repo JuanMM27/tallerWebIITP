@@ -1,0 +1,299 @@
+.paginaDetalleCafe {
+    min-height: calc(100vh - 150px);
+    overflow-x: clip;
+    background: var(--surface);
+    color: var(--on-surface);
+}
+
+.contenidoDetalleCafe {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    align-items: center;
+    gap: clamp(38px, 5vw, 78px);
+    max-width: 1510px;
+    min-height: 600px;
+    margin: 0 auto;
+    padding: 48px max(5.5vw, 32px) 56px;
+}
+
+.marcoImagenDetalleCafe {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    max-width: 540px;
+    min-width: 0;
+    min-height: 0;
+    aspect-ratio: 1 / 1;
+    justify-self: center;
+    overflow: hidden;
+    border-radius: 9px;
+    background: #f2e8da;
+}
+
+.imagenDetalleCafe {
+    display: block;
+    width: 90%;
+    height: 90%;
+    max-height: 560px;
+    object-fit: contain;
+}
+
+.datosDetalleCafe {
+    min-width: 0;
+    padding: 8px 0;
+}
+
+.enlaceVolverDetalle {
+    display: inline-block;
+    color: #776b5e;
+    font: 500 12px 'Manrope', sans-serif;
+    text-decoration: none;
+}
+
+.enlaceVolverDetalle:hover,
+.enlaceVolverDetalle:focus-visible {
+    color: var(--terracotta);
+}
+
+.nombreDetalleCafe {
+    margin: 17px 0 15px;
+    color: var(--primary);
+    font: 600 clamp(38px, 4.2vw, 62px) / 1.05 var(--tipografiaTitulos);
+    letter-spacing: var(--espaciadoTitulo);
+    overflow-wrap: anywhere;
+}
+
+.descripcionDetalleCafe {
+    margin: 0;
+    color: #5f574e;
+    font: 400 15px / 1.8 'Manrope', sans-serif;
+    white-space: pre-line;
+}
+
+.atributosDetalleCafe {
+    display: grid;
+    gap: 0;
+    margin: 28px 0 0;
+    padding: 13px 0;
+    border-top: 1px solid #d9cfc2;
+    border-bottom: 1px solid #d9cfc2;
+}
+
+.filaAtributoDetalle {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 10px 0;
+    font: 400 14px 'Manrope', sans-serif;
+}
+
+.etiquetaAtributoDetalle {
+    color: #554d45;
+    font-weight: 600;
+}
+
+.valorAtributoDetalle {
+    margin: 0;
+    color: #62594f;
+    text-align: right;
+}
+
+.compraDetalleCafe {
+    padding-top: 21px;
+}
+
+.filaPrecioStockDetalle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.precioDetalleCafe {
+    margin: 0;
+    color: var(--terracotta);
+    font: 700 clamp(27px, 3vw, 39px) 'Manrope', sans-serif;
+}
+
+.estadoStockDetalle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    color: #3f654b;
+    font: 500 12px 'Manrope', sans-serif;
+    white-space: nowrap;
+}
+
+.indicadorStockDisponible,
+.indicadorStockAgotado {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #54885e;
+}
+
+.estadoSinStock {
+    color: #815f50;
+}
+
+.indicadorStockAgotado {
+    background: #a66b54;
+}
+
+.accionesDetalleCafe {
+    display: flex;
+    align-items: end;
+    gap: 18px;
+    margin-top: 24px;
+}
+
+.controlCantidadDetalle {
+    display: grid;
+    gap: 8px;
+    min-width: 170px;
+}
+
+.etiquetaCantidadDetalle {
+    color: #554d45;
+    font: 600 11px 'Manrope', sans-serif;
+}
+
+.selectorCantidadDetalle {
+    display: grid;
+    grid-template-columns: 42px minmax(36px, 1fr) 42px;
+    align-items: center;
+    min-height: 46px;
+    border: 1px solid #d7cbbb;
+    border-radius: 8px;
+    background: #faf8f3;
+}
+
+.botonCantidadDetalle {
+    min-height: 42px;
+    border: 0;
+    background: transparent;
+    color: var(--primary);
+    font: 500 20px 'Manrope', sans-serif;
+    cursor: pointer;
+}
+
+.botonCantidadDetalle:disabled {
+    color: #b8aea2;
+    cursor: default;
+}
+
+.valorCantidadDetalle {
+    color: var(--primary);
+    font: 500 14px 'Manrope', sans-serif;
+    text-align: center;
+}
+
+.botonAgregarDetalle {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 50px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--terracotta);
+    color: #fffaf3;
+    font: 600 13px 'Manrope', sans-serif;
+}
+
+.botonAgotadoDetalle {
+    width: 100%;
+    margin-top: 24px;
+    background: #d8d0c6;
+    color: #777067;
+    cursor: not-allowed;
+}
+
+.estadoDetalleCafe {
+    display: grid;
+    justify-items: center;
+    gap: 14px;
+    min-height: 440px;
+    align-content: center;
+    padding: 40px 22px;
+    text-align: center;
+}
+
+.tituloEstadoDetalle {
+    margin: 0;
+    color: var(--primary);
+    font: 500 32px 'Newsreader', Georgia, serif;
+}
+
+.textoEstadoDetalle {
+    margin: 0;
+    color: #766c61;
+    font: 400 13px 'Manrope', sans-serif;
+}
+
+@media (max-width: 1000px) {
+    .contenidoDetalleCafe {
+        gap: 34px;
+        min-height: 0;
+        padding-top: 38px;
+        padding-bottom: 42px;
+    }
+
+    .marcoImagenDetalleCafe {
+        max-width: 460px;
+    }
+
+    .accionesDetalleCafe {
+        flex-wrap: wrap;
+    }
+
+}
+
+@media (max-width: 620px) {
+    .contenidoDetalleCafe {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 26px;
+        padding: 24px 22px 32px;
+    }
+
+    .marcoImagenDetalleCafe {
+        max-width: none;
+        min-height: 0;
+        aspect-ratio: 1 / 1;
+    }
+
+    .imagenDetalleCafe {
+        width: 90%;
+        height: 90%;
+    }
+
+    .nombreDetalleCafe {
+        margin-top: 12px;
+        font-size: 40px;
+    }
+
+    .descripcionDetalleCafe {
+        font-size: 14px;
+    }
+
+    .filaPrecioStockDetalle {
+        align-items: flex-start;
+    }
+
+    .estadoStockDetalle {
+        white-space: normal;
+        text-align: right;
+    }
+
+    .accionesDetalleCafe {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 14px;
+    }
+
+    .controlCantidadDetalle {
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: center;
+    }
+
+}
