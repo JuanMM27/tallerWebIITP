@@ -2,4 +2,3 @@ node_modules/
 .env
 dist/
 .angular/
-/frontend/src/referencia/
