@@ -52,7 +52,16 @@ export class AuthService {
     );
   }
 
-    logout() {
+  // Recuperación de contraseña: pide el enlace y luego guarda la contraseña nueva.
+  solicitarRecuperacion(correo: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.apiUrl}/forgot-password`, { correo });
+  }
+
+  restablecerPassword(token: string, password: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.apiUrl}/reset-password`, { token, password });
+  }
+
+  logout() {
     this.borrarSesion();
     // El carrito persiste al recargar pero se limpia al cerrar sesión (ver plan 1.1).
     this.cart.vaciar();
