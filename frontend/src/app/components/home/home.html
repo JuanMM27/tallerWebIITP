@@ -41,16 +41,23 @@
                 </h2>
             </div>
             <div class="contenidoDestacados">
-                <div class="filaAccionesDestacados">
-                    <a class="enlaceVerCatalogo" routerLink="/cafes"
-                        >Ver todos los cafés
-                        <span class="flechaEnlaceCatalogo" aria-hidden="true">→</span></a
-                    >
-                </div>
+              
                 @if (cargando()) {
-                    <div class="estadoVacio estadoVacioDestacados"><p class="tituloEstadoVacio">Cargando cafés...</p></div>
+                    <div class="grillaDestacados" aria-busy="true" aria-label="Cargando cafés">
+                        @for (n of [1, 2, 3, 4]; track n) {
+                            <div class="tarjetaProducto tarjetaEsqueleto" aria-hidden="true">
+                                <div class="esqueletoImagen"></div>
+                                <div class="esqueletoLinea esqueletoTitulo"></div>
+                                <div class="esqueletoLinea"></div>
+                                <div class="esqueletoLinea esqueletoCorta"></div>
+                            </div>
+                        }
+                    </div>
                 } @else if (errorCarga()) {
-                    <div class="estadoVacio estadoVacioDestacados"><p class="tituloEstadoVacio">No pudimos cargar los cafés.</p><span class="mensajeEstadoVacio">Revisá tu conexión e intentá nuevamente.</span></div>
+                    <div class="estadoVacio estadoVacioDestacados" role="alert">
+                        <p class="tituloEstadoVacio">No pudimos cargar los cafés.</p>
+                        <span class="mensajeEstadoVacio">Revisá tu conexión y recargá la página para intentar de nuevo.</span>
+                    </div>
                 } @else if (productosDestacados().length === 0) {
                     <div class="estadoVacio estadoVacioDestacados">
                         <p class="tituloEstadoVacio">No hay cafés para mostrar.</p>
@@ -61,18 +68,33 @@
                 } @else {
                     <div class="grillaDestacados">
                         @for (producto of productosDestacados(); track producto._id) {
-                            <article class="tarjetaProducto tarjetaDestacada">
+                            <article
+                                class="tarjetaProducto tarjetaDestacada"
+                                [class.tarjetaAgotada]="producto.stock === 0"
+                            >
                                 <div class="contenedorImagenProducto">
-                                    <a class="enlaceImagenDestacada" [routerLink]="['/cafes', producto._id]" [attr.aria-label]="'Ver detalle de ' + producto.nombre">
-                                        <img
-                                            [src]="'http://localhost:4000' + producto.imagen"
-                                            [alt]="producto.nombre"
-                                            class="imagenProducto"
-                                        />
-                                    </a>
+                                    @if (producto.stock === 0) {
+                                        <span class="etiquetaProducto etiquetaAgotado">Agotado</span>
+                                    } @else if (producto.stock <= 5) {
+                                        <span class="etiquetaProducto etiquetaPocoStock">Últimas unidades</span>
+                                    }
+                                    <img
+                                        [src]="'http://localhost:4000' + producto.imagen"
+                                        [alt]="producto.nombre"
+                                        class="imagenProducto"
+                                        loading="lazy"
+                                        width="320"
+                                        height="320"
+                                    />
                                 </div>
                                 <div class="informacionProducto">
-                                    <h3 class="nombreProducto"><a class="enlaceNombreDestacado" [routerLink]="['/cafes', producto._id]">{{ producto.nombre }}</a></h3>
+                                    <h3 class="nombreProducto">
+                                        <a
+                                            class="enlaceNombreDestacado"
+                                            [routerLink]="['/cafes', producto._id]"
+                                            >{{ producto.nombre }}</a
+                                        >
+                                    </h3>
                                     <p class="descripcionProducto">{{ producto.descripcion }}</p>
                                     <div class="pieProducto">
                                         <span class="precioProducto">{{ producto.precio | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}</span>
@@ -82,12 +104,10 @@
                                                 [class.botonAgregadoProducto]="fueAgregado(producto)"
                                                 type="button"
                                                 (click)="agregarAlCarrito(producto)"
-                                                [attr.aria-label]="
-                                                    'Agregar ' + producto.nombre + ' al carrito'
-                                                "
+                                                [attr.aria-label]="'Agregar ' + producto.nombre + ' al carrito'"
                                             >
                                                 @if (fueAgregado(producto)) {
-                                                    <span class="textoAgregadoProducto">✓ Agregado</span>
+                                                    <span class="textoBotonCarrito">✓ Agregado</span>
                                                 } @else {
                                                     <svg
                                                         class="iconoCarritoProducto"
@@ -100,6 +120,7 @@
                                                         <circle cx="10" cy="20" r="1.25" />
                                                         <circle cx="18" cy="20" r="1.25" />
                                                     </svg>
+                                                    <span class="textoBotonCarrito">Agregar</span>
                                                 }
                                             </button>
                                         } @else {
@@ -109,26 +130,19 @@
                                                 disabled
                                                 aria-label="Producto agotado"
                                             >
-                                                <svg
-                                                    class="iconoCarritoProducto"
-                                                    viewBox="0 0 24 24"
-                                                    aria-hidden="true"
-                                                >
-                                                    <path
-                                                        d="M3 4h2l2.2 10.1a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 1.9-1.4L21 8H6"
-                                                    />
-                                                    <circle cx="10" cy="20" r="1.25" />
-                                                    <circle cx="18" cy="20" r="1.25" />
-                                                </svg>
+                                                <span class="textoBotonCarrito">Sin stock</span>
                                             </button>
                                         }
                                     </div>
                                     @if (mensajeDeStock(producto); as mensaje) {
-                                        <p class="mensajeStockProducto" role="status">{{ mensaje }}</p>
+                                        <p class="mensajeStockProducto" role="status" aria-live="polite">{{ mensaje }}</p>
                                     }
                                 </div>
                             </article>
                         }
+                    </div>
+                    <div class="filaVerTodos">
+                        <a class="botonVerTodos" routerLink="/cafes">Ver todos los cafés <span aria-hidden="true">→</span></a>
                     </div>
                 }
             </div>
