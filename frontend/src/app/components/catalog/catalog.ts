@@ -31,15 +31,19 @@ export class Catalog {
   agregadoRecientemente = signal<Record<string, boolean>>({});
   // Mensaje de stock por producto (se muestra debajo del selector, en rojo)
   mensajeStock = signal<Record<string, string>>({});
+  // Filtros: lo que el usuario elige (borrador) y lo que está aplicado.
+  // La lista solo se filtra con los valores aplicados, al tocar "Aplicar filtros".
   consultaBusqueda = this.servicioBusquedaCatalogo.query;
+  consultaAplicada = this.servicioBusquedaCatalogo.consultaAplicada;
   clasificacionSeleccionada = signal('Todos');
+  clasificacionAplicada = signal('Todos');
   clasificaciones = computed(() => [
     ...new Set(this.productos().map(producto => producto.clasificacion))
   ].sort());
 
   productosFiltrados = computed(() => {
-    const consulta = this.consultaBusqueda().toLowerCase().trim();
-    const clasificacion = this.clasificacionSeleccionada();
+    const consulta = this.consultaAplicada().toLowerCase();
+    const clasificacion = this.clasificacionAplicada();
 
     return this.productos().filter(producto => {
       const coincideTexto = producto.nombre.toLowerCase().includes(consulta)
@@ -50,6 +54,28 @@ export class Catalog {
       return coincideTexto && coincideClasificacion;
     });
   });
+
+  // true si el usuario cambió algún filtro y todavía no lo aplicó.
+  hayCambiosSinAplicar = computed(() =>
+    this.consultaBusqueda().trim() !== this.consultaAplicada()
+    || this.clasificacionSeleccionada() !== this.clasificacionAplicada()
+  );
+
+  // true si hay algún filtro aplicado (para mostrar el botón "Limpiar").
+  hayFiltrosAplicados = computed(() =>
+    this.consultaAplicada() !== '' || this.clasificacionAplicada() !== 'Todos'
+  );
+
+  aplicarFiltros(): void {
+    this.servicioBusquedaCatalogo.aplicar();
+    this.clasificacionAplicada.set(this.clasificacionSeleccionada());
+  }
+
+  limpiarFiltros(): void {
+    this.servicioBusquedaCatalogo.limpiar();
+    this.clasificacionSeleccionada.set('Todos');
+    this.clasificacionAplicada.set('Todos');
+  }
 
   constructor() {
     this.servicioProductos.getProducts().subscribe({

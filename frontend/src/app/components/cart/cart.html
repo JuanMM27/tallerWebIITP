@@ -9,7 +9,7 @@
       <span class="iconoExito" aria-hidden="true">✓</span>
       <h2 class="tituloPedidoConfirmado">¡Pedido confirmado!</h2>
       <p class="textoPedidoConfirmado">
-        Tu pago fue simulado con éxito y descontamos el stock de los productos.
+        Recibimos tu pago y ya registramos tu pedido.
       </p>
 
       <div class="resumenPedido">
@@ -31,6 +31,7 @@
       </div>
 
       <div class="accionesPedidoConfirmado">
+        <a class="botonSecundarioCarrito" routerLink="/mis-pedidos">Ver mis pedidos</a>
         <a class="botonPrimarioCarrito" routerLink="/cafes">Seguir comprando</a>
       </div>
     </section>
@@ -38,14 +39,17 @@
     <section class="estadoVacioCarrito" aria-live="polite">
       <span class="adornoEstadoVacio" aria-hidden="true">🛒</span>
       <h2 class="tituloEstadoVacio">Tu carrito está vacío.</h2>
+      @if (avisoStock()) {
+        <p class="avisoStock" role="status">{{ avisoStock() }}</p>
+      }
       <p class="textoEstadoVacio">Agregá cafés desde el catálogo para armar tu pedido.</p>
       <a class="enlaceVolverCarrito" routerLink="/cafes">Explorar cafés</a>
     </section>
   } @else if (mostrandoPago()) {
-    <section class="simulacionPago" aria-label="Simulación de pago">
-      <h2 class="tituloSimulacionPago">Simulación de pago</h2>
+    <section class="simulacionPago" aria-label="Datos de pago">
+      <h2 class="tituloSimulacionPago">Datos de pago</h2>
       <p class="textoSimulacionPago">
-        Esto es una simulación: no se procesa ningún cobro real ni se usa una pasarela de pago.
+        Ingresá los datos de tu tarjeta para finalizar la compra.
       </p>
 
       <div class="resumenPago">
@@ -56,20 +60,71 @@
       <div class="formularioPago">
         <label class="campoPago">
           <span class="etiquetaCampoPago">Titular de la tarjeta</span>
-          <input class="entradaPago" type="text" placeholder="Nombre como figura en la tarjeta" />
+          <input
+            class="entradaPago"
+            [class.entradaPagoInvalida]="intentoPagar() && errorTitular()"
+            type="text"
+            autocomplete="off"
+            maxlength="40"
+            placeholder="Nombre como figura en la tarjeta"
+            [value]="titular()"
+            (input)="onTitular($event)"
+          />
+          @if (intentoPagar() && errorTitular()) {
+            <span class="errorCampoPago">{{ errorTitular() }}</span>
+          }
         </label>
         <label class="campoPago">
           <span class="etiquetaCampoPago">Número de tarjeta</span>
-          <input class="entradaPago" type="text" inputmode="numeric" placeholder="0000 0000 0000 0000" />
+          <input
+            class="entradaPago"
+            [class.entradaPagoInvalida]="intentoPagar() && errorNumero()"
+            type="text"
+            inputmode="numeric"
+            autocomplete="off"
+            maxlength="19"
+            placeholder="0000 0000 0000 0000"
+            [value]="numeroTarjeta()"
+            (input)="onNumeroTarjeta($event)"
+          />
+          @if (intentoPagar() && errorNumero()) {
+            <span class="errorCampoPago">{{ errorNumero() }}</span>
+          }
         </label>
         <div class="filaPago">
           <label class="campoPago">
             <span class="etiquetaCampoPago">Vencimiento</span>
-            <input class="entradaPago" type="text" placeholder="MM/AA" />
+            <input
+              class="entradaPago"
+              [class.entradaPagoInvalida]="intentoPagar() && errorVencimiento()"
+              type="text"
+              inputmode="numeric"
+              autocomplete="off"
+              maxlength="5"
+              placeholder="MM/AA"
+              [value]="vencimiento()"
+              (input)="onVencimiento($event)"
+            />
+            @if (intentoPagar() && errorVencimiento()) {
+              <span class="errorCampoPago">{{ errorVencimiento() }}</span>
+            }
           </label>
           <label class="campoPago">
             <span class="etiquetaCampoPago">Código</span>
-            <input class="entradaPago" type="text" inputmode="numeric" placeholder="CVC" />
+            <input
+              class="entradaPago"
+              [class.entradaPagoInvalida]="intentoPagar() && errorCodigo()"
+              type="text"
+              inputmode="numeric"
+              autocomplete="off"
+              maxlength="3"
+              placeholder="CVC"
+              [value]="codigo()"
+              (input)="onCodigo($event)"
+            />
+            @if (intentoPagar() && errorCodigo()) {
+              <span class="errorCampoPago">{{ errorCodigo() }}</span>
+            }
           </label>
         </div>
       </div>
@@ -91,16 +146,14 @@
           (click)="confirmarPago()"
           [disabled]="procesandoPago()"
         >
-          {{ procesandoPago() ? 'Procesando...' : 'Pagar (simulado)' }}
+          {{ procesandoPago() ? 'Procesando...' : 'Pagar' }}
         </button>
       </div>
     </section>
   } @else {
     <section class="contenidoCarrito" aria-label="Detalle del carrito">
       @if (avisoStock()) {
-        <p class="avisoStock" role="status">
-          El stock de algunos productos cambió y ajustamos las cantidades.
-        </p>
+        <p class="avisoStock" role="status">{{ avisoStock() }}</p>
       }
 
       <ul class="listaItemsCarrito">
@@ -171,7 +224,7 @@
         } @else {
           <div class="avisoSesion">
             <p class="textoAvisoSesion">Debés iniciar sesión para comprar.</p>
-            <a class="botonPrimarioCarrito" routerLink="/login">Iniciar sesión</a>
+            <a class="botonPrimarioCarrito" routerLink="/login" [queryParams]="{ returnUrl: '/carrito' }">Iniciar sesión</a>
           </div>
         }
       </footer>

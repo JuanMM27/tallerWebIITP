@@ -29,13 +29,29 @@ export class Home {
     });
   }
 
+  // Feedback por producto: botón "✓ Agregado" y mensaje de stock (en vez de alert)
+  agregadoRecientemente = signal<Record<string, boolean>>({});
+  mensajeStock = signal<Record<string, string>>({});
+
   agregarAlCarrito(producto: Cafe) {
     const resultado = this.carrito.agregar(producto, 1);
     if (!resultado.agregado) {
-      alert(`No podés agregar más de ${producto.nombre}: ya alcanzaste el stock (${resultado.stock} unidades).`);
-    } else if (resultado.capped) {
-      alert(`Solo hay ${resultado.stock} unidades de ${producto.nombre}; agregamos las disponibles.`);
+      this.mensajeStock.update(mapa => ({ ...mapa, [producto._id]: 'Ya tenés todo el stock en el carrito' }));
+      return;
     }
+    this.mensajeStock.update(mapa => ({ ...mapa, [producto._id]: '' }));
+    this.agregadoRecientemente.update(mapa => ({ ...mapa, [producto._id]: true }));
+    setTimeout(() => {
+      this.agregadoRecientemente.update(mapa => ({ ...mapa, [producto._id]: false }));
+    }, 1200);
+  }
+
+  fueAgregado(producto: Cafe): boolean {
+    return this.agregadoRecientemente()[producto._id] === true;
+  }
+
+  mensajeDeStock(producto: Cafe): string {
+    return this.mensajeStock()[producto._id] ?? '';
   }
 
 }

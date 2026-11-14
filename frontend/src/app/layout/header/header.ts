@@ -28,6 +28,13 @@ export class Header {
     this.router.navigate(['/']);
   }
 
+  // Enter en el buscador del header: aplica la búsqueda y lleva al catálogo.
+  buscar() {
+    this.catalogSearch.aplicar();
+    this.searchOpen.set(false);
+    this.router.navigate(['/cafes']);
+  }
+
   toggleSearch() {
     this.menuAbierto.set(false);
     this.searchOpen.update(open => !open);

@@ -39,8 +39,16 @@
                                     <button class="botonCantidadDetalle" type="button" (click)="cambiarCantidad(1)" [disabled]="cantidad() >= producto.stock" aria-label="Aumentar cantidad">+</button>
                                 </div>
                             </div>
-                            <button class="botonAgregarDetalle" type="button" (click)="agregarAlCarrito()">Agregar al carrito</button>
+                            <button
+                                class="botonAgregarDetalle"
+                                [class.botonAgregadoDetalle]="agregado()"
+                                type="button"
+                                (click)="agregarAlCarrito()"
+                            >{{ agregado() ? '✓ Agregado al carrito' : 'Agregar al carrito' }}</button>
                         </div>
+                        @if (mensajeStock()) {
+                            <p class="mensajeStockDetalle" role="status">{{ mensajeStock() }}</p>
+                        }
                     } @else {
                         <button class="botonAgregarDetalle botonAgotadoDetalle" type="button" disabled>Sin stock</button>
                     }

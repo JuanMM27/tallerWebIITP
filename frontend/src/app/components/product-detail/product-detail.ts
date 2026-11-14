@@ -28,6 +28,9 @@ export class ProductDetail implements OnInit {
   cargando = signal(true);
   noEncontrado = signal(false);
   errorCarga = signal(false);
+  // Feedback al agregar al carrito (en vez de alert)
+  agregado = signal(false);
+  mensajeStock = signal('');
 
   ngOnInit(): void {
     this.rutaActual.paramMap.pipe(
@@ -38,6 +41,8 @@ export class ProductDetail implements OnInit {
         this.errorCarga.set(false);
         this.productoSeleccionado.set(null);
         this.cantidad.set(1);
+        this.agregado.set(false);
+        this.mensajeStock.set('');
         if (!/^[a-f\d]{24}$/i.test(identificador)) return of(null);
         return this.servicioProductos.getProductById(identificador);
       })
@@ -70,9 +75,13 @@ export class ProductDetail implements OnInit {
 
     const resultado = this.carrito.agregar(producto, this.cantidad());
     if (!resultado.agregado) {
-      alert(`No podés agregar más de ${producto.nombre}: ya alcanzaste el stock (${resultado.stock} unidades).`);
-    } else if (resultado.capped) {
-      alert(`Solo hay ${resultado.stock} unidades de ${producto.nombre}; agregamos las disponibles.`);
+      this.mensajeStock.set(`Ya tenés en el carrito todo el stock disponible (${resultado.stock} unidades).`);
+      return;
     }
+    this.mensajeStock.set(
+      resultado.capped ? `Solo había ${resultado.stock} unidades: agregamos las disponibles.` : ''
+    );
+    this.agregado.set(true);
+    setTimeout(() => this.agregado.set(false), 1500);
   }
 }
