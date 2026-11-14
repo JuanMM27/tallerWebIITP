@@ -64,6 +64,7 @@
     line-height: var(--interlineadoParrafo);
 }
 
+
 .botonExplorar {
     display: inline-flex;
     align-items: center;
@@ -363,23 +364,39 @@
         sans-serif;
 }
 
+
+
 .botonCarritoProducto {
-    display: grid;
-    place-items: center;
-    width: 34px;
-    height: 34px;
-    padding: 7px;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 38px;
+    height: 38px;
+    padding: 0 12px;
+    flex-shrink: 0;
     border: 0;
-    border-radius: 10px;
+    border-radius: 8px;
     background: #151b19;
     color: #fff;
     cursor: pointer;
-    transition:
-        background 0.2s,
-        transform 0.2s;
+    transition: background 0.2s, transform 0.2s;
 }
 
 .iconoCarritoProducto {
+    flex: none;
+    width: 18px;
+    height: 18px;
+}
+
+.textoBotonCarrito {
+    font: 600 12px 'Space Grotesk', sans-serif;
+    letter-spacing: 0.03em;
+}
+
+.iconoCarritoProducto {
+    flex: none;
     width: 20px;
     height: 20px;
 }
