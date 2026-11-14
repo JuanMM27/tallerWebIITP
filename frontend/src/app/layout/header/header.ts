@@ -39,8 +39,7 @@ export class Header {
     this.menuAbierto.set(false);
     this.searchOpen.update(open => !open);
   }
-
-  toggleMenu() {
+    toggleMenu() {
     this.searchOpen.set(false);
     this.menuAbierto.update(abierto => !abierto);
   }
