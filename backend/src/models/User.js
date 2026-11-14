@@ -8,7 +8,11 @@ const userSchema = new mongoose.Schema({
     direccion: {type: String, required: true},
     rol: {
         type: String, enum: ['cliente', 'admin'], default: 'cliente'
-    }
+    },
+    // Recuperación de contraseña: se guarda el hash del token (no el token en sí)
+    // y hasta cuándo es válido.
+    resetTokenHash: { type: String },
+    resetTokenExpira: { type: Date }
 }, {timestamps: true});
 
 module.exports = mongoose.model('User', userSchema);
