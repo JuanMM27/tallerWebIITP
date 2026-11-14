@@ -66,6 +66,42 @@
         </svg>
         <span class="cantidadCarrito">{{ cantidadCarrito() }}</span>
       </a>
+
+      <button
+        class="botonMenu"
+        type="button"
+        (click)="toggleMenu()"
+        [attr.aria-expanded]="menuAbierto()"
+        aria-controls="menuMovil"
+        [attr.aria-label]="menuAbierto() ? 'Cerrar menú' : 'Abrir menú'"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          @if (menuAbierto()) {
+            <path d="M6 6l12 12M18 6 6 18" />
+          } @else {
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          }
+        </svg>
+      </button>
     </div>
   </div>
+  @if (menuAbierto()) {
+    <nav id="menuMovil" class="menuMovil" aria-label="Menú">
+      <a routerLink="/cafes" (click)="cerrarMenu()">Catálogo</a>
+      <a routerLink="/origenes" (click)="cerrarMenu()">Orígenes</a>
+      <a routerLink="/nuestra-historia" (click)="cerrarMenu()">Nuestra historia</a>
+
+      <div class="autenticacionMenu">
+        @if (auth.esAdmin()) {
+          <a routerLink="/admin/crear" (click)="cerrarMenu()">Cargar producto</a>
+        }
+        @if (auth.estaLogueado()) {
+          <span class="saludoMenu">Hola, {{ auth.usuario()?.nombre }}</span>
+          <button type="button" (click)="cerrarSesion()">Salir</button>
+        } @else {
+          <a routerLink="/login" (click)="cerrarMenu()">Ingresar</a>
+        }
+      </div>
+    </nav>
+  }
 </header>

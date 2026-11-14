@@ -18,10 +18,12 @@ export class Header {
   private carrito = inject(CartService);
   private router = inject(Router);
   searchOpen = signal(false);
+  menuAbierto = signal(false);
 
   cantidadCarrito = this.carrito.cantidadTotal;
 
   cerrarSesion() {
+    this.cerrarMenu();
     this.auth.logout();
     this.router.navigate(['/']);
   }
@@ -34,6 +36,16 @@ export class Header {
   }
 
   toggleSearch() {
+    this.menuAbierto.set(false);
     this.searchOpen.update(open => !open);
+  }
+
+  toggleMenu() {
+    this.searchOpen.set(false);
+    this.menuAbierto.update(abierto => !abierto);
+  }
+
+  cerrarMenu() {
+    this.menuAbierto.set(false);
   }
 }
