@@ -30,6 +30,7 @@
               type="search"
               [ngModel]="catalogSearch.query()"
               (ngModelChange)="catalogSearch.query.set($event)"
+              (keydown.enter)="buscar()"
               placeholder="Buscar cafés..."
               aria-label="Buscar por nombre o notas de cata"
             >
@@ -45,6 +46,7 @@
 
       @if (auth.estaLogueado()) {
         <span class="saludoUsuario">Hola, {{ auth.usuario()?.nombre }}</span>
+        <a routerLink="/mis-pedidos" class="enlaceCargarProducto">Mis pedidos</a>
         <button type="button" class="enlaceCargarProducto botonCerrarSesion" (click)="cerrarSesion()">
           Salir
         </button>

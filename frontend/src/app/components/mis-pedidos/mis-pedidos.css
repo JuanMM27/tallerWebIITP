@@ -1,0 +1,191 @@
+.paginaPedidos {
+    min-height: calc(100vh - 150px);
+    padding: 40px max(5.5vw, 32px) 60px;
+    background: var(--surface);
+    color: var(--on-surface);
+}
+
+.encabezadoPedidos {
+    margin-bottom: 28px;
+}
+
+.tituloPedidos {
+    margin: 0;
+    color: var(--primary);
+    font: 600 clamp(2.25rem, 4vw, 3.5rem)/1 var(--tipografiaTitulos);
+    letter-spacing: var(--espaciadoTitulo);
+}
+
+.subtituloPedidos {
+    margin: 12px 0 0 4px;
+    color: #6d645a;
+    font: 400 var(--tamanoParrafoIntroductorio)/1.5 'Manrope', sans-serif;
+}
+
+/* Estados: cargando, error, vacío */
+.estadoPedidos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 48px 20px;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    background: var(--surface-container);
+    color: #6d645a;
+    font: 400 15px/1.5 'Manrope', sans-serif;
+    text-align: center;
+}
+
+.estadoPedidos p {
+    margin: 0;
+}
+
+.estadoError {
+    color: #8a4f35;
+    background: #f8ede6;
+    border-color: #e3c9b9;
+}
+
+.tituloEstadoPedidos {
+    margin: 0;
+    color: var(--primary);
+    font: 600 1.6rem/1.2 var(--tipografiaTitulos);
+}
+
+.botonPedidos {
+    margin-top: 14px;
+    padding: 12px 22px;
+    border: 0;
+    border-radius: 30px;
+    background: var(--primary);
+    color: var(--on-primary);
+    font: 600 13px 'Space Grotesk', sans-serif;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.botonPedidos:hover {
+    background: var(--forest);
+}
+
+/* Listado */
+.listaPedidos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 18px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.tarjetaPedido {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px 22px;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    background: var(--surface-container);
+}
+
+.cabeceraPedido {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.fechaPedido {
+    margin: 0;
+    color: var(--primary);
+    font: 600 1.15rem/1.2 var(--tipografiaTitulos);
+}
+
+.idPedido {
+    margin: 4px 0 0;
+    color: #8a8076;
+    font: 500 var(--tamanoEtiqueta) var(--tipografiaEtiquetas);
+    letter-spacing: var(--espaciadoEtiqueta);
+    text-transform: uppercase;
+}
+
+.estadoPedido {
+    padding: 5px 12px;
+    border-radius: 30px;
+    font: 600 11px var(--tipografiaEtiquetas);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.estadoPago {
+    background: #e2ece5;
+    color: var(--forest);
+}
+
+.estadoPendiente {
+    background: #f8ede6;
+    color: #8a4f35;
+}
+
+.estadoEntregado {
+    background: var(--surface-low);
+    color: var(--secondary);
+}
+
+.itemsPedido {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding: 14px 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    list-style: none;
+}
+
+.itemPedido {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font: 400 14px/1.4 'Manrope', sans-serif;
+}
+
+.nombreItem {
+    color: var(--on-surface);
+    font-weight: 600;
+}
+
+.detalleItem {
+    color: #6d645a;
+    white-space: nowrap;
+}
+
+.piePedido {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.unidadesPedido {
+    color: #6d645a;
+    font: 400 13px 'Manrope', sans-serif;
+}
+
+.totalPedido {
+    color: var(--primary);
+    font: 600 1.35rem var(--tipografiaTitulos);
+}
+
+@media (max-width: 480px) {
+    .paginaPedidos {
+        padding: 28px 16px 48px;
+    }
+
+    .listaPedidos {
+        grid-template-columns: 1fr;
+    }
+}
