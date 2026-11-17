@@ -66,8 +66,8 @@
             </div>
 
             <p class="cantidadResultadosCatalogo" aria-live="polite">
-                {{ productosFiltrados().length }}
-                {{ productosFiltrados().length === 1 ? 'café encontrado' : 'cafés encontrados' }}
+                {{ total() }}
+                {{ total() === 1 ? 'café encontrado' : 'cafés encontrados' }}
             </p>
         </div>
 
@@ -85,7 +85,7 @@
         } @else if (productosFiltrados().length === 0) {
             <div class="estadoVacioCatalogo">
                 <span class="adornoEstadoVacio" aria-hidden="true">✳</span>
-                @if (productos().length === 0) {
+                @if (!hayFiltrosAplicados()) {
                     <h2 class="tituloEstadoVacio">
                         Todavía no hay cafés en esta cosecha.
                     </h2>
@@ -240,6 +240,13 @@
                     </article>
                 }
             </div>
+        }
+        @if (!cargando() && !errorCarga() && totalPaginas() > 1) {
+            <nav class="paginacionCatalogo" aria-label="Páginas del catálogo">
+                <button class="botonLimpiarFiltros" type="button" [disabled]="pagina() === 1" (click)="cargarPagina(pagina() - 1)">Anterior</button>
+                <span aria-live="polite" aria-atomic="true">Página {{ pagina() }} de {{ totalPaginas() }}</span>
+                <button class="botonLimpiarFiltros" type="button" [disabled]="pagina() === totalPaginas()" (click)="cargarPagina(pagina() + 1)">Siguiente</button>
+            </nav>
         }
     </section>
 

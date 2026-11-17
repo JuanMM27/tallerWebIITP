@@ -1,4 +1,5 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, signal, untracked } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -25,6 +26,11 @@ export class Catalog {
   productos = signal<Cafe[]>([]);
   cargando = signal(true);
   errorCarga = signal(false);
+  pagina = signal(1);
+  total = signal(0);
+  readonly porPagina = 12;
+  totalPaginas = computed(() => Math.max(1, Math.ceil(this.total() / this.porPagina)));
+  private solicitud?: Subscription;
   // Cantidad seleccionada por producto (para agregar varias unidades desde el catálogo)
   cantidades = signal<Record<string, number>>({});
   // Feedback visual: producto que se acaba de agregar
@@ -37,23 +43,8 @@ export class Catalog {
   consultaAplicada = this.servicioBusquedaCatalogo.consultaAplicada;
   clasificacionSeleccionada = signal('Todos');
   clasificacionAplicada = signal('Todos');
-  clasificaciones = computed(() => [
-    ...new Set(this.productos().map(producto => producto.clasificacion))
-  ].sort());
-
-  productosFiltrados = computed(() => {
-    const consulta = this.consultaAplicada().toLowerCase();
-    const clasificacion = this.clasificacionAplicada();
-
-    return this.productos().filter(producto => {
-      const coincideTexto = producto.nombre.toLowerCase().includes(consulta)
-        || producto.descripcion.toLowerCase().includes(consulta);
-      const coincideClasificacion = clasificacion === 'Todos'
-        || producto.clasificacion === clasificacion;
-
-      return coincideTexto && coincideClasificacion;
-    });
-  });
+  clasificaciones = signal<string[]>([]);
+  productosFiltrados = this.productos;
 
   // true si el usuario cambió algún filtro y todavía no lo aplicó.
   hayCambiosSinAplicar = computed(() =>
@@ -78,8 +69,28 @@ export class Catalog {
   }
 
   constructor() {
-    this.servicioProductos.getProducts().subscribe({
-      next: productos => { this.productos.set(productos); this.cargando.set(false); },
+    inject(DestroyRef).onDestroy(() => this.solicitud?.unsubscribe());
+    effect(() => {
+      this.consultaAplicada();
+      this.clasificacionAplicada();
+      untracked(() => this.cargarPagina(1));
+    });
+  }
+
+  cargarPagina(pagina: number): void {
+    this.solicitud?.unsubscribe();
+    this.cargando.set(true);
+    this.errorCarga.set(false);
+    this.solicitud = this.servicioProductos.obtenerPaginaProductos(
+      pagina, this.porPagina, this.consultaAplicada(), this.clasificacionAplicada()
+    ).subscribe({
+      next: respuesta => {
+        this.productos.set(respuesta.productos);
+        this.total.set(respuesta.total);
+        this.pagina.set(respuesta.pagina);
+        this.clasificaciones.set(respuesta.clasificaciones);
+        this.cargando.set(false);
+      },
       error: () => { this.errorCarga.set(true); this.cargando.set(false); }
     });
   }
@@ -87,7 +98,7 @@ export class Catalog {
   eliminarProducto(identificador: string) {
     if (confirm('¿Estás seguro de que deseas dar de baja este lote?')) {
       this.servicioProductos.deleteProduct(identificador).subscribe({
-        next: () => this.productos.update(productos => productos.filter(producto => producto._id !== identificador)),
+        next: () => this.cargarPagina(this.pagina()),
         error: () => alert('No se pudo eliminar el producto.')
       });
     }

@@ -628,3 +628,17 @@
     }
 
 }
+
+.paginacionCatalogo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.paginacionCatalogo button:disabled {
+    opacity: .45;
+    cursor: default;
+}
