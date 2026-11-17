@@ -630,15 +630,44 @@
 }
 
 .paginacionCatalogo {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 2rem;
+    gap: clamp(6px, 2vw, 16px);
+    width: fit-content;
+    max-width: 100%;
+    margin: 36px auto 0;
+    padding: clamp(6px, 2vw, 10px);
+
 }
 
-.paginacionCatalogo button:disabled {
-    opacity: .45;
+
+.paginacionCatalogo .botonLimpiarFiltros {
+    min-height: 44px;
+    padding: 6px clamp(8px, 3vw, 20px);
+    border: 1px solid var(--primary);
+    border-radius: 10px;
+    background: var(--primary);
+    color: var(--on-primary);
+    font-size: clamp(.75rem, 2.6vw, .875rem);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color .2s, color .2s;
+}
+
+.paginacionCatalogo .botonLimpiarFiltros:enabled:hover {
+    background: var(--on-primary);
+    color: var(--primary);
+}
+
+.paginacionCatalogo .botonLimpiarFiltros:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+.paginacionCatalogo .botonLimpiarFiltros:disabled {
+    border-color: #e4dbd0;
+    background: var(--surface);
+    color: #746b61;
     cursor: default;
 }

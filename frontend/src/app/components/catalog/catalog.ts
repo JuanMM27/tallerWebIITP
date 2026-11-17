@@ -28,7 +28,7 @@ export class Catalog {
   errorCarga = signal(false);
   pagina = signal(1);
   total = signal(0);
-  readonly porPagina = 12;
+  readonly porPagina = 8;
   totalPaginas = computed(() => Math.max(1, Math.ceil(this.total() / this.porPagina)));
   private solicitud?: Subscription;
   // Cantidad seleccionada por producto (para agregar varias unidades desde el catálogo)

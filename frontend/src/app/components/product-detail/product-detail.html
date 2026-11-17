@@ -23,7 +23,7 @@
                     <div class="filaPrecioStockDetalle">
                         <p class="precioDetalleCafe">{{ producto.precio | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}</p>
                         @if (producto.stock > 0) {
-                            <p class="estadoStockDetalle"><span class="indicadorStockDisponible" aria-hidden="true"></span>En stock ({{ producto.stock }} unidades)</p>
+                            <p class="estadoStockDetalle"><span class="indicadorStockDisponible" aria-hidden="true"></span>En stock</p>
                         } @else {
                             <p class="estadoStockDetalle estadoSinStock"><span class="indicadorStockAgotado" aria-hidden="true"></span>Sin stock</p>
                         }
