@@ -6,7 +6,7 @@ const getProducts = async (req, res) => {
             return res.status(200).json(await Product.find({}));
         }
         const paginaSolicitada = Number(req.query.pagina ?? 1);
-        const limite = Number(req.query.limite ?? 12);
+        const limite = Number(req.query.limite ?? 8);
         const { busqueda = '', clasificacion = '' } = req.query;
         if (!Number.isSafeInteger(paginaSolicitada) || paginaSolicitada < 1 ||
             !Number.isSafeInteger(limite) || limite < 1 || limite > 100 ||

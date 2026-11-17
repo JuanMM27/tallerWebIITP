@@ -39,7 +39,7 @@ export class ProductService {
         return this.clienteHttp.get<Cafe[]>(this.urlApi);
     }
 
-    obtenerPaginaProductos(pagina: number, limite = 12, busqueda = '', clasificacion = 'Todos'): Observable<PaginaProductos> {
+    obtenerPaginaProductos(pagina: number, limite = 8, busqueda = '', clasificacion = 'Todos'): Observable<PaginaProductos> {
         return this.clienteHttp.get<PaginaProductos>(this.urlApi, {
             params: { pagina, limite, busqueda, clasificacion }
         });
