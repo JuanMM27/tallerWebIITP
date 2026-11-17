@@ -1,8 +1,37 @@
 const Product = require('../models/Product');
 const getProducts = async (req, res) => {
     try {
-        const products = await Product.find({});
-        res.status(200).json(products);
+        // Mantener el contrato del inicio; el catálogo solicita páginas explícitas.
+        if (req.query.pagina === undefined && req.query.limite === undefined) {
+            return res.status(200).json(await Product.find({}));
+        }
+        const paginaSolicitada = Number(req.query.pagina ?? 1);
+        const limite = Number(req.query.limite ?? 12);
+        const { busqueda = '', clasificacion = '' } = req.query;
+        if (!Number.isSafeInteger(paginaSolicitada) || paginaSolicitada < 1 ||
+            !Number.isSafeInteger(limite) || limite < 1 || limite > 100 ||
+            !Number.isSafeInteger((paginaSolicitada - 1) * limite) ||
+            typeof busqueda !== 'string' || busqueda.length > 200 ||
+            typeof clasificacion !== 'string' || clasificacion.length > 100) {
+            return res.status(400).json({ message: 'Parámetros de paginación o filtros inválidos.' });
+        }
+        const filtro = {};
+        if (busqueda.trim()) {
+            const texto = busqueda.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            filtro.$or = [
+                { nombre: { $regex: texto, $options: 'i' } },
+                { descripcion: { $regex: texto, $options: 'i' } }
+            ];
+        }
+        if (clasificacion && clasificacion !== 'Todos') filtro.clasificacion = clasificacion;
+        const [total, clasificaciones] = await Promise.all([
+            Product.countDocuments(filtro),
+            Product.distinct('clasificacion')
+        ]);
+        const pagina = Math.min(paginaSolicitada, Math.max(1, Math.ceil(total / limite)));
+        const productos = await Product.find(filtro).sort({ _id: 1 })
+            .skip((pagina - 1) * limite).limit(limite).lean();
+        res.status(200).json({ productos, total, pagina, limite, clasificaciones: clasificaciones.sort() });
     } catch (error) {
         res.status(500).json({ message: "Error en la carga de los productos", error: error.message });
     }
