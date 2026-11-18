@@ -7,12 +7,25 @@ const getProducts = async (req, res) => {
         }
         const paginaSolicitada = Number(req.query.pagina ?? 1);
         const limite = Number(req.query.limite ?? 8);
-        const { busqueda = '', clasificacion = '' } = req.query;
+        const {
+            busqueda = '',
+            clasificacion = '',
+            disponibilidad = 'todos',
+            orden = 'ninguno'
+        } = req.query;
+
+        const disponibilidadesValidas = ['todos', 'con_stock', 'sin_stock'];
+        const ordenesValidos = ['ninguno', 'precio_asc', 'precio_desc'];
+
         if (!Number.isSafeInteger(paginaSolicitada) || paginaSolicitada < 1 ||
             !Number.isSafeInteger(limite) || limite < 1 || limite > 100 ||
             !Number.isSafeInteger((paginaSolicitada - 1) * limite) ||
             typeof busqueda !== 'string' || busqueda.length > 200 ||
-            typeof clasificacion !== 'string' || clasificacion.length > 100) {
+            typeof clasificacion !== 'string' || clasificacion.length > 100 ||
+            typeof disponibilidad !== 'string' ||
+            !disponibilidadesValidas.includes(disponibilidad) ||
+            typeof orden !== 'string' ||
+            !ordenesValidos.includes(orden)) {
             return res.status(400).json({ message: 'Parámetros de paginación o filtros inválidos.' });
         }
         const filtro = {};
@@ -23,15 +36,42 @@ const getProducts = async (req, res) => {
                 { descripcion: { $regex: texto, $options: 'i' } }
             ];
         }
-        if (clasificacion && clasificacion !== 'Todos') filtro.clasificacion = clasificacion;
+
+        if (clasificacion && clasificacion !== 'Todos') {
+            filtro.clasificacion = clasificacion;
+        }
+
+        if (disponibilidad === 'con_stock') {
+            filtro.stock = { $gt: 0 };
+        } else if (disponibilidad === 'sin_stock') {
+            filtro.stock = 0;
+        }
+
+        const ordenamiento = orden === 'precio_asc'
+            ? { precio: 1, _id: 1 }
+            : orden === 'precio_desc'
+                ? { precio: -1, _id: 1 }
+                : { _id: 1 };
+        
         const [total, clasificaciones] = await Promise.all([
             Product.countDocuments(filtro),
             Product.distinct('clasificacion')
         ]);
+
         const pagina = Math.min(paginaSolicitada, Math.max(1, Math.ceil(total / limite)));
-        const productos = await Product.find(filtro).sort({ _id: 1 })
-            .skip((pagina - 1) * limite).limit(limite).lean();
-        res.status(200).json({ productos, total, pagina, limite, clasificaciones: clasificaciones.sort() });
+        const productos = await Product.find(filtro)
+            .sort(ordenamiento)
+            .skip((pagina - 1) * limite)
+            .limit(limite)
+            .lean();
+
+        res.status(200).json({
+            productos,
+            total,
+            pagina,
+            limite,
+            clasificaciones: clasificaciones.sort()
+        });
     } catch (error) {
         res.status(500).json({ message: "Error en la carga de los productos", error: error.message });
     }
@@ -112,9 +152,7 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-// Valida el stock de una lista de productos para el carrito.
-// Recibe: [{ productId, cantidad }]
-// Devuelve: { ok: [{productId, cantidad, stock}], insuficiente: [{productId, cantidad, stock}] }
+
 const validateStock = async (req, res) => {
   try {
     const items = req.body;

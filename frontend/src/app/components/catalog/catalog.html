@@ -34,23 +34,57 @@
                 />
             </label>
 
-            <div class="filtroClasificacionCatalogo">
-                <label class="etiquetaClasificacionCatalogo" for="clasificacionCatalogo">
-                    Clasificación
-                </label>
-                <select
-                    class="selectorClasificacionCatalogo"
-                    id="clasificacionCatalogo"
-                    [ngModel]="clasificacionSeleccionada()"
-                    (ngModelChange)="clasificacionSeleccionada.set($event)"
-                >
-                    <option value="Todos">Todas</option>
-                    @for (clasificacion of clasificaciones(); track clasificacion) {
-                        <option [value]="clasificacion">
-                            {{ clasificacion === 'Capsulas' ? 'Cápsulas' : clasificacion }}
-                        </option>
-                    }
-                </select>
+            <div class="controlesFiltrosCatalogo">
+                <div class="filtroClasificacionCatalogo">
+                    <label class="etiquetaClasificacionCatalogo" for="clasificacionCatalogo">
+                        Clasificación
+                    </label>
+                    <select
+                        class="selectorClasificacionCatalogo"
+                        id="clasificacionCatalogo"
+                        [ngModel]="clasificacionSeleccionada()"
+                        (ngModelChange)="clasificacionSeleccionada.set($event)"
+                    >
+                        <option value="Todos">Todas</option>
+                        @for (clasificacion of clasificaciones(); track clasificacion) {
+                            <option [value]="clasificacion">
+                                {{ clasificacion === 'Capsulas' ? 'Cápsulas' : clasificacion }}
+                            </option>
+                        }
+                    </select>
+                </div>
+
+                <div class="filtroClasificacionCatalogo">
+                    <label class="etiquetaClasificacionCatalogo" for="ordenPrecioCatalogo">
+                        Ordenar por precio
+                    </label>
+                    <select
+                        class="selectorClasificacionCatalogo"
+                        id="ordenPrecioCatalogo"
+                        [ngModel]="ordenPrecioSeleccionado()"
+                        (ngModelChange)="ordenPrecioSeleccionado.set($event)"
+                    >
+                        <option value="ninguno">Predeterminado</option>
+                        <option value="precio_asc">Menor a mayor</option>
+                        <option value="precio_desc">Mayor a menor</option>
+                    </select>
+                </div>
+
+                <div class="filtroClasificacionCatalogo">
+                    <label class="etiquetaClasificacionCatalogo" for="disponibilidadCatalogo">
+                        Disponibilidad
+                    </label>
+                    <select
+                        class="selectorClasificacionCatalogo"
+                        id="disponibilidadCatalogo"
+                        [ngModel]="disponibilidadSeleccionada()"
+                        (ngModelChange)="disponibilidadSeleccionada.set($event)"
+                    >
+                        <option value="todos">Todos</option>
+                        <option value="con_stock">Con stock</option>
+                        <option value="sin_stock">Sin stock</option>
+                    </select>
+                </div>
             </div>
 
             <div class="accionesFiltrosCatalogo">

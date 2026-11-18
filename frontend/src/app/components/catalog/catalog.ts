@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { CatalogSearchService } from '../../services/catalog-search';
-import { ProductService } from '../../services/product';
+import { ProductService, type DisponibilidadProductos, type OrdenPrecioProductos } from '../../services/product';
 import { CartService } from '../../services/cart';
 import { AuthService } from '../../services/auth';
 import type { Cafe } from '../../models/cafe';
@@ -31,50 +31,60 @@ export class Catalog {
   readonly porPagina = 8;
   totalPaginas = computed(() => Math.max(1, Math.ceil(this.total() / this.porPagina)));
   private solicitud?: Subscription;
-  // Cantidad seleccionada por producto (para agregar varias unidades desde el catálogo)
   cantidades = signal<Record<string, number>>({});
-  // Feedback visual: producto que se acaba de agregar
   agregadoRecientemente = signal<Record<string, boolean>>({});
-  // Mensaje de stock por producto (se muestra debajo del selector, en rojo)
   mensajeStock = signal<Record<string, string>>({});
-  // Filtros: lo que el usuario elige (borrador) y lo que está aplicado.
-  // La lista solo se filtra con los valores aplicados, al tocar "Aplicar filtros".
   consultaBusqueda = this.servicioBusquedaCatalogo.query;
   consultaAplicada = this.servicioBusquedaCatalogo.consultaAplicada;
   clasificacionSeleccionada = signal('Todos');
   clasificacionAplicada = signal('Todos');
+  disponibilidadSeleccionada = signal<DisponibilidadProductos>('todos');
+  disponibilidadAplicada = signal<DisponibilidadProductos>('todos');
+  ordenPrecioSeleccionado = signal<OrdenPrecioProductos>('ninguno');
+  ordenPrecioAplicado = signal<OrdenPrecioProductos>('ninguno');
   clasificaciones = signal<string[]>([]);
   productosFiltrados = this.productos;
 
-  // true si el usuario cambió algún filtro y todavía no lo aplicó.
   hayCambiosSinAplicar = computed(() =>
-    this.consultaBusqueda().trim() !== this.consultaAplicada()
-    || this.clasificacionSeleccionada() !== this.clasificacionAplicada()
-  );
+  this.consultaBusqueda().trim() !== this.consultaAplicada()
+  || this.clasificacionSeleccionada() !== this.clasificacionAplicada()
+  || this.disponibilidadSeleccionada() !== this.disponibilidadAplicada()
+  || this.ordenPrecioSeleccionado() !== this.ordenPrecioAplicado()
+);
 
-  // true si hay algún filtro aplicado (para mostrar el botón "Limpiar").
-  hayFiltrosAplicados = computed(() =>
-    this.consultaAplicada() !== '' || this.clasificacionAplicada() !== 'Todos'
-  );
+hayFiltrosAplicados = computed(() =>
+  this.consultaAplicada() !== ''
+  || this.clasificacionAplicada() !== 'Todos'
+  || this.disponibilidadAplicada() !== 'todos'
+  || this.ordenPrecioAplicado() !== 'ninguno'
+);
 
   aplicarFiltros(): void {
-    this.servicioBusquedaCatalogo.aplicar();
-    this.clasificacionAplicada.set(this.clasificacionSeleccionada());
-  }
+  this.servicioBusquedaCatalogo.aplicar();
+  this.clasificacionAplicada.set(this.clasificacionSeleccionada());
+  this.disponibilidadAplicada.set(this.disponibilidadSeleccionada());
+  this.ordenPrecioAplicado.set(this.ordenPrecioSeleccionado());
+}
 
-  limpiarFiltros(): void {
-    this.servicioBusquedaCatalogo.limpiar();
-    this.clasificacionSeleccionada.set('Todos');
-    this.clasificacionAplicada.set('Todos');
-  }
+limpiarFiltros(): void {
+  this.servicioBusquedaCatalogo.limpiar();
+  this.clasificacionSeleccionada.set('Todos');
+  this.clasificacionAplicada.set('Todos');
+  this.disponibilidadSeleccionada.set('todos');
+  this.disponibilidadAplicada.set('todos');
+  this.ordenPrecioSeleccionado.set('ninguno');
+  this.ordenPrecioAplicado.set('ninguno');
+}
 
   constructor() {
     inject(DestroyRef).onDestroy(() => this.solicitud?.unsubscribe());
     effect(() => {
-      this.consultaAplicada();
-      this.clasificacionAplicada();
-      untracked(() => this.cargarPagina(1));
-    });
+    this.consultaAplicada();
+    this.clasificacionAplicada();
+    this.disponibilidadAplicada();
+    this.ordenPrecioAplicado();
+    untracked(() => this.cargarPagina(1));
+  });
   }
 
   cargarPagina(pagina: number): void {
@@ -82,7 +92,7 @@ export class Catalog {
     this.cargando.set(true);
     this.errorCarga.set(false);
     this.solicitud = this.servicioProductos.obtenerPaginaProductos(
-      pagina, this.porPagina, this.consultaAplicada(), this.clasificacionAplicada()
+      pagina, this.porPagina, this.consultaAplicada(), this.clasificacionAplicada(), this.disponibilidadAplicada(), this.ordenPrecioAplicado()
     ).subscribe({
       next: respuesta => {
         this.productos.set(respuesta.productos);

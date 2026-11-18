@@ -11,6 +11,9 @@ export interface PaginaProductos {
     clasificaciones: string[];
 }
 
+export type DisponibilidadProductos = 'todos' | 'con_stock' | 'sin_stock';
+export type OrdenPrecioProductos = 'ninguno' | 'precio_asc' | 'precio_desc';
+
 // Contrato compartido del carrito: validación de stock 
 export interface ItemValidacionStock {
     productId: string;
@@ -39,11 +42,12 @@ export class ProductService {
         return this.clienteHttp.get<Cafe[]>(this.urlApi);
     }
 
-    obtenerPaginaProductos(pagina: number, limite = 8, busqueda = '', clasificacion = 'Todos'): Observable<PaginaProductos> {
+    obtenerPaginaProductos(pagina: number, limite = 8, busqueda = '', clasificacion = 'Todos', 
+        disponibilidad: DisponibilidadProductos = 'todos',orden: OrdenPrecioProductos = 'ninguno'): Observable<PaginaProductos> {
         return this.clienteHttp.get<PaginaProductos>(this.urlApi, {
-            params: { pagina, limite, busqueda, clasificacion }
-        });
-    }
+        params: { pagina, limite, busqueda, clasificacion, disponibilidad, orden }
+    });
+}
 
     validateStock(items: ItemValidacionStock[]): Observable<RespuestaValidarStock> {
         return this.clienteHttp.post<RespuestaValidarStock>(`${this.urlApi}/validate-stock`, items);

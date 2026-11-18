@@ -671,3 +671,23 @@
     color: #746b61;
     cursor: default;
 }
+
+.controlesFiltrosCatalogo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.controlesFiltrosCatalogo .filtroClasificacionCatalogo {
+    justify-content: space-between;
+    gap: 12px;
+    padding-left: 0;
+    border-left: 0;
+}
+
+.controlesFiltrosCatalogo .selectorClasificacionCatalogo {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+}
