@@ -272,6 +272,50 @@
   font: 600 12px 'Space Grotesk', sans-serif;
 }
 
+.panelBusqueda {
+  right: auto;
+  left: 50%;
+  width: min(420px, calc(100vw - 32px));
+  transform: translateX(-50%);
+}
+
+.enlaceCargarProducto {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+@media (min-width: 961px) {
+  .contenidoNavegacion {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .menuPrincipal {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 960px) {
+  .contenidoNavegacion {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .accionesNavegacion {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 500px) {
+  .enlaceCargarProducto span {
+    display: inline-flex;
+  }
+}
+
 
 @media (max-width: 1100px) {
   .saludoUsuario {
@@ -347,5 +391,90 @@
   .botonCarrito {
     gap: 5px;
     font-size: 0;
+  }
+}
+
+.autenticacionEncabezado {
+  display: contents;
+}
+
+.panelBusqueda {
+  right: auto;
+  left: 50%;
+  width: min(420px, calc(100vw - 32px));
+  transform: translateX(-50%);
+}
+
+@media (min-width: 1101px) {
+  .contenidoNavegacion {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .menuPrincipal {
+    justify-content: center;
+  }
+
+  .accionesNavegacion {
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    gap: clamp(8px, 1vw, 16px);
+  }
+}
+
+@media (max-width: 1100px) {
+  .contenidoNavegacion {
+    width: calc(100% - 40px);
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+  }
+
+  .logoMarca {
+    width: min(150px, 100%);
+  }
+
+  .menuPrincipal,
+  .autenticacionEncabezado {
+    display: none;
+  }
+
+  .accionesNavegacion {
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    gap: clamp(6px, 1.5vw, 13px);
+    min-width: 0;
+  }
+
+  .botonMenu {
+    display: grid;
+    flex: 0 0 36px;
+  }
+
+  .menuMovil {
+    display: flex;
+  }
+
+  .autenticacionMenu {
+    display: flex;
+  }
+}
+
+@media (max-width: 500px) {
+  .contenidoNavegacion {
+    width: calc(100% - 32px);
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+  }
+
+  .logoMarca {
+    width: 105px;
+    height: 58px;
+  }
+
+  .accionesNavegacion {
+    gap: 6px;
+  }
+
+  .enlaceCargarProducto span {
+    display: inline-flex;
   }
 }

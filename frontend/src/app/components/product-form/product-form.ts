@@ -43,7 +43,7 @@ export class ProductForm implements OnInit {
 
   loadProductData(id: string) {
     this.productService.getProductById(id).subscribe({
-      next: (prod: any) => {
+      next: (prod) => {
         this.product.set({
           nombre: prod.nombre,
           descripcion: prod.descripcion,
@@ -60,14 +60,14 @@ export class ProductForm implements OnInit {
     });
   }
 
-  onFileSelected(event: any) {
+  onFileSelected(event: Event): void {
     this.fileTouched.set(true);
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
-    } else {
-      this.selectedFile = null;
-    }
+    const target = event.target;
+
+    this.selectedFile =
+      target instanceof HTMLInputElement
+        ? target.files?.item(0) ?? null
+        : null;
   }
   get isImageInvalid(): boolean {
     return !this.isEditMode() && !this.selectedFile;

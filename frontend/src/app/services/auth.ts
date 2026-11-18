@@ -26,6 +26,11 @@ interface RespuestaLogin {
   usuario: Usuario;
 }
 
+interface RespuestaRegistro {
+  message: string;
+  usuario: Usuario;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -38,8 +43,8 @@ export class AuthService {
   estaLogueado = computed(() => this.usuario() !== null);
   esAdmin = computed(() => this.usuario()?.rol === 'admin');
 
-  register(datos: DatosRegistro): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, datos);
+  register(datos: DatosRegistro): Observable<RespuestaRegistro> {
+    return this.http.post<RespuestaRegistro>(`${this.apiUrl}/register`, datos);
   }
 
   login(correo: string, password: string): Observable<RespuestaLogin> {

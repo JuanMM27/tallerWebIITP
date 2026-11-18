@@ -116,7 +116,7 @@
                     Revisá que el servidor esté disponible e intentá nuevamente.
                 </p>
             </div>
-        } @else if (productosFiltrados().length === 0) {
+        } @else if (productos().length === 0) {
             <div class="estadoVacioCatalogo">
                 <span class="adornoEstadoVacio" aria-hidden="true">✳</span>
                 @if (!hayFiltrosAplicados()) {
@@ -137,7 +137,7 @@
             </div>
         } @else {
             <div class="grillaCatalogo">
-                @for (producto of productosFiltrados(); track producto._id; let indice = $index) {
+                @for (producto of productos(); track producto._id; let indice = $index) {
                     <article class="tarjetaProductoCatalogo">
                         <div
                             class="imagenProductoFondo"

@@ -38,21 +38,27 @@
         }
       </div>
 
-      @if (auth.esAdmin()) {
-        <a routerLink="/admin/crear" class="enlaceCargarProducto">
-          <span aria-hidden="true">＋</span> Cargar producto
-        </a>
-      }
+      <div class="autenticacionEncabezado">
+        @if (auth.esAdmin()) {
+          <a routerLink="/admin/crear" class="enlaceCargarProducto">
+            <span aria-hidden="true">＋</span> Cargar producto
+          </a>
+        }
 
-      @if (auth.estaLogueado()) {
-        <span class="saludoUsuario">Hola, {{ auth.usuario()?.nombre }}</span>
-        <a routerLink="/mis-pedidos" class="enlaceCargarProducto">Mis pedidos</a>
-        <button type="button" class="enlaceCargarProducto botonCerrarSesion" (click)="cerrarSesion()">
-          Salir
-        </button>
-      } @else {
-        <a routerLink="/login" class="enlaceCargarProducto">Ingresar</a>
-      }
+        @if (auth.estaLogueado()) {
+          <span class="saludoUsuario">Hola, {{ auth.usuario()?.nombre }}</span>
+          <a routerLink="/mis-pedidos" class="enlaceCargarProducto">Mis pedidos</a>
+          <button
+            type="button"
+            class="enlaceCargarProducto botonCerrarSesion"
+            (click)="cerrarSesion()"
+          >
+            Salir
+          </button>
+        } @else {
+          <a routerLink="/login" class="enlaceCargarProducto">Ingresar</a>
+        }
+      </div>
 
       <a
         class="botonCarrito"
@@ -93,10 +99,14 @@
 
       <div class="autenticacionMenu">
         @if (auth.esAdmin()) {
-          <a routerLink="/admin/crear" (click)="cerrarMenu()">Cargar producto</a>
+          <a routerLink="/admin/crear" (click)="cerrarMenu()">
+            <span aria-hidden="true">＋</span> Cargar producto
+          </a>
         }
+
         @if (auth.estaLogueado()) {
           <span class="saludoMenu">Hola, {{ auth.usuario()?.nombre }}</span>
+          <a routerLink="/mis-pedidos" (click)="cerrarMenu()">Mis pedidos</a>
           <button type="button" (click)="cerrarSesion()">Salir</button>
         } @else {
           <a routerLink="/login" (click)="cerrarMenu()">Ingresar</a>

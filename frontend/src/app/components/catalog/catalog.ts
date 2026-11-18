@@ -43,7 +43,6 @@ export class Catalog {
   ordenPrecioSeleccionado = signal<OrdenPrecioProductos>('ninguno');
   ordenPrecioAplicado = signal<OrdenPrecioProductos>('ninguno');
   clasificaciones = signal<string[]>([]);
-  productosFiltrados = this.productos;
 
   hayCambiosSinAplicar = computed(() =>
   this.consultaBusqueda().trim() !== this.consultaAplicada()
