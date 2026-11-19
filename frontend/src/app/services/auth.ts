@@ -26,6 +26,11 @@ interface RespuestaLogin {
   usuario: Usuario;
 }
 
+interface RespuestaRegistro {
+  message: string;
+  usuario: Usuario;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -38,8 +43,8 @@ export class AuthService {
   estaLogueado = computed(() => this.usuario() !== null);
   esAdmin = computed(() => this.usuario()?.rol === 'admin');
 
-  register(datos: DatosRegistro): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, datos);
+  register(datos: DatosRegistro): Observable<RespuestaRegistro> {
+    return this.http.post<RespuestaRegistro>(`${this.apiUrl}/register`, datos);
   }
 
   login(correo: string, password: string): Observable<RespuestaLogin> {
@@ -52,12 +57,31 @@ export class AuthService {
     );
   }
 
+  // Recuperación de contraseña: pide el enlace y luego guarda la contraseña nueva.
+  solicitarRecuperacion(correo: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.apiUrl}/forgot-password`, { correo });
+  }
+
+  restablecerPassword(token: string, password: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.apiUrl}/reset-password`, { token, password });
+  }
+
   logout() {
+    this.borrarSesion();
+    // El carrito persiste al recargar pero se limpia al cerrar sesión (ver plan 1.1).
+    this.cart.vaciar();
+  }
+
+  // Sesión vencida (token expirado): se borra la sesión pero se conserva el
+  // carrito, para que el usuario no pierda lo que cargó justo antes de pagar.
+  sesionVencida() {
+    this.borrarSesion();
+  }
+
+  private borrarSesion() {
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
     this.usuario.set(null);
-    // El carrito persiste al recargar pero se limpia al cerrar sesión (ver plan 1.1).
-    this.cart.vaciar();
   }
 
   getToken(): string | null {

@@ -1,4 +1,4 @@
-<main class="paginaDetalleCafe">
+<div class="paginaDetalleCafe">
     @if (cargando()) {
         <section class="estadoDetalleCafe" aria-live="polite"><p class="textoEstadoDetalle">Cargando café...</p></section>
     } @else if (noEncontrado()) {
@@ -23,7 +23,7 @@
                     <div class="filaPrecioStockDetalle">
                         <p class="precioDetalleCafe">{{ producto.precio | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}</p>
                         @if (producto.stock > 0) {
-                            <p class="estadoStockDetalle"><span class="indicadorStockDisponible" aria-hidden="true"></span>En stock ({{ producto.stock }} unidades)</p>
+                            <p class="estadoStockDetalle"><span class="indicadorStockDisponible" aria-hidden="true"></span>En stock</p>
                         } @else {
                             <p class="estadoStockDetalle estadoSinStock"><span class="indicadorStockAgotado" aria-hidden="true"></span>Sin stock</p>
                         }
@@ -39,8 +39,16 @@
                                     <button class="botonCantidadDetalle" type="button" (click)="cambiarCantidad(1)" [disabled]="cantidad() >= producto.stock" aria-label="Aumentar cantidad">+</button>
                                 </div>
                             </div>
-                            <button class="botonAgregarDetalle" type="button" (click)="agregarAlCarrito()">Agregar al carrito</button>
+                            <button
+                                class="botonAgregarDetalle"
+                                [class.botonAgregadoDetalle]="agregado()"
+                                type="button"
+                                (click)="agregarAlCarrito()"
+                            >{{ agregado() ? '✓ Agregado al carrito' : 'Agregar al carrito' }}</button>
                         </div>
+                        @if (mensajeStock()) {
+                            <p class="mensajeStockDetalle" role="status">{{ mensajeStock() }}</p>
+                        }
                     } @else {
                         <button class="botonAgregarDetalle botonAgotadoDetalle" type="button" disabled>Sin stock</button>
                     }
@@ -50,4 +58,4 @@
     }
 
     <app-benefits />
-</main>
+</div>

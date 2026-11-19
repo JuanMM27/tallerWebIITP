@@ -75,7 +75,7 @@
 
 .barraFiltrosCatalogo {
     display: grid;
-    grid-template-columns: minmax(260px, 0.95fr) minmax(300px, 1fr) minmax(170px, 1fr);
+    grid-template-columns: minmax(240px, 1fr) minmax(260px, 1fr) auto minmax(140px, auto);
     align-items: center;
     gap: 26px;
     min-height: 70px;
@@ -124,6 +124,49 @@
 .entradaBusquedaCatalogo::placeholder {
     color: #81766a;
     opacity: 1;
+}
+
+/* Botones "Aplicar filtros" y "Limpiar" */
+.accionesFiltrosCatalogo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.botonAplicarFiltros,
+.botonLimpiarFiltros {
+    min-height: 39px;
+    padding: 0 18px;
+    border-radius: 28px;
+    font: 600 12px 'Space Grotesk', sans-serif;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.botonAplicarFiltros {
+    border: 1px solid var(--primary);
+    background: transparent;
+    color: var(--primary);
+}
+
+/* Hay cambios sin aplicar: el botón se resalta */
+.botonAplicarPendiente,
+.botonAplicarFiltros:hover {
+    background: var(--primary);
+    color: var(--on-primary);
+}
+
+.botonLimpiarFiltros {
+    border: 1px solid transparent;
+    background: transparent;
+    color: #6d645a;
+    text-decoration: underline;
+}
+
+.botonLimpiarFiltros:hover {
+    color: var(--primary);
 }
 
 .filtroClasificacionCatalogo {
@@ -476,6 +519,11 @@
         padding: 12px 0;
     }
 
+    .accionesFiltrosCatalogo {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
     .cantidadResultadosCatalogo {
         grid-column: 2;
         grid-row: 2;
@@ -550,6 +598,15 @@
         min-width: 160px;
     }
 
+    .accionesFiltrosCatalogo {
+        grid-column: 1;
+        grid-row: auto;
+    }
+
+    .botonAplicarFiltros {
+        flex: 1;
+    }
+
     .cantidadResultadosCatalogo {
         grid-column: 1;
         grid-row: auto;
@@ -570,4 +627,125 @@
         opacity: 1;
     }
 
+}
+
+.paginacionCatalogo {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(6px, 2vw, 16px);
+    width: fit-content;
+    max-width: 100%;
+    margin: 36px auto 0;
+    padding: clamp(6px, 2vw, 10px);
+
+}
+
+
+.paginacionCatalogo .botonLimpiarFiltros {
+    min-height: 44px;
+    padding: 6px clamp(8px, 3vw, 20px);
+    border: 1px solid var(--primary);
+    border-radius: 10px;
+    background: var(--primary);
+    color: var(--on-primary);
+    font-size: clamp(.75rem, 2.6vw, .875rem);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color .2s, color .2s;
+}
+
+.paginacionCatalogo .botonLimpiarFiltros:enabled:hover {
+    background: var(--on-primary);
+    color: var(--primary);
+}
+
+.paginacionCatalogo .botonLimpiarFiltros:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+.paginacionCatalogo .botonLimpiarFiltros:disabled {
+    border-color: #e4dbd0;
+    background: var(--surface);
+    color: #746b61;
+    cursor: default;
+}
+
+.controlesFiltrosCatalogo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px 14px;
+  min-width: 0;
+}
+
+.controlesFiltrosCatalogo .filtroClasificacionCatalogo {
+  flex: 1 1 180px;
+  gap: 8px;
+  min-width: 0;
+  padding-left: 0;
+  border-left: 0;
+}
+
+.controlesFiltrosCatalogo .selectorClasificacionCatalogo {
+  flex: 1;
+  width: auto;
+  min-width: 0;
+}
+
+@media (min-width: 1001px) {
+  .barraFiltrosCatalogo {
+    grid-template-columns: minmax(220px, 1fr) minmax(0, 2fr) auto auto;
+  }
+}
+
+@media (max-width: 1000px) {
+  .barraFiltrosCatalogo {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .campoBusquedaCatalogo {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .controlesFiltrosCatalogo {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-content: flex-start;
+  }
+
+  .accionesFiltrosCatalogo {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .cantidadResultadosCatalogo {
+    grid-column: 2;
+    grid-row: 3;
+  }
+}
+
+@media (max-width: 620px) {
+  .barraFiltrosCatalogo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .campoBusquedaCatalogo,
+  .controlesFiltrosCatalogo,
+  .accionesFiltrosCatalogo,
+  .cantidadResultadosCatalogo {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .controlesFiltrosCatalogo {
+    align-items: stretch;
+  }
+
+  .controlesFiltrosCatalogo .filtroClasificacionCatalogo {
+    flex-basis: 100%;
+  }
 }

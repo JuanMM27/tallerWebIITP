@@ -1,5 +1,4 @@
-
-<main class="paginaCatalogo">
+<div class="paginaCatalogo">
     <section class="heroCatalogo" aria-labelledby="tituloCatalogo">
         <div class="contenidoHeroCatalogo">
             <h1 id="tituloCatalogo" class="tituloHeroCatalogo">
@@ -29,33 +28,80 @@
                     type="search"
                     [ngModel]="consultaBusqueda()"
                     (ngModelChange)="consultaBusqueda.set($event)"
+                    (keydown.enter)="aplicarFiltros()"
                     placeholder="Buscar café o notas de cata..."
                     aria-label="Buscar café o notas de cata"
                 />
             </label>
 
-            <div class="filtroClasificacionCatalogo">
-                <label class="etiquetaClasificacionCatalogo" for="clasificacionCatalogo">
-                    Clasificación
-                </label>
-                <select
-                    class="selectorClasificacionCatalogo"
-                    id="clasificacionCatalogo"
-                    [ngModel]="clasificacionSeleccionada()"
-                    (ngModelChange)="clasificacionSeleccionada.set($event)"
-                >
-                    <option value="Todos">Todas</option>
-                    @for (clasificacion of clasificaciones(); track clasificacion) {
-                        <option [value]="clasificacion">
-                            {{ clasificacion === 'Capsulas' ? 'Cápsulas' : clasificacion }}
-                        </option>
-                    }
-                </select>
+            <div class="controlesFiltrosCatalogo">
+                <div class="filtroClasificacionCatalogo">
+                    <label class="etiquetaClasificacionCatalogo" for="clasificacionCatalogo">
+                        Clasificación
+                    </label>
+                    <select
+                        class="selectorClasificacionCatalogo"
+                        id="clasificacionCatalogo"
+                        [ngModel]="clasificacionSeleccionada()"
+                        (ngModelChange)="clasificacionSeleccionada.set($event)"
+                    >
+                        <option value="Todos">Todas</option>
+                        @for (clasificacion of clasificaciones(); track clasificacion) {
+                            <option [value]="clasificacion">
+                                {{ clasificacion === 'Capsulas' ? 'Cápsulas' : clasificacion }}
+                            </option>
+                        }
+                    </select>
+                </div>
+
+                <div class="filtroClasificacionCatalogo">
+                    <label class="etiquetaClasificacionCatalogo" for="ordenPrecioCatalogo">
+                        Ordenar por precio
+                    </label>
+                    <select
+                        class="selectorClasificacionCatalogo"
+                        id="ordenPrecioCatalogo"
+                        [ngModel]="ordenPrecioSeleccionado()"
+                        (ngModelChange)="ordenPrecioSeleccionado.set($event)"
+                    >
+                        <option value="ninguno">Predeterminado</option>
+                        <option value="precio_asc">Menor a mayor</option>
+                        <option value="precio_desc">Mayor a menor</option>
+                    </select>
+                </div>
+
+                <div class="filtroClasificacionCatalogo">
+                    <label class="etiquetaClasificacionCatalogo" for="disponibilidadCatalogo">
+                        Disponibilidad
+                    </label>
+                    <select
+                        class="selectorClasificacionCatalogo"
+                        id="disponibilidadCatalogo"
+                        [ngModel]="disponibilidadSeleccionada()"
+                        (ngModelChange)="disponibilidadSeleccionada.set($event)"
+                    >
+                        <option value="todos">Todos</option>
+                        <option value="con_stock">Con stock</option>
+                        <option value="sin_stock">Sin stock</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="accionesFiltrosCatalogo">
+                <button
+                    class="botonAplicarFiltros"
+                    [class.botonAplicarPendiente]="hayCambiosSinAplicar()"
+                    type="button"
+                    (click)="aplicarFiltros()"
+                >Aplicar filtros</button>
+                @if (hayFiltrosAplicados()) {
+                    <button class="botonLimpiarFiltros" type="button" (click)="limpiarFiltros()">Limpiar</button>
+                }
             </div>
 
             <p class="cantidadResultadosCatalogo" aria-live="polite">
-                {{ productosFiltrados().length }}
-                {{ productosFiltrados().length === 1 ? 'café encontrado' : 'cafés encontrados' }}
+                {{ total() }}
+                {{ total() === 1 ? 'café encontrado' : 'cafés encontrados' }}
             </p>
         </div>
 
@@ -70,10 +116,10 @@
                     Revisá que el servidor esté disponible e intentá nuevamente.
                 </p>
             </div>
-        } @else if (productosFiltrados().length === 0) {
+        } @else if (productos().length === 0) {
             <div class="estadoVacioCatalogo">
                 <span class="adornoEstadoVacio" aria-hidden="true">✳</span>
-                @if (productos().length === 0) {
+                @if (!hayFiltrosAplicados()) {
                     <h2 class="tituloEstadoVacio">
                         Todavía no hay cafés en esta cosecha.
                     </h2>
@@ -91,7 +137,7 @@
             </div>
         } @else {
             <div class="grillaCatalogo">
-                @for (producto of productosFiltrados(); track producto._id; let indice = $index) {
+                @for (producto of productos(); track producto._id; let indice = $index) {
                     <article class="tarjetaProductoCatalogo">
                         <div
                             class="imagenProductoFondo"
@@ -103,6 +149,7 @@
                             <a class="enlaceImagenProductoCatalogo" [routerLink]="['/cafes', producto._id]" [attr.aria-label]="'Ver detalle de ' + producto.nombre">
                                 <img
                                     class="imagenProductoCatalogo"
+                                    alt="Foto del café"
                                     [src]="'http://localhost:4000' + producto.imagen"
                                     [alt]="producto.nombre"
                                 />
@@ -228,7 +275,14 @@
                 }
             </div>
         }
+        @if (!cargando() && !errorCarga() && totalPaginas() > 1) {
+            <nav class="paginacionCatalogo" aria-label="Páginas del catálogo">
+                <button class="botonLimpiarFiltros" type="button" [disabled]="pagina() === 1" (click)="cargarPagina(pagina() - 1)">Anterior</button>
+                <span aria-live="polite" aria-atomic="true">Página {{ pagina() }} de {{ totalPaginas() }}</span>
+                <button class="botonLimpiarFiltros" type="button" [disabled]="pagina() === totalPaginas()" (click)="cargarPagina(pagina() + 1)">Siguiente</button>
+            </nav>
+        }
     </section>
 
     <app-benefits />
-</main>
+</div>

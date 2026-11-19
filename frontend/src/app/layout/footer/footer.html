@@ -1,5 +1,59 @@
-<footer class="piePagina">
-  <div class="container">
-    <p class="textoPiePagina">TERRA — Café de origen, tueste artesanal</p>
-  </div>
+<footer class="pieDePagina" aria-label="Información del sitio">
+    <div class="contenidoPie">
+        <div class="columnaPie columnaMarca">
+            <p class="marcaPie">TERRA</p>
+            <p class="lemaPie">Café de especialidad. De la tierra, con intención.</p>
+        </div>
+
+        <nav class="columnaPie" aria-label="Navegación del pie de página">
+            <h2 class="tituloColumnaPie">Navegar</h2>
+            <ul class="listaPie">
+                <li><a class="enlacePie" routerLink="/">Inicio</a></li>
+                <li><a class="enlacePie" routerLink="/cafes">Todos los cafés</a></li>
+            </ul>
+        </nav>
+
+        <div class="columnaPie">
+            <h2 class="tituloColumnaPie">Contacto</h2>
+            <ul class="listaPie">
+                <li>
+                    <a class="enlacePie" href="mailto:hola@terra.com.ar">hola@terra.com.ar</a>
+                </li>
+                <li>
+                    <a class="enlacePie" href="tel:+541100000000">+54 11 0000-0000</a>
+                </li>
+                <li class="textoPie">Lunes a viernes, de 9 a 18 hs</li>
+                <li class="textoPie">Buenos Aires, Argentina</li>
+            </ul>
+        </div>
+
+        <div class="columnaPie columnaPoliticas">
+            <h2 class="tituloColumnaPie">Envíos y devoluciones</h2>
+
+            <details class="politicaPie">
+                <summary class="resumenPolitica">Políticas de envío</summary>
+                <ul class="detallePolitica">
+                    <li>Enviamos a todo el país por correo o mensajería.</li>
+                    <li>Preparamos tu pedido dentro de las 48 hs hábiles.</li>
+                    <li>Entrega estimada: 3 a 7 días hábiles según tu zona.</li>
+                    <li>Envío gratis en compras superiores a $30.000.</li>
+                    <li>Te avisamos por mail cuando tu pedido sale.</li>
+                </ul>
+            </details>
+
+            <details class="politicaPie">
+                <summary class="resumenPolitica">Cambios y devoluciones</summary>
+                <ul class="detallePolitica">
+                    <li>Tenés 10 días desde que lo recibís para pedir un cambio.</li>
+                    <li>El paquete debe estar sin abrir y en su empaque original.</li>
+                    <li>Si llegó dañado o equivocado, lo cambiamos sin costo.</li>
+                    <li>Escribinos a hola@terra.com.ar con tu número de pedido.</li>
+                </ul>
+            </details>
+        </div>
+    </div>
+
+    <div class="barraInferiorPie">
+        <p class="derechosPie">© {{ anio }} TERRA · Café de especialidad. Todos los derechos reservados.</p>
+    </div>
 </footer>
