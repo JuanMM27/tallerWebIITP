@@ -574,6 +574,11 @@ img {
   line-height: 1.45;
 }
 
+.t-help.is-invalid {
+  color: var(--color-danger);
+  font-weight: 600;
+}
+
 .t-error {
   display: flex;
   align-items: flex-start;
@@ -1227,6 +1232,24 @@ img {
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+.t-auth__done-icon.iconoEnlaceInvalido {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+.t-auth .volverAuth {
+  justify-self: start;
+  margin-bottom: var(--space-2);
+  text-decoration: none;
+}
+
+.t-alert .enlaceAlerta {
+  display: block;
+  margin-top: 2px;
+  color: inherit;
+  font-weight: 700;
 }
 
 @media (max-width: 920px) {

@@ -2,9 +2,10 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth';
+import { AuthAside } from '../shared/auth-aside/auth-aside';
 
 @Component({
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, AuthAside],
   selector: 'app-restablecer-password',
   styleUrl: './restablecer-password.css',
   templateUrl: './restablecer-password.html',

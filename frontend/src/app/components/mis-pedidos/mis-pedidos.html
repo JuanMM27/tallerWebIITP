@@ -1,21 +1,37 @@
 <div class="paginaPedidos">
-  <header class="encabezadoPedidos">
-    <h1 class="tituloPedidos">Mis pedidos</h1>
-    <p class="subtituloPedidos">Tu historial de compras, del más reciente al más antiguo.</p>
+  <header class="t-page-header encabezadoPedidos">
+    <p class="t-eyebrow">Tu cuenta</p>
+    <h1 class="t-title tituloPedidos">Mis pedidos</h1>
+    <p class="t-subtitle subtituloPedidos">Tu historial de compras, del más reciente al más antiguo.</p>
   </header>
 
   @if (cargando()) {
-    <p class="estadoPedidos" aria-live="polite">Cargando tus pedidos...</p>
+    <p class="sr-only estadoPedidos" aria-live="polite">Cargando tus pedidos...</p>
+    <div class="listaPedidos" aria-hidden="true">
+      @for (n of [1, 2]; track n) {
+        <div class="tarjetaPedido">
+          <div class="t-skeleton" style="width: 40%; height: 18px"></div>
+          <div class="t-skeleton" style="width: 25%; height: 12px"></div>
+          <div class="t-skeleton" style="height: 56px; margin-top: 8px"></div>
+        </div>
+      }
+    </div>
   } @else if (error()) {
-    <section class="estadoPedidos estadoError" role="alert">
-      <p>{{ error() }}</p>
-      <button class="botonPedidos" type="button" (click)="cargarPedidos()">Reintentar</button>
+    <section class="t-empty estadoPedidos estadoError" role="alert">
+      <span class="t-empty__icon t-empty__icon--danger" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7.5v5.5M12 16.5v.01" /></svg>
+      </span>
+      <p class="t-empty__text">{{ error() }}</p>
+      <button class="t-btn t-btn--secondary botonPedidos" type="button" (click)="cargarPedidos()">Reintentar</button>
     </section>
   } @else if (pedidos().length === 0) {
-    <section class="estadoPedidos">
-      <h2 class="tituloEstadoPedidos">Todavía no hiciste ningún pedido.</h2>
-      <p>Cuando confirmes una compra, la vas a ver acá.</p>
-      <a class="botonPedidos" routerLink="/cafes">Explorar cafés</a>
+    <section class="t-empty estadoPedidos">
+      <span class="t-empty__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M5 7h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 7Z" /><path d="M9 7a3 3 0 0 1 6 0" /></svg>
+      </span>
+      <h2 class="t-empty__title tituloEstadoPedidos">Todavía no hiciste ningún pedido.</h2>
+      <p class="t-empty__text">Cuando confirmes una compra, la vas a ver acá.</p>
+      <a class="t-btn botonPedidos" routerLink="/cafes">Explorar cafés</a>
     </section>
   } @else {
     <ul class="listaPedidos">
@@ -23,12 +39,17 @@
         <li class="tarjetaPedido">
           <div class="cabeceraPedido">
             <div>
+              <p class="idPedido">Pedido #{{ pedido._id.slice(-6).toUpperCase() }}</p>
               <p class="fechaPedido">
                 {{ pedido.fechaCreacion | date:'d MMM y, HH:mm':'':'es-AR' }}
               </p>
-              <p class="idPedido">Pedido #{{ pedido._id.slice(-6).toUpperCase() }}</p>
             </div>
-            <span [class]="'estadoPedido estado' + pedido.estado">
+            <span
+              class="t-badge t-badge--dot estadoPedido"
+              [class.t-badge--success]="pedido.estado === 'Pago'"
+              [class.t-badge--warning]="pedido.estado === 'Pendiente'"
+              [class.t-badge--accent]="pedido.estado === 'Entregado'"
+            >
               {{ pedido.estado }}
             </span>
           </div>
@@ -48,7 +69,7 @@
             <span class="unidadesPedido">
               {{ cantidadUnidades(pedido) }} {{ cantidadUnidades(pedido) === 1 ? 'unidad' : 'unidades' }}
             </span>
-            <strong class="totalPedido">
+            <strong class="t-price totalPedido">
               {{ pedido.total | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}
             </strong>
           </div>

@@ -2,12 +2,12 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../services/product';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-product-form',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './product-form.html',
   styleUrl: './product-form.css'
 })
@@ -32,6 +32,10 @@ export class ProductForm implements OnInit {
   selectedFile: File | null = null;
   fileTouched = signal(false);
 
+  // Avisos en la página en lugar de alert(), y estado de envío del botón.
+  mensajeError = signal('');
+  guardando = signal(false);
+
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
@@ -55,7 +59,7 @@ export class ProductForm implements OnInit {
         });
       },
       error: () => {
-        alert('No se pudo cargar el producto.');
+        this.mensajeError.set('No se pudo cargar el producto.');
       }
     });
   }
@@ -91,25 +95,31 @@ export class ProductForm implements OnInit {
       formData.append('imagen', this.selectedFile);
     }
 
+    this.mensajeError.set('');
+
     if (this.isEditMode()) {
       const id = this.productId();
       if (!id) return;
 
+      this.guardando.set(true);
       this.productService.updateProduct(id, formData).subscribe({
         next: () => {
-          this.router.navigate(['/']); 
+          this.router.navigate(['/']);
         },
         error: (error) => {
-          alert(error.error?.message || 'No se pudo actualizar el café. Revisá que el servidor y la base de datos estén disponibles.');
+          this.guardando.set(false);
+          this.mensajeError.set(error.error?.message || 'No se pudo actualizar el café. Revisá que el servidor y la base de datos estén disponibles.');
         }
       });
     } else {
+      this.guardando.set(true);
       this.productService.createProduct(formData).subscribe({
         next: () => {
-          this.router.navigate(['/']); 
+          this.router.navigate(['/']);
         },
         error: (error) => {
-          alert(error.error?.message || 'No se pudo guardar el café. Revisá que el servidor y la base de datos estén disponibles.');
+          this.guardando.set(false);
+          this.mensajeError.set(error.error?.message || 'No se pudo guardar el café. Revisá que el servidor y la base de datos estén disponibles.');
         }
       });
     }
