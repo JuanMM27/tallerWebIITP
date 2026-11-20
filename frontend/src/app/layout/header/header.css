@@ -396,7 +396,7 @@
   animation: desplegarMenu 200ms var(--ease);
 }
 
-.menuMovil a,
+.menuMovil a:not(.t-btn),
 .menuMovil button:not(.t-btn) {
   padding: 14px 4px;
   border: 0;
@@ -413,7 +413,7 @@
   color: var(--color-accent);
 }
 
-.menuMovil a:hover,
+.menuMovil a:not(.t-btn):hover,
 .menuMovil button:not(.t-btn):hover {
   color: var(--color-accent);
 }
@@ -427,13 +427,6 @@
 .autenticacionMenu {
   display: none;
   flex-direction: column;
-}
-
-.cabeceraMenuMovil {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-5) 4px var(--space-3);
 }
 
 /* Responsive */

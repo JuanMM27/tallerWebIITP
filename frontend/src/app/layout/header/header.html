@@ -143,13 +143,6 @@
 
       <div class="autenticacionMenu">
         @if (auth.estaLogueado()) {
-          <div class="cabeceraMenuMovil">
-            <span class="avatarCuenta" aria-hidden="true">{{ inicialUsuario() }}</span>
-            <div class="datosCuenta">
-              <strong>Hola, {{ auth.usuario()?.nombre }}</strong>
-              <span>{{ auth.usuario()?.correo }}</span>
-            </div>
-          </div>
           @if (auth.esAdmin()) {
             <a routerLink="/admin/crear" (click)="cerrarMenu()">Cargar producto</a>
           }
