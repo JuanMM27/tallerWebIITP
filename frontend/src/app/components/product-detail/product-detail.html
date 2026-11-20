@@ -62,7 +62,11 @@
                     <div class="compraDetalleCafe">
                         <div class="filaPrecioStockDetalle">
                             <p class="t-price precioDetalleCafe">{{ producto.precio | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}</p>
-                            @if (producto.stock > 0) {
+                            @if (producto.stock > 0 && esAdmin()) {
+                                <span class="t-badge t-badge--success t-badge--dot estadoStockDetalle">
+                                    Stock disponible: {{ producto.stock }} {{ producto.stock === 1 ? 'unidad' : 'unidades' }}
+                                </span>
+                            } @else if (producto.stock > 0) {
                                 <span class="t-badge t-badge--success t-badge--dot estadoStockDetalle">En stock</span>
                             } @else {
                                 <span class="t-badge t-badge--danger t-badge--dot estadoStockDetalle estadoSinStock">Sin stock</span>
