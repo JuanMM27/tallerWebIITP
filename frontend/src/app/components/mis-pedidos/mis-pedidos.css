@@ -19,7 +19,7 @@
 .subtituloPedidos {
     margin: 12px 0 0 4px;
     color: #6d645a;
-    font: 400 var(--tamanoParrafoIntroductorio)/1.5 'Manrope', sans-serif;
+    font: 400 var(--tamanoParrafoIntroductorio)/1.5 var(--font-sans);
 }
 
 /* Estados: cargando, error, vacío */
@@ -33,7 +33,7 @@
     border-radius: 12px;
     background: var(--surface-container);
     color: #6d645a;
-    font: 400 15px/1.5 'Manrope', sans-serif;
+    font: 400 15px/1.5 var(--font-sans);
     text-align: center;
 }
 
@@ -60,7 +60,7 @@
     border-radius: 30px;
     background: var(--primary);
     color: var(--on-primary);
-    font: 600 13px 'Space Grotesk', sans-serif;
+    font: 600 13px var(--font-sans);
     letter-spacing: 0.04em;
     text-decoration: none;
     cursor: pointer;
@@ -151,7 +151,7 @@
     display: flex;
     justify-content: space-between;
     gap: 12px;
-    font: 400 14px/1.4 'Manrope', sans-serif;
+    font: 400 14px/1.4 var(--font-sans);
 }
 
 .nombreItem {
@@ -172,7 +172,7 @@
 
 .unidadesPedido {
     color: #6d645a;
-    font: 400 13px 'Manrope', sans-serif;
+    font: 400 13px var(--font-sans);
 }
 
 .totalPedido {

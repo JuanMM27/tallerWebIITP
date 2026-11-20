@@ -1,61 +1,116 @@
 <div class="paginaDetalleCafe">
-    @if (cargando()) {
-        <section class="estadoDetalleCafe" aria-live="polite"><p class="textoEstadoDetalle">Cargando café...</p></section>
-    } @else if (noEncontrado()) {
-        <section class="estadoDetalleCafe"><h1 class="tituloEstadoDetalle">No encontramos ese café.</h1><a class="enlaceVolverDetalle" routerLink="/cafes">Volver al catálogo</a></section>
-    } @else if (errorCarga()) {
-        <section class="estadoDetalleCafe"><h1 class="tituloEstadoDetalle">No pudimos cargar el café.</h1><p class="textoEstadoDetalle">Revisá que el servidor esté disponible e intentá nuevamente.</p><a class="enlaceVolverDetalle" routerLink="/cafes">Volver al catálogo</a></section>
-    } @else if (productoSeleccionado(); as producto) {
-        <section class="contenidoDetalleCafe" aria-label="Detalle del café">
-            <div class="marcoImagenDetalleCafe">
-                <img class="imagenDetalleCafe" [src]="'http://localhost:4000' + producto.imagen" [alt]="producto.nombre" />
-            </div>
-            <div class="datosDetalleCafe">
-                <h1 class="nombreDetalleCafe">{{ producto.nombre }}</h1>
-                <p class="descripcionDetalleCafe">{{ producto.descripcion }}</p>
+    <div class="interiorDetalleCafe">
+        @if (cargando()) {
+            <section class="contenidoDetalleCafe" aria-live="polite" aria-busy="true">
+                <span class="textoEstadoDetalle sr-only">Cargando café...</span>
+                <div class="t-skeleton marcoImagenDetalleCafe esqueletoImagenDetalle" aria-hidden="true"></div>
+                <div class="datosDetalleCafe" aria-hidden="true">
+                    <div class="t-skeleton esqueletoLineaDetalle" style="width: 30%"></div>
+                    <div class="t-skeleton esqueletoLineaDetalle esqueletoTituloDetalle"></div>
+                    <div class="t-skeleton esqueletoLineaDetalle" style="width: 80%"></div>
+                    <div class="t-skeleton esqueletoLineaDetalle" style="width: 60%"></div>
+                    <div class="t-skeleton esqueletoCajaDetalle"></div>
+                </div>
+            </section>
+        } @else if (noEncontrado()) {
+            <section class="t-empty estadoDetalleCafe">
+                <span class="t-empty__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" /><path d="m16 16 4 4" /></svg>
+                </span>
+                <h1 class="t-empty__title tituloEstadoDetalle">No encontramos ese café.</h1>
+                <a class="t-btn t-btn--secondary enlaceVolverDetalle" routerLink="/cafes">Volver al catálogo</a>
+            </section>
+        } @else if (errorCarga()) {
+            <section class="t-empty estadoDetalleCafe" role="alert">
+                <span class="t-empty__icon t-empty__icon--danger" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7.5v5.5M12 16.5v.01" /></svg>
+                </span>
+                <h1 class="t-empty__title tituloEstadoDetalle">No pudimos cargar el café.</h1>
+                <p class="t-empty__text textoEstadoDetalle">Revisá que el servidor esté disponible e intentá nuevamente.</p>
+                <a class="t-btn t-btn--secondary enlaceVolverDetalle" routerLink="/cafes">Volver al catálogo</a>
+            </section>
+        } @else if (productoSeleccionado(); as producto) {
+            <nav aria-label="Ubicación">
+                <ol class="t-breadcrumb">
+                    <li><a routerLink="/">Inicio</a></li>
+                    <li><a routerLink="/cafes">Catálogo</a></li>
+                    <li><span aria-current="page">{{ producto.nombre }}</span></li>
+                </ol>
+            </nav>
 
-                <dl class="atributosDetalleCafe">
-                    <div class="filaAtributoDetalle"><dt class="etiquetaAtributoDetalle">Clasificación</dt><dd class="valorAtributoDetalle">{{ producto.clasificacion }}</dd></div>
-                    <div class="filaAtributoDetalle"><dt class="etiquetaAtributoDetalle">Contenido</dt><dd class="valorAtributoDetalle">{{ producto.gramaje }}</dd></div>
-                </dl>
+            <section class="contenidoDetalleCafe" aria-label="Detalle del café">
+                <div class="marcoImagenDetalleCafe">
+                    <img class="imagenDetalleCafe" [src]="'http://localhost:4000' + producto.imagen" [alt]="producto.nombre" />
+                </div>
 
-                <div class="compraDetalleCafe">
-                    <div class="filaPrecioStockDetalle">
-                        <p class="precioDetalleCafe">{{ producto.precio | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}</p>
+                <div class="datosDetalleCafe">
+                    <p class="t-eyebrow">{{ producto.clasificacion === 'Capsulas' ? 'Cápsulas' : producto.clasificacion }}</p>
+                    <h1 class="nombreDetalleCafe">{{ producto.nombre }}</h1>
+                    <p class="descripcionDetalleCafe">{{ producto.descripcion }}</p>
+
+                    <dl class="atributosDetalleCafe">
+                        <div class="filaAtributoDetalle">
+                            <dt class="etiquetaAtributoDetalle">Clasificación</dt>
+                            <dd class="valorAtributoDetalle">{{ producto.clasificacion }}</dd>
+                        </div>
+                        <div class="filaAtributoDetalle">
+                            <dt class="etiquetaAtributoDetalle">Contenido</dt>
+                            <dd class="valorAtributoDetalle">{{ producto.gramaje }}</dd>
+                        </div>
+                    </dl>
+
+                    <div class="compraDetalleCafe">
+                        <div class="filaPrecioStockDetalle">
+                            <p class="t-price precioDetalleCafe">{{ producto.precio | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}</p>
+                            @if (producto.stock > 0) {
+                                <span class="t-badge t-badge--success t-badge--dot estadoStockDetalle">En stock</span>
+                            } @else {
+                                <span class="t-badge t-badge--danger t-badge--dot estadoStockDetalle estadoSinStock">Sin stock</span>
+                            }
+                        </div>
+
                         @if (producto.stock > 0) {
-                            <p class="estadoStockDetalle"><span class="indicadorStockDisponible" aria-hidden="true"></span>En stock</p>
+                            <div class="accionesDetalleCafe">
+                                <div class="controlCantidadDetalle">
+                                    <span class="etiquetaCantidadDetalle" id="etiquetaCantidadDetalle">Cantidad</span>
+                                    <div class="t-qty selectorCantidadDetalle" aria-labelledby="etiquetaCantidadDetalle">
+                                        <button type="button" (click)="cambiarCantidad(-1)" [disabled]="cantidad() <= 1" aria-label="Disminuir cantidad">−</button>
+                                        <output aria-live="polite">{{ cantidad() }}</output>
+                                        <button type="button" (click)="cambiarCantidad(1)" [disabled]="cantidad() >= producto.stock" aria-label="Aumentar cantidad">+</button>
+                                    </div>
+                                </div>
+                                <button
+                                    class="t-btn t-btn--lg botonAgregarDetalle"
+                                    [class.t-btn--success]="agregado()"
+                                    type="button"
+                                    (click)="agregarAlCarrito()"
+                                >
+                                    @if (agregado()) {
+                                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>
+                                        Agregado al carrito
+                                    } @else {
+                                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                                            <path d="M5 7h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 7Z" />
+                                            <path d="M9 7a3 3 0 0 1 6 0" />
+                                        </svg>
+                                        Agregar al carrito
+                                    }
+                                </button>
+                            </div>
+                            @if (mensajeStock()) {
+                                <p class="t-alert t-alert--warning mensajeStockDetalle" role="status">{{ mensajeStock() }}</p>
+                            }
+                            @if (agregado()) {
+                                <a class="t-link enlaceIrCarrito" routerLink="/carrito">Ver carrito</a>
+                            }
                         } @else {
-                            <p class="estadoStockDetalle estadoSinStock"><span class="indicadorStockAgotado" aria-hidden="true"></span>Sin stock</p>
+                            <button class="t-btn t-btn--lg t-btn--secondary t-btn--block botonAgregarDetalle botonAgotadoDetalle" type="button" disabled>Sin stock</button>
                         }
                     </div>
-
-                    @if (producto.stock > 0) {
-                        <div class="accionesDetalleCafe">
-                            <div class="controlCantidadDetalle">
-                                <span class="etiquetaCantidadDetalle">Cantidad</span>
-                                <div class="selectorCantidadDetalle" aria-label="Selector de cantidad">
-                                    <button class="botonCantidadDetalle" type="button" (click)="cambiarCantidad(-1)" [disabled]="cantidad() <= 1" aria-label="Disminuir cantidad">−</button>
-                                    <output class="valorCantidadDetalle" aria-live="polite">{{ cantidad() }}</output>
-                                    <button class="botonCantidadDetalle" type="button" (click)="cambiarCantidad(1)" [disabled]="cantidad() >= producto.stock" aria-label="Aumentar cantidad">+</button>
-                                </div>
-                            </div>
-                            <button
-                                class="botonAgregarDetalle"
-                                [class.botonAgregadoDetalle]="agregado()"
-                                type="button"
-                                (click)="agregarAlCarrito()"
-                            >{{ agregado() ? '✓ Agregado al carrito' : 'Agregar al carrito' }}</button>
-                        </div>
-                        @if (mensajeStock()) {
-                            <p class="mensajeStockDetalle" role="status">{{ mensajeStock() }}</p>
-                        }
-                    } @else {
-                        <button class="botonAgregarDetalle botonAgotadoDetalle" type="button" disabled>Sin stock</button>
-                    }
                 </div>
-            </div>
-        </section>
-    }
+            </section>
+        }
+    </div>
 
     <app-benefits />
 </div>

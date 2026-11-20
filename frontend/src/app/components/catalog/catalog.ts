@@ -104,13 +104,37 @@ limpiarFiltros(): void {
     });
   }
 
+  // Confirmación de baja con un modal propio (antes: confirm() y alert() nativos).
+  // La baja en sí no cambia: deleteProduct y luego recargar la página actual.
+  productoAEliminar = signal<Cafe | null>(null);
+  eliminando = signal(false);
+  errorEliminar = signal('');
+
   eliminarProducto(identificador: string) {
-    if (confirm('¿Estás seguro de que deseas dar de baja este lote?')) {
-      this.servicioProductos.deleteProduct(identificador).subscribe({
-        next: () => this.cargarPagina(this.pagina()),
-        error: () => alert('No se pudo eliminar el producto.')
-      });
-    }
+    this.errorEliminar.set('');
+    this.productoAEliminar.set(this.productos().find(producto => producto._id === identificador) ?? null);
+  }
+
+  cancelarEliminar() {
+    if (this.eliminando()) return;
+    this.productoAEliminar.set(null);
+  }
+
+  confirmarEliminar() {
+    const producto = this.productoAEliminar();
+    if (!producto) return;
+    this.eliminando.set(true);
+    this.servicioProductos.deleteProduct(producto._id).subscribe({
+      next: () => {
+        this.eliminando.set(false);
+        this.productoAEliminar.set(null);
+        this.cargarPagina(this.pagina());
+      },
+      error: () => {
+        this.eliminando.set(false);
+        this.errorEliminar.set('No se pudo eliminar el producto. Intentá de nuevo.');
+      }
+    });
   }
 
   cantidadEnCarrito(producto: Cafe): number {

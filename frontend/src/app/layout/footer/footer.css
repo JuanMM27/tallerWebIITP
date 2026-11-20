@@ -1,156 +1,161 @@
 .pieDePagina {
-    background: #151b19;
-    color: #e9e3d8;
-    font-family: 'Manrope', sans-serif;
+  background: #161A18;
+  color: #E9E3D8;
+  font-family: var(--font-sans);
 }
 
 .contenidoPie {
-    display: grid;
-    grid-template-columns: 1.3fr 0.8fr 1.1fr 1.4fr;
-    gap: clamp(24px, 4vw, 56px);
-    padding: 56px max(7.1vw, 28px) 40px;
+  display: grid;
+  width: min(calc(100% - var(--page-gutter) * 2), var(--page-max));
+  margin: 0 auto;
+  padding: var(--space-16) 0 var(--space-12);
+  grid-template-columns: 1.4fr 0.8fr 1.1fr 1.4fr;
+  gap: clamp(24px, 4vw, 56px);
 }
 
 .columnaPie {
-    min-width: 0;
+  min-width: 0;
 }
 
 .marcaPie {
-    margin: 0 0 12px;
-    color: #fff;
-    font: 600 28px/1 'Newsreader', Georgia, serif;
-    letter-spacing: 0.18em;
+  margin: 0 0 var(--space-3);
+  color: #FFFFFF;
+  font: 500 28px / 1 var(--font-display);
+  letter-spacing: 0.2em;
 }
 
 .lemaPie {
-    max-width: 260px;
-    margin: 0;
-    color: #b9b2a5;
-    font-size: 14px;
-    line-height: 1.6;
+  max-width: 30ch;
+  margin: 0;
+  color: #A8A196;
+  font-size: var(--text-sm);
+  line-height: 1.6;
 }
 
 .tituloColumnaPie {
-    margin: 0 0 16px;
-    color: #fff;
-    font: 600 12px/1.4 'Space Grotesk', sans-serif;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+  margin: 0 0 var(--space-4);
+  color: #7F786E;
+  font: 700 var(--text-xs) / 1.4 var(--font-sans);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
 }
 
 .listaPie {
-    display: grid;
-    gap: 10px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .enlacePie,
 .textoPie {
-    color: #b9b2a5;
-    font-size: 14px;
-    line-height: 1.5;
-    text-decoration: none;
+  color: #CFC8BC;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+.textoPie {
+  color: #A8A196;
 }
 
 .enlacePie {
-    display: inline-block;
-    padding: 2px 0;
-    transition: color 0.2s;
+  display: inline-block;
+  padding: 2px 0;
+  transition: color var(--dur) var(--ease);
 }
 
 .enlacePie:hover {
-    color: #fff;
-    text-decoration: underline;
-    text-underline-offset: 4px;
+  color: #FFFFFF;
 }
 
 .enlacePie:focus-visible,
 .resumenPolitica:focus-visible {
-    outline: 2px solid #e08a68;
-    outline-offset: 3px;
-    border-radius: 4px;
+  border-radius: 4px;
+  outline: 2px solid #E08A68;
+  outline-offset: 3px;
 }
 
 /* Políticas desplegables */
 .politicaPie {
-    border-bottom: 1px solid #ffffff1f;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .politicaPie:first-of-type {
-    border-top: 1px solid #ffffff1f;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .resumenPolitica {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 12px 0;
-    color: #e9e3d8;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 13px 0;
+  color: #E9E3D8;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  list-style: none;
+  cursor: pointer;
+  transition: color var(--dur) var(--ease);
+}
+
+.resumenPolitica:hover {
+  color: #FFFFFF;
 }
 
 .resumenPolitica::-webkit-details-marker {
-    display: none;
+  display: none;
 }
 
 .resumenPolitica::after {
-    content: '+';
-    font-size: 20px;
-    line-height: 1;
-    transition: transform 0.2s;
+  content: '';
+  width: 14px;
+  height: 14px;
+  flex: none;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: transform var(--dur) var(--ease);
 }
 
 .politicaPie[open] .resumenPolitica::after {
-    transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 
 .detallePolitica {
-    display: grid;
-    gap: 8px;
-    margin: 0;
-    padding: 0 0 14px 18px;
-    color: #b9b2a5;
-    font-size: 13.5px;
-    line-height: 1.5;
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0 0 var(--space-4) 18px;
+  color: #A8A196;
+  font-size: 13.5px;
+  line-height: 1.55;
 }
 
 /* Barra inferior */
 .barraInferiorPie {
-    padding: 18px max(7.1vw, 28px);
-    border-top: 1px solid #ffffff1f;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .derechosPie {
-    margin: 0;
-    color: #8f897e;
-    font-size: 13px;
+  width: min(calc(100% - var(--page-gutter) * 2), var(--page-max));
+  margin: 0 auto;
+  padding: var(--space-5) 0;
+  color: #7F786E;
+  font-size: var(--text-xs);
 }
 
 /* Responsive */
 @media (max-width: 960px) {
-    .contenidoPie {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+  .contenidoPie {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 560px) {
-    .contenidoPie {
-        grid-template-columns: 1fr;
-        padding: 44px 20px 28px;
-    }
-    .barraInferiorPie {
-        padding: 16px 20px;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .resumenPolitica::after {
-        transition: none;
-    }
+  .contenidoPie {
+    padding: var(--space-12) 0 var(--space-8);
+    grid-template-columns: 1fr;
+  }
 }
