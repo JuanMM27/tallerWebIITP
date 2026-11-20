@@ -345,7 +345,7 @@ html {
         padding-block: var(--space-12);
     }
     .grillaDestacados {
-        gap: var(--space-3);
+        grid-template-columns: minmax(0, 1fr);
     }
     .grillaDestacados .t-product__desc {
         display: none;
@@ -356,8 +356,10 @@ html {
     .grillaDestacados .t-product__price {
         font-size: var(--text-md);
     }
-    .grillaDestacados .t-btn svg {
-        display: none;
+    .grillaDestacados .t-product__actions .t-btn {
+        white-space: normal;
+        line-height: 1.25;
+        text-align: center;
     }
     .botonVerTodos {
         width: 100%;
