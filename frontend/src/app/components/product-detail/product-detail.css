@@ -187,9 +187,46 @@
     position: static;
     max-width: 520px;
   }
+
+  .detalleCafeCargado {
+    gap: var(--space-4);
+  }
+
+  .detalleCafeCargado .datosDetalleCafe {
+    display: contents;
+  }
+
+  .detalleCafeCargado .marcoImagenDetalleCafe {
+    order: 1;
+    width: 100%;
+    justify-self: center;
+  }
+
+  .detalleCafeCargado .compraDetalleCafe {
+    order: 2;
+    margin-top: 0;
+  }
+
+  .detalleCafeCargado .atributosDetalleCafe {
+    order: 3;
+  }
 }
 
 @media (max-width: 480px) {
+  .t-breadcrumb {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+
+  .t-breadcrumb li:last-child {
+    display: flex;
+    min-width: 0;
+  }
+
+  .t-breadcrumb [aria-current] {
+    min-width: 0;
+  }
+
   .accionesDetalleCafe {
     flex-direction: column;
     align-items: stretch;
@@ -201,5 +238,9 @@
 
   .compraDetalleCafe {
     padding: var(--space-5);
+  }
+
+  .filaPrecioStockDetalle {
+    flex-wrap: wrap;
   }
 }
