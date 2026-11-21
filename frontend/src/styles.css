@@ -115,9 +115,10 @@
   --interlineadoParrafo: 1.6;
   --espaciadoTitulo: -0.055em;
   --espaciadoEtiqueta: 0.18em;
-  --heroPaddingSuperior: 30px;
+  --heroPaddingSuperior: clamp(32px, 4vw, 64px);
   --heroPaddingInferior: 54px;
-  --heroPaddingLateral: var(--page-gutter);
+  /* Alinea los héroes con la grilla del sitio en pantallas anchas */
+  --heroPaddingLateral: max(var(--page-gutter), calc((100% - var(--page-max)) / 2));
   --heroSeparacion: clamp(24px, 3vw, 48px);
   --heroAnchoContenido: 560px;
   --heroAnchoTexto: 390px;
@@ -132,7 +133,7 @@
   --colorDescripcionBeneficios: var(--color-text-muted);
   --colorSeparadorBeneficios: var(--color-border-strong);
   --paddingVerticalBeneficios: 28px;
-  --paddingHorizontalBeneficios: var(--page-gutter);
+  --paddingHorizontalBeneficios: max(var(--page-gutter), calc((100% - var(--page-max)) / 2));
   --tamanoDescripcionTarjeta: 13px;
   --interlineadoDescripcionTarjeta: 1.5;
   --colorDescripcionTarjeta: var(--color-text-muted);
