@@ -1,60 +1,69 @@
-﻿<div class="container py-5">
-  <div class="col-lg-7 mx-auto">
+﻿<div class="paginaFormularioProducto">
+  <nav aria-label="Ubicación">
+    <ol class="t-breadcrumb">
+      <li><a routerLink="/cafes">Catálogo</a></li>
+      <li><span aria-current="page">{{ isEditMode() ? 'Editar café' : 'Cargar café' }}</span></li>
+    </ol>
+  </nav>
 
-    <div class="card border p-4 p-md-5 shadow-sm form-card-container">
+  <header class="t-page-header encabezadoFormulario">
+    <p class="t-eyebrow">Panel de administración</p>
+    <h1 class="t-title">{{ isEditMode() ? 'Editar perfil de tueste' : 'Cargar nuevo café' }}</h1>
+    <p class="t-subtitle">
+      {{ isEditMode() ? 'Actualizá los datos del café. Los cambios se ven al instante en el catálogo.' : 'Completá los datos del lote para publicarlo en el catálogo.' }}
+    </p>
+  </header>
 
-      <span class="badge badge-cafe-gold mx-auto mb-2 form-badge-top">
-        Panel de Administración
-      </span>
+  @if (mensajeError()) {
+    <p class="t-alert t-alert--error alertaFormulario" role="alert">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7.5v5.5M12 16.5v.01" /></svg>
+      {{ mensajeError() }}
+    </p>
+  }
 
-      <h2 class="font-serif text-center fw-normal mb-4 form-main-heading">
-        {{ isEditMode() ? 'Editar Perfil de Tueste' : 'Cargar Nuevo Café' }}
-      </h2>
+  <form class="distribucionFormulario" (ngSubmit)="onSubmit()" #f="ngForm" novalidate>
+    <section class="tarjetaFormulario" aria-labelledby="tituloDatos">
+      <h2 id="tituloDatos" class="tituloTarjetaFormulario">Datos del café</h2>
 
-      <form (ngSubmit)="onSubmit()" #f="ngForm" novalidate>
-
-        <div class="mb-3">
-          <label class="font-tag text-uppercase small fw-bold mb-1 form-label-custom">
-            Nombre del Café:
-          </label>
+      <div class="t-form">
+        <div class="t-field">
+          <label class="t-label" for="campoNombre">Nombre del café</label>
           <input
+            id="campoNombre"
             type="text"
             [(ngModel)]="product().nombre"
             name="nombre"
             required
             placeholder="Ej: Grato Gesha"
-            class="form-control py-2 custom-form-control"
+            class="t-input"
             #nombre="ngModel">
 
           @if (nombre.invalid && (nombre.dirty || nombre.touched)) {
-            <div class="text-danger small mt-1">El nombre del café es obligatorio.</div>
+            <span class="t-error">El nombre del café es obligatorio.</span>
           }
         </div>
 
-        <div class="mb-3">
-          <label class="font-tag text-uppercase small fw-bold mb-1 form-label-custom">
-            Descripción (Notas de cata):
-          </label>
+        <div class="t-field">
+          <label class="t-label" for="campoDescripcion">Descripción (notas de cata)</label>
           <textarea
+            id="campoDescripcion"
             [(ngModel)]="product().descripcion"
             name="descripcion"
             rows="3"
             required
             placeholder="Notas de jazmín, bergamota y miel..."
-            class="form-control py-2 custom-form-control"
+            class="t-textarea"
             #descripcion="ngModel"></textarea>
 
           @if (descripcion.invalid && (descripcion.dirty || descripcion.touched)) {
-            <div class="text-danger small mt-1">La descripción es obligatoria.</div>
+            <span class="t-error">La descripción es obligatoria.</span>
           }
         </div>
 
-        <div class="row g-3 mb-3">
-          <div class="col-md-6">
-            <label class="font-tag text-uppercase small fw-bold mb-1 form-label-custom">
-              Clasificación:
-            </label>
-            <select [(ngModel)]="product().clasificacion" name="clasificacion" required class="form-select py-2 custom-form-control">
+        <div class="t-form-row">
+          <div class="t-field">
+            <label class="t-label" for="campoClasificacion">Clasificación</label>
+            <select id="campoClasificacion" [(ngModel)]="product().clasificacion" name="clasificacion" required class="t-select">
               <option value="Grano Entero">Grano Entero</option>
               <option value="Molido">Molido</option>
               <option value="Soluble">Soluble</option>
@@ -62,11 +71,9 @@
             </select>
           </div>
 
-          <div class="col-md-6">
-            <label class="font-tag text-uppercase small fw-bold mb-1 form-label-custom">
-              Gramaje:
-            </label>
-            <select [(ngModel)]="product().gramaje" name="gramaje" required class="form-select py-2 custom-form-control">
+          <div class="t-field">
+            <label class="t-label" for="campoGramaje">Gramaje</label>
+            <select id="campoGramaje" [(ngModel)]="product().gramaje" name="gramaje" required class="t-select">
               <option value="250g">250g</option>
               <option value="500g">500g</option>
               <option value="1kg">1kg</option>
@@ -74,72 +81,106 @@
           </div>
         </div>
 
-        <div class="row g-3 mb-3">
-          <div class="col-md-6">
-            <label class="font-tag text-uppercase small fw-bold mb-1 form-label-custom">
-              Precio ($):
-            </label>
-            <input
-              type="number"
-              [(ngModel)]="product().precio"
-              name="precio"
-              min="1"
-              required
-              class="form-control py-2 custom-form-control"
-              #precio="ngModel">
+        <div class="t-form-row">
+          <div class="t-field">
+            <label class="t-label" for="campoPrecio">Precio</label>
+            <div class="campoConPrefijo">
+              <span class="prefijoCampo" aria-hidden="true">$</span>
+              <input
+                id="campoPrecio"
+                type="number"
+                [(ngModel)]="product().precio"
+                name="precio"
+                min="1"
+                required
+                class="t-input"
+                #precio="ngModel">
+            </div>
 
             @if (precio.invalid && (precio.dirty || precio.touched)) {
-              <div class="text-danger small mt-1">Ingresá un precio válido mayor a 0.</div>
+              <span class="t-error">Ingresá un precio válido mayor a 0.</span>
             }
           </div>
 
-          <div class="col-md-6">
-            <label class="font-tag text-uppercase small fw-bold mb-1 form-label-custom">
-              Stock inicial:
-            </label>
+          <div class="t-field">
+            <label class="t-label" for="campoStock">{{ isEditMode() ? 'Stock' : 'Stock inicial' }}</label>
             <input
+              id="campoStock"
               type="number"
               [(ngModel)]="product().stock"
               name="stock"
               [min]="isEditMode() ? 0 : 1"
               required
-              class="form-control py-2 custom-form-control"
+              class="t-input"
               #stock="ngModel">
 
             @if (stock.invalid && (stock.dirty || stock.touched)) {
-              <div class="text-danger small mt-1">El stock no puede ser negativo.</div>
+              <span class="t-error">El stock no puede ser negativo.</span>
             }
           </div>
         </div>
+      </div>
+    </section>
 
-        <div class="mb-4">
-          <label class="font-tag text-uppercase small fw-bold mb-1 form-label-custom">
-            Imagen del Producto (Archivo):
-          </label>
+    <aside class="columnaLateralFormulario">
+      <section class="tarjetaFormulario" aria-labelledby="tituloImagen">
+        <h2 id="tituloImagen" class="tituloTarjetaFormulario">Imagen</h2>
+
+        @if (isEditMode() && product().imagen && !selectedFile) {
+          <div class="imagenActual">
+            <img [src]="'http://localhost:4000' + product().imagen" [alt]="'Imagen actual de ' + product().nombre" />
+            <span class="t-badge t-badge--light">Imagen actual</span>
+          </div>
+        }
+
+        <label class="zonaImagen" [class.zonaImagenInvalida]="isImageInvalid && fileTouched()" [class.zonaImagenCargada]="selectedFile">
           <input
+            class="entradaArchivo"
             type="file"
             (change)="onFileSelected($event)"
             accept="image/*"
-            class="form-control py-2 custom-form-control">
+            aria-describedby="ayudaImagen">
+          <span class="iconoZonaImagen" aria-hidden="true">
+            @if (selectedFile) {
+              <svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>
+            } @else {
+              <svg viewBox="0 0 24 24"><path d="M12 16V4m0 0-4 4m4-4 4 4M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" /></svg>
+            }
+          </span>
+          <span class="textoZonaImagen">
+            @if (selectedFile) {
+              <strong>{{ selectedFile.name }}</strong>
+              <span>Hacé clic para elegir otra</span>
+            } @else {
+              <strong>{{ isEditMode() ? 'Reemplazar imagen' : 'Elegí una imagen' }}</strong>
+              <span>Hacé clic para buscar un archivo</span>
+            }
+          </span>
+        </label>
 
-          @if (isImageInvalid && fileTouched()) {
-            <div class="text-danger small mt-1">La imagen del café es obligatoria para nuevos registros.</div>
-          } @else {
-            <div class="form-text text-muted small mt-1">
-              {{ isEditMode() ? 'Opcional: Subí una nueva imagen solo si deseas reemplazar la actual.' : 'Formatos aceptados: JPG, PNG, WEBP.' }}
-            </div>
-          }
-        </div>
+        @if (isImageInvalid && fileTouched()) {
+          <span class="t-error" id="ayudaImagen">La imagen del café es obligatoria para nuevos registros.</span>
+        } @else {
+          <span class="t-help" id="ayudaImagen">
+            {{ isEditMode() ? 'Opcional: subí una nueva imagen solo si querés reemplazar la actual.' : 'Formatos aceptados: JPG, PNG, WEBP.' }}
+          </span>
+        }
+      </section>
+
+      <div class="accionesFormulario">
         <button
           type="submit"
-          [disabled]="f.invalid || isImageInvalid"
-          class="btn btn-cafe-primary w-100 py-3 fs-6">
-          {{ isEditMode() ? 'Guardar Cambios' : 'Publicar Producto' }}
+          [disabled]="f.invalid || isImageInvalid || guardando()"
+          class="t-btn t-btn--lg t-btn--block">
+          @if (guardando()) {
+            <span class="t-spinner" aria-hidden="true"></span>
+            Guardando…
+          } @else {
+            {{ isEditMode() ? 'Guardar cambios' : 'Publicar producto' }}
+          }
         </button>
-
-      </form>
-
-    </div>
-
-  </div>
+        <a class="t-btn t-btn--ghost t-btn--block" routerLink="/cafes">Cancelar</a>
+      </div>
+    </aside>
+  </form>
 </div>

@@ -2,9 +2,10 @@ import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth';
+import { AuthAside } from '../shared/auth-aside/auth-aside';
 
 @Component({
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, AuthAside],
   selector: 'app-recuperar-password',
   styleUrl: './recuperar-password.css',
   templateUrl: './recuperar-password.html',

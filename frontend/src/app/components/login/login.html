@@ -1,17 +1,24 @@
-<div class="container py-5">
-  <div class="col-md-8 col-lg-5 mx-auto">
-    <div class="card border p-4 p-md-5 shadow-sm form-card-container">
-      <h1 class="font-serif text-center fw-normal mb-4 form-main-heading">Iniciar sesión</h1>
+<div class="t-auth">
+  <app-auth-aside />
+
+  <div class="t-auth__main">
+    <div class="t-auth__card">
+      <div class="t-auth__head">
+        <p class="t-eyebrow">Bienvenido de nuevo</p>
+        <h1 class="t-auth__title">Iniciar sesión</h1>
+        <p class="t-auth__lead">Ingresá para comprar y seguir tus pedidos.</p>
+      </div>
 
       @if (mensajeError()) {
-        <div class="alert alert-danger small" role="alert">{{ mensajeError() }}</div>
+        <div class="t-alert t-alert--error" role="alert">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7.5v5.5M12 16.5v.01" /></svg>
+          {{ mensajeError() }}
+        </div>
       }
 
-      <form (ngSubmit)="onSubmit()" #f="ngForm" novalidate>
-        <div class="mb-3">
-          <label for="correo" class="font-tag text-uppercase small fw-bold mb-1 form-label-custom">
-            Email
-          </label>
+      <form class="t-form" (ngSubmit)="onSubmit()" #f="ngForm" novalidate>
+        <div class="t-field">
+          <label for="correo" class="t-label">Email</label>
           <input
             id="correo"
             type="email"
@@ -20,21 +27,20 @@
             required
             email
             autocomplete="email"
-            class="form-control py-2 custom-form-control"
+            placeholder="tu@email.com"
+            class="t-input"
             #correoCtrl="ngModel"
           />
           @if (correoCtrl.invalid && correoCtrl.touched) {
-            <div class="text-danger small mt-1">Ingresá un email válido.</div>
+            <span class="t-error">Ingresá un email válido.</span>
           }
         </div>
 
-        <div class="mb-4">
-          <label
-            for="password"
-            class="font-tag text-uppercase small fw-bold mb-1 form-label-custom"
-          >
-            Contraseña
-          </label>
+        <div class="t-field">
+          <div class="t-label-row">
+            <label for="password" class="t-label">Contraseña</label>
+            <a class="t-link" routerLink="/recuperar-password">¿Olvidaste tu contraseña?</a>
+          </div>
           <input
             id="password"
             type="password"
@@ -42,27 +48,29 @@
             [(ngModel)]="password"
             required
             autocomplete="current-password"
-            class="form-control py-2 custom-form-control"
+            class="t-input"
             #passwordCtrl="ngModel"
           />
           @if (passwordCtrl.invalid && passwordCtrl.touched) {
-            <div class="text-danger small mt-1">Ingresá tu contraseña.</div>
+            <span class="t-error">Ingresá tu contraseña.</span>
           }
-          <div class="text-end small mt-2">
-            <a routerLink="/recuperar-password">¿Olvidaste tu contraseña?</a>
-          </div>
         </div>
 
         <button
           type="submit"
           [disabled]="f.invalid || cargando()"
-          class="btn btn-cafe-primary w-100 py-3 fs-6"
+          class="t-btn t-btn--lg t-btn--block"
         >
-          {{ cargando() ? 'Ingresando...' : 'Ingresar' }}
+          @if (cargando()) {
+            <span class="t-spinner" aria-hidden="true"></span>
+            Ingresando...
+          } @else {
+            Ingresar
+          }
         </button>
       </form>
 
-      <p class="text-center small mt-4 mb-0">
+      <p class="t-auth__foot">
         ¿No tenés cuenta? <a routerLink="/registro">Registrate</a>
       </p>
     </div>

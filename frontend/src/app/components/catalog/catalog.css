@@ -1,751 +1,303 @@
-.paginaCatalogo {
-    min-height: calc(100vh - 150px);
-    overflow-x: clip;
-    padding: 0;
-    background: var(--surface);
-    color: var(--on-surface);
+:host {
+  display: block;
 }
 
+/* Hero */
 .heroCatalogo {
-    position: relative;
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-    align-items: center;
-    min-height: 255px;
-    overflow: hidden;
-    padding: 28px max(5.5vw, 32px);
-    isolation: isolate;
-    background: linear-gradient(90deg, #f7f3ec 0%, #f7f3ec 42%, #f1e7db 100%);
+  overflow: hidden;
+  border-bottom: 1px solid var(--color-border);
+  background: linear-gradient(100deg, var(--color-bg) 45%, #EEE5D8 100%);
+}
+
+.interiorHeroCatalogo {
+  display: grid;
+  width: min(calc(100% - var(--page-gutter) * 2), var(--page-max));
+  min-height: 280px;
+  margin: 0 auto;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-8);
 }
 
 .contenidoHeroCatalogo {
-    position: relative;
-    z-index: 1;
-    max-width: 790px;
+  display: grid;
+  gap: var(--space-3);
+  padding-block: var(--space-12);
 }
 
 .tituloHeroCatalogo {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    column-gap: 0.16em;
-    margin: 0;
-    color: var(--primary);
-    font: 600 var(--tamanoTituloPrincipal)/var(--interlineadoTitulo) var(--tipografiaTitulos);
-    letter-spacing: var(--espaciadoTitulo);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.22em;
+  margin: 0;
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 7vw, 5.25rem);
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
 }
 
 .palabraActual {
-    color: var(--terracotta);
-    font-style: italic;
-    font-weight: 500;
+  color: var(--color-accent);
+  font-style: italic;
+  font-weight: 400;
 }
 
 .descripcionHeroCatalogo {
-    max-width: 610px;
-    margin: 16px 0 0 6px;
-    color: #6d645a;
-    font: 400 var(--tamanoParrafoIntroductorio)/var(--interlineadoParrafo) 'Manrope', sans-serif;
+  max-width: 46ch;
+  margin: var(--space-2) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-md);
 }
 
 .imagenHeroCatalogo {
-    position: absolute;
-    z-index: 0;
-    top: 0;
-    right: 0;
-    width: 53%;
-    height: 100%;
-    object-fit: contain;
-    object-position: right center;
-    pointer-events: none;
+  display: block;
+  width: clamp(240px, 28vw, 380px);
+  align-self: end;
+  margin-bottom: -6px;
+  mix-blend-mode: multiply;
 }
 
+/* Contenido */
 .contenidoCatalogo {
-    padding: 0 max(5.5vw, 32px) 34px;
+  width: min(calc(100% - var(--page-gutter) * 2), var(--page-max));
+  margin: 0 auto;
+  padding-block: var(--space-8) var(--space-20);
 }
 
-.imagenProductoFondo > a {
-    display: contents;
-}
-
-.nombreProductoCatalogo a {
-    color: inherit;
-    text-decoration: none;
-}
-
+/* Barra de filtros */
 .barraFiltrosCatalogo {
-    display: grid;
-    grid-template-columns: minmax(240px, 1fr) minmax(260px, 1fr) auto minmax(140px, auto);
-    align-items: center;
-    gap: 26px;
-    min-height: 70px;
-    margin-bottom: 18px;
-    border-bottom: 1px solid #ded6cb;
+  position: relative;
+  z-index: 2;
+  display: grid;
+  margin-top: calc(var(--space-12) * -1);
+  padding: var(--space-4);
+  grid-template-columns: minmax(220px, 1.5fr) repeat(3, minmax(150px, 1fr)) auto;
+  align-items: end;
+  gap: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
 }
 
-.campoBusquedaCatalogo {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    min-width: 0;
-    min-height: 43px;
-    padding: 0 17px;
-    border: 1px solid #d6c9ba;
-    border-radius: 28px;
-    background: #fbf9f4;
-    color: var(--primary);
-}
-
-.iconoBusquedaCatalogo,
-.iconoAccionCatalogo,
-.iconoCarritoCatalogo {
-    fill: none;
-    stroke: currentColor;
-    stroke-linecap: round;
-}
-
-.iconoBusquedaCatalogo {
-    flex: 0 0 22px;
-    height: 22px;
-    stroke-width: 1.8;
-}
-
-.entradaBusquedaCatalogo {
-    width: 100%;
-    min-width: 0;
-    padding: 10px 0;
-    border: 0;
-    outline: 0;
-    background: transparent;
-    color: var(--primary);
-    font: 400 12px 'Manrope', sans-serif;
-}
-
-.entradaBusquedaCatalogo::placeholder {
-    color: #81766a;
-    opacity: 1;
-}
-
-/* Botones "Aplicar filtros" y "Limpiar" */
-.accionesFiltrosCatalogo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.botonAplicarFiltros,
-.botonLimpiarFiltros {
-    min-height: 39px;
-    padding: 0 18px;
-    border-radius: 28px;
-    font: 600 12px 'Space Grotesk', sans-serif;
-    letter-spacing: 0.04em;
-    white-space: nowrap;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s, border-color 0.2s;
-}
-
-.botonAplicarFiltros {
-    border: 1px solid var(--primary);
-    background: transparent;
-    color: var(--primary);
-}
-
-/* Hay cambios sin aplicar: el botón se resalta */
-.botonAplicarPendiente,
-.botonAplicarFiltros:hover {
-    background: var(--primary);
-    color: var(--on-primary);
-}
-
-.botonLimpiarFiltros {
-    border: 1px solid transparent;
-    background: transparent;
-    color: #6d645a;
-    text-decoration: underline;
-}
-
-.botonLimpiarFiltros:hover {
-    color: var(--primary);
-}
-
+.campoBusquedaCatalogo,
 .filtroClasificacionCatalogo {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    min-height: 39px;
-    padding-left: 28px;
-    border-left: 1px solid #d6c9ba;
+  display: grid;
+  min-width: 0;
+  gap: 6px;
 }
 
 .etiquetaClasificacionCatalogo {
-    color: #514b44;
-    font: 600 10px 'Space Grotesk', sans-serif;
-    letter-spacing: 0.11em;
-    text-transform: uppercase;
-    white-space: nowrap;
+  color: var(--color-text-subtle);
+  font: 700 0.6875rem / 1.2 var(--font-sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.envolturaBusquedaCatalogo {
+  position: relative;
+  display: block;
+}
+
+.iconoBusquedaCatalogo {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: var(--color-text-subtle);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.entradaBusquedaCatalogo {
+  padding-left: 42px;
+}
+
+.entradaBusquedaCatalogo::-webkit-search-cancel-button {
+  cursor: pointer;
 }
 
 .selectorClasificacionCatalogo {
-    width: 100%;
-    min-width: 150px;
-    min-height: 42px;
-    padding: 0 16px;
-    border: 1px solid #d6c9ba;
-    border-radius: 24px;
-    background: #f9f6f0;
-    color: var(--primary);
-    font: 400 12px 'Manrope', sans-serif;
+  min-width: 0;
+}
+
+.accionesFiltrosCatalogo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.botonAplicarFiltros {
+  min-height: 46px;
+}
+
+.botonAplicarPendiente {
+  --btn-bg: var(--color-accent);
+  --btn-bg-hover: var(--color-accent-hover);
+  box-shadow: 0 0 0 4px var(--color-accent-soft);
+}
+
+.botonLimpiarFiltros {
+  min-height: 46px;
+}
+
+.resumenResultadosCatalogo {
+  display: flex;
+  min-height: 28px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin: var(--space-6) 0 var(--space-5);
 }
 
 .cantidadResultadosCatalogo {
-    justify-self: end;
-    margin: 0;
-    color: #756d64;
-    font: 400 12px 'Manrope', sans-serif;
-    text-align: right;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
 }
 
+.cantidadResultadosCatalogo strong {
+  color: var(--color-text);
+}
+
+/* Grilla */
 .grillaCatalogo {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 28px 20px;
-}
-
-.tarjetaProductoCatalogo {
-    min-width: 0;
-}
-
-.imagenProductoFondo {
-    position: relative;
-    display: grid;
-    place-items: center;
-    height: clamp(250px, 23vw, 360px);
-    overflow: hidden;
-    border-radius: 8px;
-    transition: box-shadow 0.25s ease;
-}
-
-.tarjetaProductoCatalogo:hover .imagenProductoFondo {
-    box-shadow: 0 12px 24px #3827181a;
-}
-
-.fondoTerracota {
-    background: #a84f2d;
-}
-
-.fondoSalvia {
-    background: #647660;
-}
-
-.fondoOcre {
-    background: #a47b42;
-}
-
-.fondoPetroleo {
-    background: #315565;
-}
-
-.imagenProductoCatalogo {
-    width: 100%;
-    height: 100%;
-    padding: 12px;
-    object-fit: contain;
-    transition: transform 0.35s ease;
-}
-
-.enlaceImagenProductoCatalogo {
-    position: absolute;
-    z-index: 0;
-    inset: 0;
-    display: grid;
-    place-items: center;
-}
-
-.tarjetaProductoCatalogo:hover .imagenProductoCatalogo {
-    transform: scale(1.025);
-}
-
-.accionesProductoCatalogo {
-    position: absolute;
-    z-index: 1;
-    top: 10px;
-    right: 10px;
-    display: flex;
-    gap: 6px;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-}
-
-.tarjetaProductoCatalogo:hover .accionesProductoCatalogo,
-.tarjetaProductoCatalogo:focus-within .accionesProductoCatalogo {
-    opacity: 1;
-}
-
-.botonAccionCatalogo {
-    display: grid;
-    place-items: center;
-    width: 30px;
-    height: 30px;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    background: #f7f3ecef;
-    color: var(--primary);
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.iconoAccionCatalogo {
-    width: 15px;
-    height: 15px;
-    stroke-linejoin: round;
-    stroke-width: 1.7;
-}
-
-.etiquetaClasificacionProducto {
-    position: absolute;
-    bottom: 12px;
-    left: 13px;
-    max-width: calc(100% - 26px);
-    padding: 6px 10px;
-    overflow: hidden;
-    border-radius: 18px;
-    background: #f7f3ecef;
-    color: var(--primary);
-    font: 600 9px 'Space Grotesk', sans-serif;
-    letter-spacing: 0.07em;
-    text-overflow: ellipsis;
-    text-transform: uppercase;
-    white-space: nowrap;
-}
-
-.datosProductoCatalogo {
-    padding: 12px 4px 0;
-}
-
-.nombreProductoCatalogo {
-    margin: 0 0 5px;
-    color: var(--primary);
-    font: 700 17px / 1.25 'Manrope', sans-serif;
-}
-
-.enlaceNombreProductoCatalogo {
-    color: inherit;
-    text-decoration: none;
-}
-
-.enlaceNombreProductoCatalogo:hover,
-.enlaceNombreProductoCatalogo:focus-visible {
-    color: var(--terracotta);
-}
-
-.notasProductoCatalogo {
-    min-height: 22px;
-    margin: 0;
-    color: #716960;
-    font: 400 13px / 1.5 'Manrope', sans-serif;
-}
-
-.pieProductoCatalogo {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: 6px;
-}
-
-.precioYGramajeCatalogo {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 9px;
-}
-
-.precioProductoCatalogo {
-    color: var(--primary);
-    font: 700 20px 'Manrope', sans-serif;
-}
-
-.gramajeProductoCatalogo {
-    color: #81766a;
-    font: 400 11px 'Manrope', sans-serif;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-6);
 }
 
 .botonAgregarCatalogo {
-    display: grid;
-    flex: 0 0 54px;
-    place-items: center;
-    height: 50px;
-    border: 0;
-    border-radius: 15px;
-    background: #101b19;
-    color: #fff;
-    cursor: pointer;
-    transition: background 0.2s ease;
+  padding-inline: var(--space-4);
 }
 
-.botonAgregarCatalogo:hover {
-    background: var(--forest);
+/* Esqueleto de carga */
+.tarjetaEsqueleto {
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
 }
 
-.iconoCarritoCatalogo {
-    width: 24px;
-    height: 24px;
-    fill: none;
-    stroke: currentColor;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-width: 1.6;
+.esqueletoImagen {
+  aspect-ratio: 1 / 1;
+  border-radius: 0;
 }
 
-.etiquetaAgotadoCatalogo {
-    padding: 9px 11px;
-    border-radius: 20px;
-    background: #e9e0d5;
-    color: #7b5140;
-    font: 600 10px 'Space Grotesk', sans-serif;
+.esqueletoCuerpo {
+  display: grid;
+  gap: 10px;
+  padding: var(--space-4) var(--space-4) var(--space-6);
 }
 
-.controlesAgregarCatalogo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+.esqueletoLinea {
+  height: 12px;
 }
 
-.selectorCantidadCatalogo {
-    display: flex;
-    align-items: center;
-    gap: 7px;
+.esqueletoTitulo {
+  width: 60%;
+  height: 16px;
 }
 
-.columnaSelectorCatalogo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
+.esqueletoCorta {
+  width: 40%;
 }
 
-.mensajeSinStockCatalogo {
-    max-width: 92px;
-    color: #b3261e;
-    font: 600 10px/1.15 'Manrope', sans-serif;
-    text-align: center;
-}
-
-.botonCantidadCatalogo {
-    display: grid;
-    width: 28px;
-    height: 28px;
-    place-items: center;
-    padding: 0;
-    border: 1px solid #d6c9ba;
-    border-radius: 50%;
-    background: #fbf9f4;
-    color: var(--primary);
-    font-size: 15px;
-    line-height: 1;
-    cursor: pointer;
-}
-
-.botonCantidadCatalogo:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
-
-.valorCantidadCatalogo {
-    min-width: 16px;
-    text-align: center;
-    color: var(--primary);
-    font: 700 14px 'Space Grotesk', sans-serif;
-}
-
-.botonAgregado {
-    flex: 0 0 auto;
-    width: auto;
-    padding: 0 14px;
-    background: #2f7d4f;
-}
-
-.confirmacionAgregado {
-    font: 600 12px 'Space Grotesk', sans-serif;
-    letter-spacing: 0.03em;
-    white-space: nowrap;
-}
-
-.estadoVacioCatalogo {
-    display: grid;
-    justify-items: center;
-    padding: 72px 20px 82px;
-    text-align: center;
-}
-
-.adornoEstadoVacio {
-    color: var(--terracotta);
-    font-size: 28px;
-}
-
-.tituloEstadoVacio {
-    margin: 13px 0 7px;
-    color: var(--primary);
-    font: 500 29px 'Newsreader', Georgia, serif;
-}
-
-.textoEstadoVacio {
-    margin: 0;
-    color: #766c61;
-    font: 400 12px 'Manrope', sans-serif;
-}
-
-@media (max-width: 1000px) {
-    .heroCatalogo {
-        min-height: 235px;
-        padding-right: 4.5vw;
-        padding-left: 4.5vw;
-    }
-
-    .imagenHeroCatalogo {
-        width: 51%;
-    }
-
-    .contenidoCatalogo {
-        padding-right: 4.5vw;
-        padding-left: 4.5vw;
-    }
-
-    .barraFiltrosCatalogo {
-        grid-template-columns: minmax(220px, 1fr) minmax(270px, 1fr);
-        gap: 16px;
-        padding: 12px 0;
-    }
-
-    .accionesFiltrosCatalogo {
-        grid-column: 1;
-        grid-row: 2;
-    }
-
-    .cantidadResultadosCatalogo {
-        grid-column: 2;
-        grid-row: 2;
-    }
-
-    .grillaCatalogo {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 26px 18px;
-    }
-
-    .imagenProductoFondo {
-        height: clamp(260px, 38vw, 380px);
-    }
-
-}
-
-@media (max-width: 620px) {
-    .heroCatalogo {
-        grid-template-columns: minmax(0, 1fr);
-        min-height: 0;
-        padding: 35px 23px 0;
-        background: linear-gradient(180deg, #f7f3ec 0%, #f3e8dc 100%);
-    }
-
-    .contenidoHeroCatalogo {
-        max-width: none;
-    }
-
-    .tituloHeroCatalogo {
-        column-gap: 0.13em;
-    }
-
-    .descripcionHeroCatalogo {
-        max-width: 360px;
-        margin: 13px 0 0 2px;
-        font-size: var(--tamanoParrafoIntroductorio);
-    }
-
-    .imagenHeroCatalogo {
-        position: relative;
-        right: auto;
-        width: min(100%, 520px);
-        height: auto;
-        max-height: 300px;
-        aspect-ratio: 3 / 2;
-        justify-self: end;
-    }
-
-    .contenidoCatalogo {
-        padding: 0 22px 28px;
-    }
-
-    .barraFiltrosCatalogo {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 12px;
-        padding: 14px 0;
-    }
-
-    .campoBusquedaCatalogo {
-        min-height: 46px;
-    }
-
-    .filtroClasificacionCatalogo {
-        justify-content: space-between;
-        min-height: 0;
-        padding: 0;
-        border: 0;
-    }
-
-    .selectorClasificacionCatalogo {
-        width: auto;
-        min-width: 160px;
-    }
-
-    .accionesFiltrosCatalogo {
-        grid-column: 1;
-        grid-row: auto;
-    }
-
-    .botonAplicarFiltros {
-        flex: 1;
-    }
-
-    .cantidadResultadosCatalogo {
-        grid-column: 1;
-        grid-row: auto;
-        justify-self: end;
-        margin-top: -3px;
-    }
-
-    .grillaCatalogo {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 24px;
-    }
-
-    .imagenProductoFondo {
-        height: min(88vw, 390px);
-    }
-
-    .accionesProductoCatalogo {
-        opacity: 1;
-    }
-
-}
-
+/* Paginación */
 .paginacionCatalogo {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-    align-items: center;
-    gap: clamp(6px, 2vw, 16px);
-    width: fit-content;
-    max-width: 100%;
-    margin: 36px auto 0;
-    padding: clamp(6px, 2vw, 10px);
-
-}
-
-
-.paginacionCatalogo .botonLimpiarFiltros {
-    min-height: 44px;
-    padding: 6px clamp(8px, 3vw, 20px);
-    border: 1px solid var(--primary);
-    border-radius: 10px;
-    background: var(--primary);
-    color: var(--on-primary);
-    font-size: clamp(.75rem, 2.6vw, .875rem);
-    font-weight: 600;
-    text-decoration: none;
-    transition: background-color .2s, color .2s;
-}
-
-.paginacionCatalogo .botonLimpiarFiltros:enabled:hover {
-    background: var(--on-primary);
-    color: var(--primary);
-}
-
-.paginacionCatalogo .botonLimpiarFiltros:focus-visible {
-    outline: 2px solid var(--primary);
-    outline-offset: 2px;
-}
-
-.paginacionCatalogo .botonLimpiarFiltros:disabled {
-    border-color: #e4dbd0;
-    background: var(--surface);
-    color: #746b61;
-    cursor: default;
-}
-
-.controlesFiltrosCatalogo {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 10px 14px;
-  min-width: 0;
+  gap: var(--space-4);
+  margin-top: var(--space-12);
 }
 
-.controlesFiltrosCatalogo .filtroClasificacionCatalogo {
-  flex: 1 1 180px;
-  gap: 8px;
-  min-width: 0;
-  padding-left: 0;
-  border-left: 0;
+.textoPaginacion {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
-.controlesFiltrosCatalogo .selectorClasificacionCatalogo {
-  flex: 1;
-  width: auto;
-  min-width: 0;
-}
-
-@media (min-width: 1001px) {
+/* Responsive */
+@media (max-width: 1140px) {
   .barraFiltrosCatalogo {
-    grid-template-columns: minmax(220px, 1fr) minmax(0, 2fr) auto auto;
-  }
-}
-
-@media (max-width: 1000px) {
-  .barraFiltrosCatalogo {
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .campoBusquedaCatalogo {
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .controlesFiltrosCatalogo {
     grid-column: 1 / -1;
-    grid-row: 2;
-    justify-content: flex-start;
   }
 
   .accionesFiltrosCatalogo {
-    grid-column: 1;
-    grid-row: 3;
-  }
-
-  .cantidadResultadosCatalogo {
-    grid-column: 2;
-    grid-row: 3;
+    grid-column: 1 / -1;
+    justify-content: flex-end;
   }
 }
 
-@media (max-width: 620px) {
+@media (max-width: 760px) {
+  .interiorHeroCatalogo {
+    min-height: 0;
+    grid-template-columns: 1fr;
+  }
+
+  .contenidoHeroCatalogo {
+    padding-block: var(--space-10) var(--space-16);
+  }
+
+  .imagenHeroCatalogo {
+    display: none;
+  }
+
   .barraFiltrosCatalogo {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: 1fr;
   }
 
-  .campoBusquedaCatalogo,
-  .controlesFiltrosCatalogo,
-  .accionesFiltrosCatalogo,
-  .cantidadResultadosCatalogo {
-    grid-column: 1;
-    grid-row: auto;
-  }
-
-  .controlesFiltrosCatalogo {
+  .accionesFiltrosCatalogo {
+    flex-direction: column-reverse;
     align-items: stretch;
   }
 
-  .controlesFiltrosCatalogo .filtroClasificacionCatalogo {
-    flex-basis: 100%;
+  .accionesFiltrosCatalogo .t-btn {
+    width: 100%;
+  }
+
+  .grillaCatalogo {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  .grillaCatalogo .t-product__body {
+    padding: var(--space-3);
+  }
+
+  .grillaCatalogo .t-product__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .grillaCatalogo .t-qty {
+    justify-content: space-between;
+  }
+
+  .grillaCatalogo .t-product__desc {
+    display: none;
+  }
+
+  .grillaCatalogo .t-product__price {
+    font-size: var(--text-md);
+  }
+}
+
+@media (max-width: 380px) {
+  .grillaCatalogo {
+    grid-template-columns: 1fr;
   }
 }

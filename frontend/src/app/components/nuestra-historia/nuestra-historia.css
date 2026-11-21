@@ -146,14 +146,14 @@
 .tituloValor {
     margin: 0 0 var(--margenTituloBeneficios);
     color: var(--primary);
-    font: 600 var(--tamanoTituloBeneficios)/var(--interlineadoTituloBeneficios) 'Manrope', sans-serif;
+    font: 600 var(--tamanoTituloBeneficios)/var(--interlineadoTituloBeneficios) var(--font-sans);
 }
 
 .textoValor {
     max-width: 320px;
     margin: 0 auto;
     color: var(--colorDescripcionBeneficios);
-    font: 400 var(--tamanoDescripcionBeneficios)/var(--interlineadoDescripcionBeneficios) 'Manrope', sans-serif;
+    font: 400 var(--tamanoDescripcionBeneficios)/var(--interlineadoDescripcionBeneficios) var(--font-sans);
 }
 
 .seccionProposito {

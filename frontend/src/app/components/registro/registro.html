@@ -1,28 +1,35 @@
-<div class="container py-5">
-  <div class="col-md-10 col-lg-7 mx-auto">
-    <div class="card border p-4 p-md-5 shadow-sm form-card-container">
+<div class="t-auth">
+  <app-auth-aside />
+
+  <div class="t-auth__main">
+    <div class="t-auth__card t-auth__card--wide">
       @if (registroExitoso()) {
-        <div class="text-center" role="status">
-          <h1 class="font-serif fw-normal mb-3 form-main-heading">¡Cuenta creada!</h1>
-          <p class="mb-4">Tu cuenta se registró correctamente. Ya podés iniciar sesión.</p>
-          <a routerLink="/login" class="btn btn-cafe-primary px-5 py-3">Iniciar sesión</a>
+        <div class="t-auth__done" role="status">
+          <span class="t-auth__done-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>
+          </span>
+          <h1 class="t-auth__title">¡Cuenta creada!</h1>
+          <p class="t-auth__lead">Tu cuenta se registró correctamente. Ya podés iniciar sesión.</p>
+          <a routerLink="/login" class="t-btn t-btn--lg">Iniciar sesión</a>
         </div>
       } @else {
-        <h1 class="font-serif text-center fw-normal mb-4 form-main-heading">Crear cuenta</h1>
+        <div class="t-auth__head">
+          <p class="t-eyebrow">Sumate a TERRA</p>
+          <h1 class="t-auth__title">Crear cuenta</h1>
+          <p class="t-auth__lead">Con tu cuenta podés comprar y ver el historial de tus pedidos.</p>
+        </div>
 
         @if (mensajeError()) {
-          <div class="alert alert-danger small" role="alert">{{ mensajeError() }}</div>
+          <div class="t-alert t-alert--error" role="alert">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7.5v5.5M12 16.5v.01" /></svg>
+            {{ mensajeError() }}
+          </div>
         }
 
-        <form (ngSubmit)="onSubmit()" #f="ngForm" novalidate>
-          <div class="row g-3 mb-3">
-            <div class="col-md-6">
-              <label
-                for="nombre"
-                class="font-tag text-uppercase small fw-bold mb-1 form-label-custom"
-              >
-                Nombre
-              </label>
+        <form class="t-form" (ngSubmit)="onSubmit()" #f="ngForm" novalidate>
+          <div class="t-form-row">
+            <div class="t-field">
+              <label for="nombre" class="t-label">Nombre</label>
               <input
                 id="nombre"
                 type="text"
@@ -30,20 +37,15 @@
                 [(ngModel)]="nombre"
                 required
                 autocomplete="given-name"
-                class="form-control py-2 custom-form-control"
+                class="t-input"
                 #nombreCtrl="ngModel"
               />
               @if (nombreCtrl.invalid && nombreCtrl.touched) {
-                <div class="text-danger small mt-1">El nombre es obligatorio.</div>
+                <span class="t-error">El nombre es obligatorio.</span>
               }
             </div>
-            <div class="col-md-6">
-              <label
-                for="apellido"
-                class="font-tag text-uppercase small fw-bold mb-1 form-label-custom"
-              >
-                Apellido
-              </label>
+            <div class="t-field">
+              <label for="apellido" class="t-label">Apellido</label>
               <input
                 id="apellido"
                 type="text"
@@ -51,22 +53,17 @@
                 [(ngModel)]="apellido"
                 required
                 autocomplete="family-name"
-                class="form-control py-2 custom-form-control"
+                class="t-input"
                 #apellidoCtrl="ngModel"
               />
               @if (apellidoCtrl.invalid && apellidoCtrl.touched) {
-                <div class="text-danger small mt-1">El apellido es obligatorio.</div>
+                <span class="t-error">El apellido es obligatorio.</span>
               }
             </div>
           </div>
 
-          <div class="mb-3">
-            <label
-              for="direccion"
-              class="font-tag text-uppercase small fw-bold mb-1 form-label-custom"
-            >
-              Dirección
-            </label>
+          <div class="t-field">
+            <label for="direccion" class="t-label">Dirección</label>
             <input
               id="direccion"
               type="text"
@@ -74,21 +71,17 @@
               [(ngModel)]="direccion"
               required
               autocomplete="street-address"
-              class="form-control py-2 custom-form-control"
+              placeholder="Calle, número, ciudad"
+              class="t-input"
               #direccionCtrl="ngModel"
             />
             @if (direccionCtrl.invalid && direccionCtrl.touched) {
-              <div class="text-danger small mt-1">La dirección es obligatoria.</div>
+              <span class="t-error">La dirección es obligatoria.</span>
             }
           </div>
 
-          <div class="mb-3">
-            <label
-              for="correo"
-              class="font-tag text-uppercase small fw-bold mb-1 form-label-custom"
-            >
-              Email
-            </label>
+          <div class="t-field">
+            <label for="correo" class="t-label">Email</label>
             <input
               id="correo"
               type="email"
@@ -97,21 +90,17 @@
               required
               email
               autocomplete="email"
-              class="form-control py-2 custom-form-control"
+              placeholder="tu@email.com"
+              class="t-input"
               #correoCtrl="ngModel"
             />
             @if (correoCtrl.invalid && correoCtrl.touched) {
-              <div class="text-danger small mt-1">Ingresá un email válido.</div>
+              <span class="t-error">Ingresá un email válido.</span>
             }
           </div>
 
-          <div class="mb-4">
-            <label
-              for="password"
-              class="font-tag text-uppercase small fw-bold mb-1 form-label-custom"
-            >
-              Contraseña
-            </label>
+          <div class="t-field">
+            <label for="password" class="t-label">Contraseña</label>
             <input
               id="password"
               type="password"
@@ -121,30 +110,34 @@
               [pattern]="passwordPattern"
               autocomplete="new-password"
               aria-describedby="password-ayuda"
-              class="form-control py-2 custom-form-control"
+              class="t-input"
               #passwordCtrl="ngModel"
             />
-            <div
+            <span
               id="password-ayuda"
-              class="small mt-1"
-              [class.text-danger]="passwordCtrl.invalid && passwordCtrl.touched"
-              [class.text-muted]="!(passwordCtrl.invalid && passwordCtrl.touched)"
+              class="t-help"
+              [class.is-invalid]="passwordCtrl.invalid && passwordCtrl.touched"
             >
               Mínimo 8 caracteres, con al menos una mayúscula, una minúscula, un número y un
               símbolo.
-            </div>
+            </span>
           </div>
 
           <button
             type="submit"
             [disabled]="f.invalid || cargando()"
-            class="btn btn-cafe-primary w-100 py-3 fs-6"
+            class="t-btn t-btn--lg t-btn--block"
           >
-            {{ cargando() ? 'Creando cuenta...' : 'Crear cuenta' }}
+            @if (cargando()) {
+              <span class="t-spinner" aria-hidden="true"></span>
+              Creando cuenta...
+            } @else {
+              Crear cuenta
+            }
           </button>
         </form>
 
-        <p class="text-center small mt-4 mb-0">
+        <p class="t-auth__foot">
           ¿Ya tenés cuenta? <a routerLink="/login">Iniciá sesión</a>
         </p>
       }

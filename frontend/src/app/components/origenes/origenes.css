@@ -119,7 +119,7 @@
 .descripcionRegion {
     margin: 0;
     color: var(--colorDescripcionTarjeta);
-    font: 400 var(--tamanoDescripcionTarjeta)/var(--interlineadoDescripcionTarjeta) 'Manrope', sans-serif;
+    font: 400 var(--tamanoDescripcionTarjeta)/var(--interlineadoDescripcionTarjeta) var(--font-sans);
 }
 
 .seccionCompromiso {
@@ -211,7 +211,7 @@
 .tituloBloqueCompromiso {
     margin: 0 0 var(--margenTituloBeneficios);
     color: var(--primary);
-    font: 600 var(--tamanoTituloBeneficios)/var(--interlineadoTituloBeneficios) 'Manrope', sans-serif;
+    font: 600 var(--tamanoTituloBeneficios)/var(--interlineadoTituloBeneficios) var(--font-sans);
     text-align: center;
 }
 
@@ -219,7 +219,7 @@
     max-width: 320px;
     margin: 0 auto;
     color: var(--colorDescripcionBeneficios);
-    font: 400 var(--tamanoDescripcionBeneficios)/var(--interlineadoDescripcionBeneficios) 'Manrope', sans-serif;
+    font: 400 var(--tamanoDescripcionBeneficios)/var(--interlineadoDescripcionBeneficios) var(--font-sans);
     text-align: center;
 }
 

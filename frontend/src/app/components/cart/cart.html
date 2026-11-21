@@ -1,233 +1,318 @@
 <div class="paginaCarrito">
-  <header class="encabezadoCarrito">
-    <h1 class="tituloCarrito">Tu carrito</h1>
-    <p class="subtituloCarrito">Revisá tu pedido antes de continuar.</p>
-  </header>
+  <div class="interiorCarrito">
+    @if (pedidoConfirmado(); as pedido) {
+      <section class="pedidoConfirmado" aria-live="polite">
+        <div class="cabeceraComprobante">
+          <span class="iconoExito" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>
+          </span>
+          <h1 class="tituloPedidoConfirmado">¡Pedido confirmado!</h1>
+          <p class="textoPedidoConfirmado">
+            Recibimos tu pago y ya registramos tu pedido.
+          </p>
+        </div>
 
-  @if (pedidoConfirmado(); as pedido) {
-    <section class="pedidoConfirmado" aria-live="polite">
-      <span class="iconoExito" aria-hidden="true">✓</span>
-      <h2 class="tituloPedidoConfirmado">¡Pedido confirmado!</h2>
-      <p class="textoPedidoConfirmado">
-        Recibimos tu pago y ya registramos tu pedido.
-      </p>
+        <div class="resumenPedido">
+          <div class="filaComprobante">
+            <span class="etiquetaComprobante">Pedido</span>
+            <span class="valorComprobante">#{{ pedido._id.slice(-6).toUpperCase() }}</span>
+          </div>
+          <div class="filaComprobante">
+            <span class="etiquetaComprobante">Estado</span>
+            <span class="t-badge t-badge--success t-badge--dot estadoPedido">{{ pedido.estado }}</span>
+          </div>
+          <hr class="t-divider">
+          <ul class="listaItemsPedido">
+            @for (item of pedido.productos; track item.productId) {
+              <li class="itemPedido">
+                <span class="nombreItemPedido">{{ item.nombre }}</span>
+                <span class="detalleItemPedido">
+                  {{ item.cantidad }} × {{ item.precioUnitario | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}
+                </span>
+              </li>
+            }
+          </ul>
+          <hr class="t-divider">
+          <div class="totalPedido">
+            <span class="etiquetaTotalCarrito">Total pagado</span>
+            <strong class="t-price valorTotalFinal">{{ pedido.total | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}</strong>
+          </div>
+        </div>
 
-      <div class="resumenPedido">
-        <ul class="listaItemsPedido">
-          @for (item of pedido.productos; track item.productId) {
-            <li class="itemPedido">
-              <span class="nombreItemPedido">{{ item.nombre }}</span>
-              <span class="detalleItemPedido">
-                {{ item.cantidad }} × {{ item.precioUnitario | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}
+        <div class="accionesPedidoConfirmado">
+          <a class="t-btn t-btn--secondary t-btn--lg" routerLink="/mis-pedidos">Ver mis pedidos</a>
+          <a class="t-btn t-btn--lg" routerLink="/cafes">Seguir comprando</a>
+        </div>
+      </section>
+    } @else {
+      <header class="t-page-header encabezadoCarrito">
+        <p class="t-eyebrow">{{ mostrandoPago() ? 'Último paso' : 'Tu pedido' }}</p>
+        <h1 class="t-title tituloCarrito">{{ mostrandoPago() ? 'Pago' : 'Tu carrito' }}</h1>
+        <p class="t-subtitle subtituloCarrito">
+          {{ mostrandoPago() ? 'Ingresá los datos de tu tarjeta para finalizar la compra.' : 'Revisá tu pedido antes de continuar.' }}
+        </p>
+      </header>
+
+      @if (estaVacio()) {
+        <section class="t-empty estadoVacioCarrito" aria-live="polite">
+          <span class="t-empty__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M5 7h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 7Z" /><path d="M9 7a3 3 0 0 1 6 0" /></svg>
+          </span>
+          <h2 class="t-empty__title">Tu carrito está vacío.</h2>
+          @if (avisoStock()) {
+            <p class="t-alert t-alert--warning avisoStock" role="status">{{ avisoStock() }}</p>
+          }
+          <p class="t-empty__text">Agregá cafés desde el catálogo para armar tu pedido.</p>
+          <a class="t-btn" routerLink="/cafes">Explorar cafés</a>
+        </section>
+      } @else if (mostrandoPago()) {
+        <div class="distribucionCarrito">
+          <section class="simulacionPago" aria-label="Datos de pago">
+            <div class="cabeceraTarjetaPago">
+              <h2 class="tituloSimulacionPago">Datos de la tarjeta</h2>
+              <span class="marcasTarjeta" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2" /><path d="M3 10h18M7 15h4" /></svg>
               </span>
-            </li>
-          }
-        </ul>
-        <div class="totalPedido">
-          <span class="etiquetaTotalCarrito">Total</span>
-          <strong class="valorTotalFinal">{{ pedido.total | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}</strong>
-        </div>
-        <p class="estadoPedido">Estado: {{ pedido.estado }}</p>
-      </div>
-
-      <div class="accionesPedidoConfirmado">
-        <a class="botonSecundarioCarrito" routerLink="/mis-pedidos">Ver mis pedidos</a>
-        <a class="botonPrimarioCarrito" routerLink="/cafes">Seguir comprando</a>
-      </div>
-    </section>
-  } @else if (estaVacio()) {
-    <section class="estadoVacioCarrito" aria-live="polite">
-      <span class="adornoEstadoVacio" aria-hidden="true">🛒</span>
-      <h2 class="tituloEstadoVacio">Tu carrito está vacío.</h2>
-      @if (avisoStock()) {
-        <p class="avisoStock" role="status">{{ avisoStock() }}</p>
-      }
-      <p class="textoEstadoVacio">Agregá cafés desde el catálogo para armar tu pedido.</p>
-      <a class="enlaceVolverCarrito" routerLink="/cafes">Explorar cafés</a>
-    </section>
-  } @else if (mostrandoPago()) {
-    <section class="simulacionPago" aria-label="Datos de pago">
-      <h2 class="tituloSimulacionPago">Datos de pago</h2>
-      <p class="textoSimulacionPago">
-        Ingresá los datos de tu tarjeta para finalizar la compra.
-      </p>
-
-      <div class="resumenPago">
-        <span class="etiquetaTotalCarrito">Total a pagar</span>
-        <span class="valorTotalFinal">{{ total() | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}</span>
-      </div>
-
-      <div class="formularioPago">
-        <label class="campoPago">
-          <span class="etiquetaCampoPago">Titular de la tarjeta</span>
-          <input
-            class="entradaPago"
-            [class.entradaPagoInvalida]="intentoPagar() && errorTitular()"
-            type="text"
-            autocomplete="off"
-            maxlength="40"
-            placeholder="Nombre como figura en la tarjeta"
-            [value]="titular()"
-            (input)="onTitular($event)"
-          />
-          @if (intentoPagar() && errorTitular()) {
-            <span class="errorCampoPago">{{ errorTitular() }}</span>
-          }
-        </label>
-        <label class="campoPago">
-          <span class="etiquetaCampoPago">Número de tarjeta</span>
-          <input
-            class="entradaPago"
-            [class.entradaPagoInvalida]="intentoPagar() && errorNumero()"
-            type="text"
-            inputmode="numeric"
-            autocomplete="off"
-            maxlength="19"
-            placeholder="0000 0000 0000 0000"
-            [value]="numeroTarjeta()"
-            (input)="onNumeroTarjeta($event)"
-          />
-          @if (intentoPagar() && errorNumero()) {
-            <span class="errorCampoPago">{{ errorNumero() }}</span>
-          }
-        </label>
-        <div class="filaPago">
-          <label class="campoPago">
-            <span class="etiquetaCampoPago">Vencimiento</span>
-            <input
-              class="entradaPago"
-              [class.entradaPagoInvalida]="intentoPagar() && errorVencimiento()"
-              type="text"
-              inputmode="numeric"
-              autocomplete="off"
-              maxlength="5"
-              placeholder="MM/AA"
-              [value]="vencimiento()"
-              (input)="onVencimiento($event)"
-            />
-            @if (intentoPagar() && errorVencimiento()) {
-              <span class="errorCampoPago">{{ errorVencimiento() }}</span>
-            }
-          </label>
-          <label class="campoPago">
-            <span class="etiquetaCampoPago">Código</span>
-            <input
-              class="entradaPago"
-              [class.entradaPagoInvalida]="intentoPagar() && errorCodigo()"
-              type="text"
-              inputmode="numeric"
-              autocomplete="off"
-              maxlength="3"
-              placeholder="CVC"
-              [value]="codigo()"
-              (input)="onCodigo($event)"
-            />
-            @if (intentoPagar() && errorCodigo()) {
-              <span class="errorCampoPago">{{ errorCodigo() }}</span>
-            }
-          </label>
-        </div>
-      </div>
-
-      @if (errorPago()) {
-        <p class="errorPago" role="alert">{{ errorPago() }}</p>
-      }
-
-      <div class="accionesPago">
-        <button
-          class="botonSecundarioCarrito"
-          type="button"
-          (click)="cancelarPago()"
-          [disabled]="procesandoPago()"
-        >Cancelar</button>
-        <button
-          class="botonPrimarioCarrito"
-          type="button"
-          (click)="confirmarPago()"
-          [disabled]="procesandoPago()"
-        >
-          {{ procesandoPago() ? 'Procesando...' : 'Pagar' }}
-        </button>
-      </div>
-    </section>
-  } @else {
-    <section class="contenidoCarrito" aria-label="Detalle del carrito">
-      @if (avisoStock()) {
-        <p class="avisoStock" role="status">{{ avisoStock() }}</p>
-      }
-
-      <ul class="listaItemsCarrito">
-        @for (item of items(); track item.productId) {
-          <li class="itemCarrito">
-            <div class="datosItemCarrito">
-              <h2 class="nombreItemCarrito">{{ item.nombre }}</h2>
-              <p class="metaItemCarrito">{{ item.clasificacion }} · {{ item.gramaje }}</p>
-              <p class="precioUnitarioItem">
-                {{ item.precio | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }} c/u
-              </p>
             </div>
-
-            <div class="cantidadItemCarrito">
-              <button
-                class="botonCantidadCarrito"
-                type="button"
-                (click)="decrementar(item.productId)"
-                [disabled]="item.cantidad <= 1"
-                [attr.aria-label]="'Disminuir cantidad de ' + item.nombre"
-              >−</button>
-              <output class="valorCantidadCarrito" aria-live="polite">{{ item.cantidad }}</output>
-              <button
-                class="botonCantidadCarrito"
-                type="button"
-                (click)="incrementar(item.productId)"
-                [disabled]="item.cantidad >= item.stock"
-                [attr.aria-label]="'Aumentar cantidad de ' + item.nombre"
-              >+</button>
-            </div>
-
-            <p class="subtotalItemCarrito">
-              {{ (item.precio * item.cantidad) | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}
+            <p class="textoSimulacionPago">
+              Ingresá los datos de tu tarjeta para finalizar la compra.
             </p>
 
-            <button
-              class="botonQuitarCarrito"
-              type="button"
-              (click)="quitar(item.productId)"
-              [attr.aria-label]="'Quitar ' + item.nombre + ' del carrito'"
-            >✕</button>
-          </li>
-        }
-      </ul>
+            <div class="formularioPago">
+              <label class="t-field campoPago">
+                <span class="t-label etiquetaCampoPago">Titular de la tarjeta</span>
+                <input
+                  class="t-input entradaPago"
+                  [class.is-invalid]="intentoPagar() && errorTitular()"
+                  type="text"
+                  autocomplete="off"
+                  maxlength="40"
+                  placeholder="Nombre como figura en la tarjeta"
+                  [value]="titular()"
+                  (input)="onTitular($event)"
+                />
+                @if (intentoPagar() && errorTitular()) {
+                  <span class="t-error errorCampoPago">{{ errorTitular() }}</span>
+                }
+              </label>
+              <label class="t-field campoPago">
+                <span class="t-label etiquetaCampoPago">Número de tarjeta</span>
+                <input
+                  class="t-input entradaPago entradaNumeroTarjeta"
+                  [class.is-invalid]="intentoPagar() && errorNumero()"
+                  type="text"
+                  inputmode="numeric"
+                  autocomplete="off"
+                  maxlength="19"
+                  placeholder="0000 0000 0000 0000"
+                  [value]="numeroTarjeta()"
+                  (input)="onNumeroTarjeta($event)"
+                />
+                @if (intentoPagar() && errorNumero()) {
+                  <span class="t-error errorCampoPago">{{ errorNumero() }}</span>
+                }
+              </label>
+              <div class="t-form-row filaPago">
+                <label class="t-field campoPago">
+                  <span class="t-label etiquetaCampoPago">Vencimiento</span>
+                  <input
+                    class="t-input entradaPago"
+                    [class.is-invalid]="intentoPagar() && errorVencimiento()"
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    maxlength="5"
+                    placeholder="MM/AA"
+                    [value]="vencimiento()"
+                    (input)="onVencimiento($event)"
+                  />
+                  @if (intentoPagar() && errorVencimiento()) {
+                    <span class="t-error errorCampoPago">{{ errorVencimiento() }}</span>
+                  }
+                </label>
+                <label class="t-field campoPago">
+                  <span class="t-label etiquetaCampoPago">Código</span>
+                  <input
+                    class="t-input entradaPago"
+                    [class.is-invalid]="intentoPagar() && errorCodigo()"
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    maxlength="3"
+                    placeholder="CVC"
+                    [value]="codigo()"
+                    (input)="onCodigo($event)"
+                  />
+                  @if (intentoPagar() && errorCodigo()) {
+                    <span class="t-error errorCampoPago">{{ errorCodigo() }}</span>
+                  }
+                </label>
+              </div>
+            </div>
 
-      <footer class="resumenCarrito">
-        <button class="botonVaciarCarrito" type="button" (click)="vaciar()">Vaciar carrito</button>
+            @if (errorPago()) {
+              <p class="t-alert t-alert--error errorPago" role="alert">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7.5v5.5M12 16.5v.01" /></svg>
+                {{ errorPago() }}
+              </p>
+            }
 
-        <div class="totalesCarrito">
-          <div class="filaTotalCarrito">
-            <span class="etiquetaTotalCarrito">Subtotal</span>
-            <span class="valorTotalCarrito">
-              {{ subtotal() | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}
-            </span>
-          </div>
-          <div class="filaTotalCarrito filaTotalFinal">
-            <span class="etiquetaTotalCarrito">Total</span>
-            <span class="valorTotalFinal">
-              {{ total() | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}
-            </span>
-          </div>
+            <div class="accionesPago">
+              <button
+                class="t-btn t-btn--ghost"
+                type="button"
+                (click)="cancelarPago()"
+                [disabled]="procesandoPago()"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6" /></svg>
+                Cancelar
+              </button>
+              <button
+                class="t-btn t-btn--lg botonPagar"
+                type="button"
+                (click)="confirmarPago()"
+                [disabled]="procesandoPago()"
+              >
+                @if (procesandoPago()) {
+                  <span class="t-spinner" aria-hidden="true"></span>
+                  Procesando...
+                } @else {
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
+                  Pagar {{ total() | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}
+                }
+              </button>
+            </div>
+          </section>
+
+          <aside class="resumenCarrito resumenPagoLateral" aria-label="Resumen del pedido">
+            <h2 class="tituloResumen">Resumen del pedido</h2>
+            <ul class="listaResumenPago">
+              @for (item of items(); track item.productId) {
+                <li>
+                  <span class="nombreResumenPago">{{ item.nombre }} <span class="cantidadResumenPago">× {{ item.cantidad }}</span></span>
+                  <span class="t-price">{{ (item.precio * item.cantidad) | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}</span>
+                </li>
+              }
+            </ul>
+            <hr class="t-divider">
+            <div class="filaTotalCarrito filaTotalFinal">
+              <span class="etiquetaTotalCarrito">Total a pagar</span>
+              <span class="t-price valorTotalFinal">{{ total() | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}</span>
+            </div>
+          </aside>
         </div>
+      } @else {
+        <div class="distribucionCarrito">
+          <section class="contenidoCarrito" aria-label="Detalle del carrito">
+            @if (avisoStock()) {
+              <p class="t-alert t-alert--warning avisoStock" role="status">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7.5v5.5M12 16.5v.01" /></svg>
+                {{ avisoStock() }}
+              </p>
+            }
 
-        @if (auth.estaLogueado()) {
-          <button class="botonPrimarioCarrito" type="button" (click)="abrirPago()">
-            Confirmar compra
-          </button>
-        } @else {
-          <div class="avisoSesion">
-            <p class="textoAvisoSesion">Debés iniciar sesión para comprar.</p>
-            <a class="botonPrimarioCarrito" routerLink="/login" [queryParams]="{ returnUrl: '/carrito' }">Iniciar sesión</a>
-          </div>
-        }
-      </footer>
-    </section>
-  }
+            <ul class="listaItemsCarrito">
+              @for (item of items(); track item.productId; let indice = $index) {
+                <li class="itemCarrito">
+                  <span
+                    class="miniaturaItemCarrito"
+                    [class.miniaturaSalvia]="indice % 4 === 1"
+                    [class.miniaturaOcre]="indice % 4 === 2"
+                    [class.miniaturaPetroleo]="indice % 4 === 3"
+                    aria-hidden="true"
+                  >{{ item.nombre.charAt(0) }}</span>
+
+                  <div class="datosItemCarrito">
+                    <h2 class="nombreItemCarrito">
+                      <a [routerLink]="['/cafes', item.productId]">{{ item.nombre }}</a>
+                    </h2>
+                    <p class="metaItemCarrito">{{ item.clasificacion }} · {{ item.gramaje }}</p>
+                    <p class="precioUnitarioItem">
+                      {{ item.precio | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }} c/u
+                    </p>
+                  </div>
+
+                  <div class="t-qty cantidadItemCarrito">
+                    <button
+                      type="button"
+                      (click)="decrementar(item.productId)"
+                      [disabled]="item.cantidad <= 1"
+                      [attr.aria-label]="'Disminuir cantidad de ' + item.nombre"
+                    >−</button>
+                    <output aria-live="polite">{{ item.cantidad }}</output>
+                    <button
+                      type="button"
+                      (click)="incrementar(item.productId)"
+                      [disabled]="item.cantidad >= item.stock"
+                      [attr.aria-label]="'Aumentar cantidad de ' + item.nombre"
+                    >+</button>
+                  </div>
+
+                  <p class="t-price subtotalItemCarrito">
+                    {{ (item.precio * item.cantidad) | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}
+                  </p>
+
+                  <button
+                    class="botonQuitarCarrito"
+                    type="button"
+                    (click)="quitar(item.productId)"
+                    [attr.aria-label]="'Quitar ' + item.nombre + ' del carrito'"
+                    title="Quitar del carrito"
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+                  </button>
+                </li>
+              }
+            </ul>
+
+            <div class="pieListaCarrito">
+              <a class="t-link" routerLink="/cafes">
+                ← Seguir comprando
+              </a>
+              <button class="t-link botonVaciarCarrito" type="button" (click)="vaciar()">Vaciar carrito</button>
+            </div>
+          </section>
+
+          <aside class="resumenCarrito" aria-label="Resumen del pedido">
+            <h2 class="tituloResumen">Resumen del pedido</h2>
+            <div class="totalesCarrito">
+              <div class="filaTotalCarrito">
+                <span class="etiquetaTotalCarrito">Subtotal ({{ cantidadTotal() }} {{ cantidadTotal() === 1 ? 'producto' : 'productos' }})</span>
+                <span class="t-price valorTotalCarrito">
+                  {{ subtotal() | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}
+                </span>
+              </div>
+              <hr class="t-divider">
+              <div class="filaTotalCarrito filaTotalFinal">
+                <span class="etiquetaTotalCarrito">Total</span>
+                <span class="t-price valorTotalFinal">
+                  {{ total() | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}
+                </span>
+              </div>
+            </div>
+
+            @if (auth.estaLogueado()) {
+              <button class="t-btn t-btn--lg t-btn--block" type="button" (click)="abrirPago()">
+                Confirmar compra
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" /></svg>
+              </button>
+            } @else {
+              <div class="avisoSesion">
+                <p class="t-alert textoAvisoSesion">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
+                  Debés iniciar sesión para comprar.
+                </p>
+                <a class="t-btn t-btn--lg t-btn--block" routerLink="/login" [queryParams]="{ returnUrl: '/carrito' }">Iniciar sesión</a>
+              </div>
+            }
+
+            <p class="notaSeguridad">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 3 8.3 7 10 4-1.7 7-5.5 7-10V6l-7-3Z" /><path d="m9 12 2 2 4-4" /></svg>
+              Revisamos el stock antes de confirmar tu compra.
+            </p>
+          </aside>
+        </div>
+      }
+    }
+  </div>
 </div>
