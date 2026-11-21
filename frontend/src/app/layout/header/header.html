@@ -5,76 +5,120 @@
     </a>
 
     <nav class="menuPrincipal" aria-label="Navegación principal">
-      <a routerLink="/cafes">Catálogo</a>
-      <a routerLink="/origenes">Orígenes</a>
-      <a routerLink="/nuestra-historia">Nuestra historia</a>
+      <a routerLink="/cafes" routerLinkActive="enlaceActivo" ariaCurrentWhenActive="page">Catálogo</a>
+      <a routerLink="/origenes" routerLinkActive="enlaceActivo" ariaCurrentWhenActive="page">Orígenes</a>
+      <a routerLink="/nuestra-historia" routerLinkActive="enlaceActivo" ariaCurrentWhenActive="page">Nuestra historia</a>
     </nav>
 
     <div class="accionesNavegacion">
       <div class="busquedaEncabezado">
         <button
-          class="botonBusqueda"
+          class="botonIcono"
           type="button"
           (click)="toggleSearch()"
           [attr.aria-expanded]="searchOpen()"
           aria-label="Buscar cafés"
         >
           <svg viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="10.8" cy="10.8" r="6.8" />
-            <path d="m16 16 4.5 4.5" />
+            <circle cx="11" cy="11" r="6.5" />
+            <path d="m16 16 4 4" />
           </svg>
         </button>
         @if (searchOpen()) {
           <div class="panelBusqueda">
+            <svg class="iconoPanelBusqueda" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="6.5" />
+              <path d="m16 16 4 4" />
+            </svg>
             <input
               type="search"
               [ngModel]="catalogSearch.query()"
               (ngModelChange)="catalogSearch.query.set($event)"
               (keydown.enter)="buscar()"
-              placeholder="Buscar cafés..."
+              placeholder="Buscar cafés por nombre o notas de cata…"
               aria-label="Buscar por nombre o notas de cata"
+              autofocus
             >
+            <kbd class="atajoBusqueda">Enter</kbd>
           </div>
         }
       </div>
 
       <div class="autenticacionEncabezado">
         @if (auth.esAdmin()) {
-          <a routerLink="/admin/crear" class="enlaceCargarProducto">
-            <span aria-hidden="true">＋</span> Cargar producto
+          <a routerLink="/admin/crear" class="t-btn t-btn--secondary t-btn--sm enlaceCargarProducto">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+            Cargar producto
           </a>
         }
 
         @if (auth.estaLogueado()) {
-          <span class="saludoUsuario">Hola, {{ auth.usuario()?.nombre }}</span>
-          <a routerLink="/mis-pedidos" class="enlaceCargarProducto">Mis pedidos</a>
-          <button
-            type="button"
-            class="enlaceCargarProducto botonCerrarSesion"
-            (click)="cerrarSesion()"
-          >
-            Salir
-          </button>
+          <div class="cuenta">
+            <button
+              type="button"
+              class="botonCuenta"
+              (click)="toggleCuenta()"
+              [attr.aria-expanded]="menuCuenta()"
+              aria-haspopup="menu"
+              aria-controls="menuCuenta"
+            >
+              <span class="avatarCuenta" aria-hidden="true">{{ inicialUsuario() }}</span>
+              <span class="saludoUsuario">Hola, {{ auth.usuario()?.nombre }}</span>
+              <svg class="flechaCuenta" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+
+            @if (menuCuenta()) {
+              <div id="menuCuenta" class="menuCuenta" role="menu" aria-label="Cuenta">
+                <div class="cabeceraMenuCuenta">
+                  <span class="avatarCuenta avatarGrande" aria-hidden="true">{{ inicialUsuario() }}</span>
+                  <div class="datosCuenta">
+                    <strong>{{ auth.usuario()?.nombre }} {{ auth.usuario()?.apellido }}</strong>
+                    <span>{{ auth.usuario()?.correo }}</span>
+                  </div>
+                  @if (auth.esAdmin()) {
+                    <span class="t-badge t-badge--accent etiquetaAdmin">Admin</span>
+                  }
+                </div>
+                <a role="menuitem" class="itemMenuCuenta" routerLink="/mis-pedidos" (click)="cerrarCuenta()">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 7Z" /><path d="M9 7a3 3 0 0 1 6 0" /></svg>
+                  Mis pedidos
+                </a>
+                @if (auth.esAdmin()) {
+                  <a role="menuitem" class="itemMenuCuenta" routerLink="/admin/crear" (click)="cerrarCuenta()">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+                    Cargar producto
+                  </a>
+                }
+                <hr class="separadorMenuCuenta">
+                <button role="menuitem" type="button" class="itemMenuCuenta" (click)="cerrarSesion()">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 16l4-4-4-4M14 12H4" /></svg>
+                  Cerrar sesión
+                </button>
+              </div>
+            }
+          </div>
         } @else {
-          <a routerLink="/login" class="enlaceCargarProducto">Ingresar</a>
+          <a routerLink="/login" class="t-btn t-btn--secondary t-btn--sm">Ingresar</a>
         }
       </div>
 
       <a
-        class="botonCarrito"
+        class="botonIcono botonCarrito"
         routerLink="/carrito"
+        routerLinkActive="enlaceActivo"
         [attr.aria-label]="'Carrito, ' + cantidadCarrito() + ' productos'"
       >
-        <svg class="iconoCarrito" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M3 4h2l2.2 10.1a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 1.9-1.4L21 8H6" />
-          <circle cx="10" cy="20" r="1.25" />
-          <circle cx="18" cy="20" r="1.25" />
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 7h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 7Z" />
+          <path d="M9 7a3 3 0 0 1 6 0" />
         </svg>
-        <span class="cantidadCarrito">{{ cantidadCarrito() }}</span>
+        @if (cantidadCarrito() > 0) {
+          <span class="cantidadCarrito">{{ cantidadCarrito() }}</span>
+        }
       </a>
 
       <button
-        class="botonMenu"
+        class="botonIcono botonMenu"
         type="button"
         (click)="toggleMenu()"
         [attr.aria-expanded]="menuAbierto()"
@@ -85,7 +129,7 @@
           @if (menuAbierto()) {
             <path d="M6 6l12 12M18 6 6 18" />
           } @else {
-            <path d="M4 7h16M4 12h16M4 17h16" />
+            <path d="M4 8h16M4 16h16" />
           }
         </svg>
       </button>
@@ -93,23 +137,19 @@
   </div>
   @if (menuAbierto()) {
     <nav id="menuMovil" class="menuMovil" aria-label="Menú">
-      <a routerLink="/cafes" (click)="cerrarMenu()">Catálogo</a>
-      <a routerLink="/origenes" (click)="cerrarMenu()">Orígenes</a>
-      <a routerLink="/nuestra-historia" (click)="cerrarMenu()">Nuestra historia</a>
+      <a routerLink="/cafes" routerLinkActive="enlaceActivo" (click)="cerrarMenu()">Catálogo</a>
+      <a routerLink="/origenes" routerLinkActive="enlaceActivo" (click)="cerrarMenu()">Orígenes</a>
+      <a routerLink="/nuestra-historia" routerLinkActive="enlaceActivo" (click)="cerrarMenu()">Nuestra historia</a>
 
       <div class="autenticacionMenu">
-        @if (auth.esAdmin()) {
-          <a routerLink="/admin/crear" (click)="cerrarMenu()">
-            <span aria-hidden="true">＋</span> Cargar producto
-          </a>
-        }
-
         @if (auth.estaLogueado()) {
-          <span class="saludoMenu">Hola, {{ auth.usuario()?.nombre }}</span>
+          @if (auth.esAdmin()) {
+            <a routerLink="/admin/crear" (click)="cerrarMenu()">Cargar producto</a>
+          }
           <a routerLink="/mis-pedidos" (click)="cerrarMenu()">Mis pedidos</a>
-          <button type="button" (click)="cerrarSesion()">Salir</button>
+          <button type="button" (click)="cerrarSesion()">Cerrar sesión</button>
         } @else {
-          <a routerLink="/login" (click)="cerrarMenu()">Ingresar</a>
+          <a routerLink="/login" class="t-btn t-btn--block" (click)="cerrarMenu()">Ingresar</a>
         }
       </div>
     </nav>

@@ -1,275 +1,286 @@
 <div class="paginaCatalogo">
     <section class="heroCatalogo" aria-labelledby="tituloCatalogo">
-        <div class="contenidoHeroCatalogo">
-            <h1 id="tituloCatalogo" class="tituloHeroCatalogo">
-                <span class="palabraCosecha">Cosecha</span>
-                <span class="palabraActual">actual</span>
-            </h1>
-            <p class="descripcionHeroCatalogo">
-                Explorá cafés de origen seleccionados para acompañar tu ritual.
-            </p>
+        <div class="interiorHeroCatalogo">
+            <div class="contenidoHeroCatalogo">
+                <p class="t-eyebrow">Café de especialidad</p>
+                <h1 id="tituloCatalogo" class="tituloHeroCatalogo">
+                    <span class="palabraCosecha">Cosecha</span>
+                    <em class="palabraActual">actual</em>
+                </h1>
+                <p class="descripcionHeroCatalogo">
+                    Explorá cafés de origen seleccionados para acompañar tu ritual.
+                </p>
+            </div>
+            <img
+                class="imagenHeroCatalogo"
+                src="/img/CafeHero.png"
+                alt="Bolsa de café TERRA rodeada de hojas, cerezas y montañas"
+            />
         </div>
-        <img
-            class="imagenHeroCatalogo"
-            src="/img/CafeHero.png"
-            alt="Bolsa de café TERRA rodeada de hojas, cerezas y montañas"
-        />
     </section>
 
     <section class="contenidoCatalogo" aria-label="Todos los cafés">
         <div class="barraFiltrosCatalogo">
             <label class="campoBusquedaCatalogo">
-                <svg class="iconoBusquedaCatalogo" viewBox="0 0 24 24" aria-hidden="true">
-                    <circle cx="10.8" cy="10.8" r="6.8" />
-                    <path d="m16 16 4.5 4.5" />
-                </svg>
-                <input
-                    class="entradaBusquedaCatalogo"
-                    type="search"
-                    [ngModel]="consultaBusqueda()"
-                    (ngModelChange)="consultaBusqueda.set($event)"
-                    (keydown.enter)="aplicarFiltros()"
-                    placeholder="Buscar café o notas de cata..."
-                    aria-label="Buscar café o notas de cata"
-                />
+                <span class="etiquetaClasificacionCatalogo">Buscar</span>
+                <span class="envolturaBusquedaCatalogo">
+                    <svg class="iconoBusquedaCatalogo" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="11" cy="11" r="6.5" />
+                        <path d="m16 16 4 4" />
+                    </svg>
+                    <input
+                        class="t-input entradaBusquedaCatalogo"
+                        type="search"
+                        [ngModel]="consultaBusqueda()"
+                        (ngModelChange)="consultaBusqueda.set($event)"
+                        (keydown.enter)="aplicarFiltros()"
+                        placeholder="Buscar café o notas de cata..."
+                        aria-label="Buscar café o notas de cata"
+                    />
+                </span>
             </label>
 
-            <div class="controlesFiltrosCatalogo">
-                <div class="filtroClasificacionCatalogo">
-                    <label class="etiquetaClasificacionCatalogo" for="clasificacionCatalogo">
-                        Clasificación
-                    </label>
-                    <select
-                        class="selectorClasificacionCatalogo"
-                        id="clasificacionCatalogo"
-                        [ngModel]="clasificacionSeleccionada()"
-                        (ngModelChange)="clasificacionSeleccionada.set($event)"
-                    >
-                        <option value="Todos">Todas</option>
-                        @for (clasificacion of clasificaciones(); track clasificacion) {
-                            <option [value]="clasificacion">
-                                {{ clasificacion === 'Capsulas' ? 'Cápsulas' : clasificacion }}
-                            </option>
-                        }
-                    </select>
-                </div>
+            <div class="filtroClasificacionCatalogo">
+                <label class="etiquetaClasificacionCatalogo" for="clasificacionCatalogo">
+                    Clasificación
+                </label>
+                <select
+                    class="t-select selectorClasificacionCatalogo"
+                    id="clasificacionCatalogo"
+                    [ngModel]="clasificacionSeleccionada()"
+                    (ngModelChange)="clasificacionSeleccionada.set($event)"
+                >
+                    <option value="Todos">Todas</option>
+                    @for (clasificacion of clasificaciones(); track clasificacion) {
+                        <option [value]="clasificacion">
+                            {{ clasificacion === 'Capsulas' ? 'Cápsulas' : clasificacion }}
+                        </option>
+                    }
+                </select>
+            </div>
 
-                <div class="filtroClasificacionCatalogo">
-                    <label class="etiquetaClasificacionCatalogo" for="ordenPrecioCatalogo">
-                        Ordenar por precio
-                    </label>
-                    <select
-                        class="selectorClasificacionCatalogo"
-                        id="ordenPrecioCatalogo"
-                        [ngModel]="ordenPrecioSeleccionado()"
-                        (ngModelChange)="ordenPrecioSeleccionado.set($event)"
-                    >
-                        <option value="ninguno">Predeterminado</option>
-                        <option value="precio_asc">Menor a mayor</option>
-                        <option value="precio_desc">Mayor a menor</option>
-                    </select>
-                </div>
+            <div class="filtroClasificacionCatalogo">
+                <label class="etiquetaClasificacionCatalogo" for="ordenPrecioCatalogo">
+                    Ordenar por precio
+                </label>
+                <select
+                    class="t-select selectorClasificacionCatalogo"
+                    id="ordenPrecioCatalogo"
+                    [ngModel]="ordenPrecioSeleccionado()"
+                    (ngModelChange)="ordenPrecioSeleccionado.set($event)"
+                >
+                    <option value="ninguno">Predeterminado</option>
+                    <option value="precio_asc">Menor a mayor</option>
+                    <option value="precio_desc">Mayor a menor</option>
+                </select>
+            </div>
 
-                <div class="filtroClasificacionCatalogo">
-                    <label class="etiquetaClasificacionCatalogo" for="disponibilidadCatalogo">
-                        Disponibilidad
-                    </label>
-                    <select
-                        class="selectorClasificacionCatalogo"
-                        id="disponibilidadCatalogo"
-                        [ngModel]="disponibilidadSeleccionada()"
-                        (ngModelChange)="disponibilidadSeleccionada.set($event)"
-                    >
-                        <option value="todos">Todos</option>
-                        <option value="con_stock">Con stock</option>
-                        <option value="sin_stock">Sin stock</option>
-                    </select>
-                </div>
+            <div class="filtroClasificacionCatalogo">
+                <label class="etiquetaClasificacionCatalogo" for="disponibilidadCatalogo">
+                    Disponibilidad
+                </label>
+                <select
+                    class="t-select selectorClasificacionCatalogo"
+                    id="disponibilidadCatalogo"
+                    [ngModel]="disponibilidadSeleccionada()"
+                    (ngModelChange)="disponibilidadSeleccionada.set($event)"
+                >
+                    <option value="todos">Todos</option>
+                    <option value="con_stock">Con stock</option>
+                    <option value="sin_stock">Sin stock</option>
+                </select>
             </div>
 
             <div class="accionesFiltrosCatalogo">
                 <button
-                    class="botonAplicarFiltros"
+                    class="t-btn botonAplicarFiltros"
                     [class.botonAplicarPendiente]="hayCambiosSinAplicar()"
                     type="button"
                     (click)="aplicarFiltros()"
                 >Aplicar filtros</button>
                 @if (hayFiltrosAplicados()) {
-                    <button class="botonLimpiarFiltros" type="button" (click)="limpiarFiltros()">Limpiar</button>
+                    <button class="t-btn t-btn--ghost botonLimpiarFiltros" type="button" (click)="limpiarFiltros()">Limpiar</button>
                 }
             </div>
+        </div>
 
+        <div class="resumenResultadosCatalogo">
             <p class="cantidadResultadosCatalogo" aria-live="polite">
-                {{ total() }}
-                {{ total() === 1 ? 'café encontrado' : 'cafés encontrados' }}
+                @if (!cargando()) {
+                    <strong>{{ total() }}</strong>
+                    {{ total() === 1 ? 'café encontrado' : 'cafés encontrados' }}
+                }
             </p>
+            @if (hayCambiosSinAplicar()) {
+                <span class="t-badge t-badge--warning t-badge--dot">Cambios sin aplicar</span>
+            }
         </div>
 
         @if (cargando()) {
-            <div class="estadoVacioCatalogo">
-                <h2 class="tituloEstadoVacio">Cargando cafés...</h2>
+            <div class="grillaCatalogo" aria-busy="true" aria-label="Cargando cafés">
+                @for (n of [1, 2, 3, 4, 5, 6, 7, 8]; track n) {
+                    <div class="tarjetaEsqueleto" aria-hidden="true">
+                        <div class="t-skeleton esqueletoImagen"></div>
+                        <div class="esqueletoCuerpo">
+                            <div class="t-skeleton esqueletoLinea esqueletoTitulo"></div>
+                            <div class="t-skeleton esqueletoLinea"></div>
+                            <div class="t-skeleton esqueletoLinea esqueletoCorta"></div>
+                        </div>
+                    </div>
+                }
             </div>
         } @else if (errorCarga()) {
-            <div class="estadoVacioCatalogo">
-                <h2 class="tituloEstadoVacio">No pudimos cargar los cafés.</h2>
-                <p class="textoEstadoVacio">
+            <div class="t-empty" role="alert">
+                <span class="t-empty__icon t-empty__icon--danger" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7.5v5.5M12 16.5v.01" /></svg>
+                </span>
+                <h2 class="t-empty__title">No pudimos cargar los cafés.</h2>
+                <p class="t-empty__text">
                     Revisá que el servidor esté disponible e intentá nuevamente.
                 </p>
+                <button class="t-btn t-btn--secondary" type="button" (click)="cargarPagina(pagina())">Reintentar</button>
             </div>
         } @else if (productos().length === 0) {
-            <div class="estadoVacioCatalogo">
-                <span class="adornoEstadoVacio" aria-hidden="true">✳</span>
+            <div class="t-empty">
+                <span class="t-empty__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" /><path d="m16 16 4 4" /></svg>
+                </span>
                 @if (!hayFiltrosAplicados()) {
-                    <h2 class="tituloEstadoVacio">
+                    <h2 class="t-empty__title">
                         Todavía no hay cafés en esta cosecha.
                     </h2>
-                    <p class="textoEstadoVacio">
+                    <p class="t-empty__text">
                         Los nuevos lotes aparecerán aquí.
                     </p>
                 } @else {
-                    <h2 class="tituloEstadoVacio">
+                    <h2 class="t-empty__title">
                         No encontramos cafés con esos filtros.
                     </h2>
-                    <p class="textoEstadoVacio">
+                    <p class="t-empty__text">
                         Probá con otra búsqueda o clasificación.
                     </p>
+                    <button class="t-btn t-btn--secondary" type="button" (click)="limpiarFiltros()">Limpiar filtros</button>
                 }
             </div>
         } @else {
             <div class="grillaCatalogo">
                 @for (producto of productos(); track producto._id; let indice = $index) {
-                    <article class="tarjetaProductoCatalogo">
-                        <div
-                            class="imagenProductoFondo"
-                            [class.fondoTerracota]="indice % 4 === 0"
-                            [class.fondoSalvia]="indice % 4 === 1"
-                            [class.fondoOcre]="indice % 4 === 2"
-                            [class.fondoPetroleo]="indice % 4 === 3"
+                    <article class="t-product tarjetaProductoCatalogo">
+                        <a
+                            class="t-product__media"
+                            [class.t-product__media--salvia]="indice % 4 === 1"
+                            [class.t-product__media--ocre]="indice % 4 === 2"
+                            [class.t-product__media--petroleo]="indice % 4 === 3"
+                            [routerLink]="['/cafes', producto._id]"
+                            [attr.aria-label]="'Ver detalle de ' + producto.nombre"
                         >
-                            <a class="enlaceImagenProductoCatalogo" [routerLink]="['/cafes', producto._id]" [attr.aria-label]="'Ver detalle de ' + producto.nombre">
-                                <img
-                                    class="imagenProductoCatalogo"
-                                    alt="Foto del café"
-                                    [src]="'http://localhost:4000' + producto.imagen"
-                                    [alt]="producto.nombre"
-                                />
-                            </a>
-                            @if (auth.esAdmin()) {
-                                <div class="accionesProductoCatalogo">
-                                    <a
-                                        class="botonAccionCatalogo"
-                                        [routerLink]="['/admin/editar', producto._id]"
-                                        title="Editar producto"
-                                        aria-label="Editar producto"
-                                    >
-                                        <svg
-                                            class="iconoAccionCatalogo"
-                                            viewBox="0 0 24 24"
-                                            aria-hidden="true"
-                                        >
-                                            <path d="m14 5 5 5M4 20l4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z" />
-                                        </svg>
-                                    </a>
+                            <img
+                                class="t-product__img"
+                                [src]="'http://localhost:4000' + producto.imagen"
+                                [alt]="producto.nombre"
+                                loading="lazy"
+                            />
+                        </a>
 
-                                    <button
-                                        class="botonAccionCatalogo"
-                                        type="button"
-                                        (click)="eliminarProducto(producto._id)"
-                                        title="Eliminar producto"
-                                        aria-label="Eliminar producto"
-                                    >
-                                        <svg
-                                            class="iconoAccionCatalogo"
-                                            viewBox="0 0 24 24"
-                                            aria-hidden="true"
-                                        >
-                                            <path d="M4 7h16M10 11v6m4-6v6M6 7l1 14h10l1-14M9 7V4h6v3" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            }
-                            <span class="etiquetaClasificacionProducto">
-                                {{ producto.clasificacion }}
+                        <div class="t-product__badges">
+                            <span class="t-badge t-badge--light">
+                                {{ producto.clasificacion === 'Capsulas' ? 'Cápsulas' : producto.clasificacion }}
                             </span>
+                            @if (producto.stock === 0) {
+                                <span class="t-badge t-badge--danger">Sin stock</span>
+                            } @else if (producto.stock <= 5) {
+                                <span class="t-badge t-badge--warning">Últimas unidades</span>
+                            }
                         </div>
 
-                        <div class="datosProductoCatalogo">
-                            <h2 class="nombreProductoCatalogo">
-                                <a class="enlaceNombreProductoCatalogo" [routerLink]="['/cafes', producto._id]">
-                                    {{ producto.nombre }}
+                        @if (auth.esAdmin()) {
+                            <div class="t-product__admin">
+                                <a
+                                    class="t-icon-btn"
+                                    [routerLink]="['/admin/editar', producto._id]"
+                                    title="Editar producto"
+                                    aria-label="Editar producto"
+                                >
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="m14 5 5 5M4 20l4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z" />
+                                    </svg>
                                 </a>
-                            </h2>
-                            <p class="notasProductoCatalogo">
-                                {{ producto.descripcion }}
-                            </p>
-
-                            <div class="pieProductoCatalogo">
-                                <div class="precioYGramajeCatalogo">
-                                    <span class="precioProductoCatalogo">
-                                        {{ producto.precio | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}
-                                    </span>
-                                    <span class="gramajeProductoCatalogo">
-                                        {{ producto.gramaje }}
-                                    </span>
-                                </div>
-
-                                @if (producto.stock > 0) {
-                                    @if (maxDisponible(producto) <= 0) {
-                                        <span class="etiquetaAgotadoCatalogo">
-                                            No hay más stock
-                                        </span>
-                                    } @else {
-                                        <div class="controlesAgregarCatalogo">
-                                            <div class="columnaSelectorCatalogo">
-                                                <div class="selectorCantidadCatalogo" [attr.aria-label]="'Cantidad de ' + producto.nombre">
-                                                    <button
-                                                        class="botonCantidadCatalogo"
-                                                        type="button"
-                                                        (click)="decrementarCantidad(producto)"
-                                                        [disabled]="cantidadDe(producto) <= 1"
-                                                        aria-label="Disminuir cantidad"
-                                                    >−</button>
-                                                    <output class="valorCantidadCatalogo" aria-live="polite">{{ cantidadDe(producto) }}</output>
-                                                    <button
-                                                        class="botonCantidadCatalogo"
-                                                        type="button"
-                                                        (click)="incrementarCantidad(producto)"
-                                                        aria-label="Aumentar cantidad"
-                                                    >+</button>
-                                                </div>
-                                                @if (mensajeDeStock(producto); as mensaje) {
-                                                    <span class="mensajeSinStockCatalogo" role="status">{{ mensaje }}</span>
-                                                }
-                                            </div>
-                                            <button
-                                                class="botonAgregarCatalogo"
-                                                [class.botonAgregado]="fueAgregado(producto)"
-                                                type="button"
-                                                (click)="agregarAlCarrito(producto)"
-                                                [attr.aria-label]="'Agregar ' + producto.nombre + ' al carrito'"
-                                            >
-                                                @if (fueAgregado(producto)) {
-                                                    <span class="confirmacionAgregado">✓ Agregado</span>
-                                                } @else {
-                                                    <svg
-                                                        class="iconoCarritoCatalogo"
-                                                        viewBox="0 0 24 24"
-                                                        aria-hidden="true"
-                                                    >
-                                                        <path d="M3 4h2l2.2 10.1a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 1.9-1.4L21 8H6" />
-                                                        <circle cx="10" cy="20" r="1.25" />
-                                                        <circle cx="18" cy="20" r="1.25" />
-                                                    </svg>
-                                                }
-                                            </button>
-                                        </div>
-                                    }
-                                } @else {
-                                    <span class="etiquetaAgotadoCatalogo">
-                                        Sin stock
-                                    </span>
-                                }
+                                <button
+                                    class="t-icon-btn t-icon-btn--danger"
+                                    type="button"
+                                    (click)="eliminarProducto(producto._id)"
+                                    title="Eliminar producto"
+                                    aria-label="Eliminar producto"
+                                >
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M4 7h16M10 11v6m4-6v6M6 7l1 13h10l1-13M9 7V4h6v3" />
+                                    </svg>
+                                </button>
                             </div>
+                        }
+
+                        <div class="t-product__body">
+                            <h2 class="t-product__name">
+                                <a [routerLink]="['/cafes', producto._id]">{{ producto.nombre }}</a>
+                            </h2>
+                            <p class="t-product__desc">{{ producto.descripcion }}</p>
+
+                            <div class="t-product__price-row">
+                                <span class="t-price t-product__price">
+                                    {{ producto.precio | currency:'ARS':'symbol-narrow':'1.0-0':'es-AR' }}
+                                </span>
+                                <span class="t-product__unit">{{ producto.gramaje }}</span>
+                            </div>
+
+                            @if (producto.stock > 0) {
+                                @if (maxDisponible(producto) <= 0) {
+                                    <div class="t-product__actions">
+                                        <button class="t-btn t-btn--secondary" type="button" disabled>No hay más stock</button>
+                                    </div>
+                                } @else {
+                                    <div class="t-product__actions">
+                                        <div class="t-qty" [attr.aria-label]="'Cantidad de ' + producto.nombre">
+                                            <button
+                                                type="button"
+                                                (click)="decrementarCantidad(producto)"
+                                                [disabled]="cantidadDe(producto) <= 1"
+                                                aria-label="Disminuir cantidad"
+                                            >−</button>
+                                            <output aria-live="polite">{{ cantidadDe(producto) }}</output>
+                                            <button
+                                                type="button"
+                                                (click)="incrementarCantidad(producto)"
+                                                aria-label="Aumentar cantidad"
+                                            >+</button>
+                                        </div>
+                                        <button
+                                            class="t-btn botonAgregarCatalogo"
+                                            [class.t-btn--success]="fueAgregado(producto)"
+                                            type="button"
+                                            (click)="agregarAlCarrito(producto)"
+                                            [attr.aria-label]="'Agregar ' + producto.nombre + ' al carrito'"
+                                        >
+                                            @if (fueAgregado(producto)) {
+                                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>
+                                                Agregado
+                                            } @else {
+                                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                                    <path d="M5 7h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 7Z" />
+                                                    <path d="M9 7a3 3 0 0 1 6 0" />
+                                                </svg>
+                                                Agregar
+                                            }
+                                        </button>
+                                    </div>
+                                    @if (mensajeDeStock(producto); as mensaje) {
+                                        <p class="t-product__note" role="status">{{ mensaje }}</p>
+                                    }
+                                }
+                            } @else {
+                                <div class="t-product__actions">
+                                    <button class="t-btn t-btn--secondary" type="button" disabled>Sin stock</button>
+                                </div>
+                            }
                         </div>
                     </article>
                 }
@@ -277,12 +288,53 @@
         }
         @if (!cargando() && !errorCarga() && totalPaginas() > 1) {
             <nav class="paginacionCatalogo" aria-label="Páginas del catálogo">
-                <button class="botonLimpiarFiltros" type="button" [disabled]="pagina() === 1" (click)="cargarPagina(pagina() - 1)">Anterior</button>
-                <span aria-live="polite" aria-atomic="true">Página {{ pagina() }} de {{ totalPaginas() }}</span>
-                <button class="botonLimpiarFiltros" type="button" [disabled]="pagina() === totalPaginas()" (click)="cargarPagina(pagina() + 1)">Siguiente</button>
+                <button class="t-btn t-btn--secondary t-btn--sm" type="button" [disabled]="pagina() === 1" (click)="cargarPagina(pagina() - 1)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6" /></svg>
+                    Anterior
+                </button>
+                <span class="textoPaginacion" aria-live="polite" aria-atomic="true">Página {{ pagina() }} de {{ totalPaginas() }}</span>
+                <button class="t-btn t-btn--secondary t-btn--sm" type="button" [disabled]="pagina() === totalPaginas()" (click)="cargarPagina(pagina() + 1)">
+                    Siguiente
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg>
+                </button>
             </nav>
         }
     </section>
+
+    @if (productoAEliminar(); as producto) {
+        <div class="t-modal-backdrop" (click)="cancelarEliminar()" (keydown.escape)="cancelarEliminar()">
+            <div
+                class="t-modal"
+                role="alertdialog"
+                aria-modal="true"
+                aria-labelledby="tituloModalEliminar"
+                aria-describedby="textoModalEliminar"
+                (click)="$event.stopPropagation()"
+            >
+                <span class="t-modal__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6m4-6v6M6 7l1 13h10l1-13M9 7V4h6v3" /></svg>
+                </span>
+                <h2 id="tituloModalEliminar" class="t-modal__title">¿Dar de baja este lote?</h2>
+                <p id="textoModalEliminar" class="t-modal__text">
+                    Vas a eliminar <strong>{{ producto.nombre }}</strong> del catálogo. Esta acción no se puede deshacer.
+                </p>
+                @if (errorEliminar()) {
+                    <p class="t-alert t-alert--error" role="alert">{{ errorEliminar() }}</p>
+                }
+                <div class="t-modal__actions">
+                    <button class="t-btn t-btn--secondary" type="button" (click)="cancelarEliminar()" [disabled]="eliminando()">Cancelar</button>
+                    <button class="t-btn t-btn--danger" type="button" (click)="confirmarEliminar()" [disabled]="eliminando()">
+                        @if (eliminando()) {
+                            <span class="t-spinner" aria-hidden="true"></span>
+                            Eliminando…
+                        } @else {
+                            Eliminar
+                        }
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
 
     <app-benefits />
 </div>

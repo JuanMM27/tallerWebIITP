@@ -6,6 +6,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { of, switchMap } from 'rxjs';
 import { ProductService } from '../../services/product';
 import { CartService } from '../../services/cart';
+import { AuthService } from '../../services/auth';
 import type { Cafe } from '../../models/cafe';
 import { Benefits } from '../shared/benefits/benefits';
 
@@ -22,6 +23,7 @@ export class ProductDetail implements OnInit {
   private readonly rutaActual = inject(ActivatedRoute);
   private readonly servicioProductos = inject(ProductService);
   private readonly carrito = inject(CartService);
+  readonly esAdmin = inject(AuthService).esAdmin;
 
   productoSeleccionado = signal<Cafe | null>(null);
   cantidad = signal(1);
